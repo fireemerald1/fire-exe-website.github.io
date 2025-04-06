@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Exe - Projects</title>
+    <style>
+        :root {
+            --primary-color: #ff0000; /* Red */
+            --secondary-color: #00ffff; /* Cyan */
+            --accent-color: #ff3333; /* Lighter Red */
+            --text-color: #e0e0e0; /* Light Gray */
+            --light-text: #a0a0a0; /* Medium Gray */
+            --bg-color: #000000; /* Black */
+            --card-bg: #1a1a1a; /* Dark Gray */
+            --border-color: #333333; /* Even Darker Gray */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Custom Scrollbar for WebKit Browsers (Chrome, Edge, Safari) */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent; /* Make the track transparent by default */
+            border: none; /* Remove the border to avoid any visible outline */
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: transparent; /* Make the thumb transparent by default */
+            border-radius: 6px;
+            border: none; /* Remove the border */
+            opacity: 0; /* Ensure the thumb is fully hidden */
+            transition: opacity 0.3s ease, background 0.3s ease; /* Smooth transition for visibility */
+        }
+
+        /* Show the scrollbar when hovering over the page */
+        html:hover ::-webkit-scrollbar-track {
+            background: #000000; /* Black track on hover */
+            border: 1px solid #333333; /* Restore the border */
+        }
+
+        html:hover ::-webkit-scrollbar-thumb {
+            background: #ff0000; /* Red thumb on hover */
+            border: 2px solid #000000; /* Restore the border */
+            opacity: 1; /* Make the thumb fully visible */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff3333; /* Slightly lighter red on direct hover for interactivity */
+        }
+
+        /* Custom Scrollbar for Firefox */
+        html {
+            scrollbar-width: none; /* Completely hide the scrollbar by default */
+        }
+
+        /* Show the scrollbar in Firefox when hovering */
+        html:hover {
+            scrollbar-width: thin; /* Show a thin scrollbar on hover */
+            scrollbar-color: #ff0000 #000000; /* Red thumb, black track */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        /* Navbar Styling */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px; /* Matches the screenshot */
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%; /* Ensure it takes full height of navbar */
+        }
+
+        .logo {
+            font-size: 1.8rem; /* Matches the screenshot */
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px; /* Matches the screenshot */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--secondary-color); /* Should make "Project" cyan */
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        /* Main content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 9rem 2rem 4rem; /* Adjusted padding to account for larger navbar */
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--light-text);
+            margin-bottom: 2rem;
+        }
+        
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+            border: 1px solid var(--border-color);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .project-image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .project-image {
+            height: 100%;
+            width: 100%;
+            background-color: var(--border-color);
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease;
+        }
+        
+        .project-card:hover .project-image {
+            transform: scale(1.1);
+        }
+        
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--text-color);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+        
+        .project-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .project-description {
+            color: var(--light-text);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto;
+            justify-content: center;
+        }
+        
+        .tag {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 50px 0 20px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--secondary-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-links span {
+            color: #ffffff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            transition: background-color 0.3s, transform 0.3s;
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            transform: scale(1.1);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--light-text);
+        }
+        
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: var(--bg-color);
+                flex-direction: column;
+                align-items: center;
+                padding-top: 50px;
+                transition: left 0.3s;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 20px 0;
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Fire Exe</a>
+            <button class="menu-btn">☰</button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="About_me.html">About Me</a></li>
+                <li><a href="#" class="active">Project</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h2 class="section-title">My Projects</h2>
+        <p class="section-subtitle">A showcase of my best work</p>
+        
+        <div id="projects-container">
+            <div class="loading">Loading projects...</div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About</h3>
+                <p>Beginner programmer from Indonesia, exploring the world of development and creation.</p>
+                
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="About_me.html">About me</a></li>
+                    <li><a href="projects.html">Project</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Skills</h3>
+                <ul class="footer-links">
+                    <li><span>Python</span></li>
+                    <li><span>Geometry Dash</span></li>
+                    <li><span>Adobe Illustrator</span></li>
+                    <li><a href="About_me.html">More Skills</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul class="footer-links">
+                    <li>Email: fireexecontact@gmail.com</li>
+                    <li>Location: Indonesia</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Fire Exe Property. All Rights Reserved.
+            <p><a href="contact.html" style="color: var(--light-text); text-decoration: none;">Contact Me</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Fetch projects data from the provided JSON URL
+        fetch('https://raw.githubusercontent.com/fireemerald1/asdbhjawbhdkjabnsdkjbwa/refs/heads/main/storage.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayProjects(data);
+            })
+            .catch(error => {
+                console.error('Error fetching projects:', error);
+                document.getElementById('projects-container').innerHTML = `
+                    <div class="loading" style="color: var(--primary-color);">
+                        Error loading projects. Please try again later.
+                    </div>
+                `;
+            });
+
+        function displayProjects(projects) {
+            const projectsContainer = document.getElementById('projects-container');
+            const projectsGrid = document.createElement('div');
+            projectsGrid.className = 'project-grid';
+            
+            projects.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+                
+                const tagsHTML = project.tag.map(tag => 
+                    `<span class="tag">${tag}</span>`
+                ).join('');
+                
+                projectCard.innerHTML = `
+                    <div class="project-image-container">
+                        <div class="project-image" style="background-image: url('${project.image}');"></div>
+                        <div class="project-overlay">
+                            <h3 class="project-title">${project.name}</h3>
+                            <p class="project-description">${project.description}</p>
+                            <div class="project-tags">
+                                ${tagsHTML}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                projectsGrid.appendChild(projectCard);
+            });
+            
+            projectsContainer.innerHTML = '';
+            projectsContainer.appendChild(projectsGrid);
+        }
+
+        // Mobile menu toggle
+        document.querySelector('.menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelector('.nav-links').classList.remove('active');
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92c1057bf82044d7',t:'MTc0MzkzOTc0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92c2719fae1abfcc',t:'MTc0Mzk1NDY1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
