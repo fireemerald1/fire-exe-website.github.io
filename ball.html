@@ -180,7 +180,7 @@
       <a href="index.html" class="logo glow">Fire Exe</a>
       <button class="menu-btn">☰</button>
       <ul class="nav-links">
-        <li><a href="ball.html" class="active">balls</a></li>
+        <li><a href="ball.html" class="active">ball</a></li>
         <li><a href="index.html" id="nav-home">Home</a></li>
         <li><a href="About_me.html" id="nav-about">About me</a></li>
         <li><a href="projects.html" id="nav-project">Project</a></li>
@@ -252,7 +252,7 @@
         800: "I'm serious, why are you doing this?",
         900: "Ok... you are very bored ._.",
         1000: "Ok... here's a reward, new icon to bounce!",
-        1500: "Ok... why are you keep doing this",
+        1500: "WAIT WTF",
         2000: "Ok... gg",
       };
       
@@ -368,7 +368,7 @@
         }
         
         // Drop nav items at 1500 bounces
-        if (bounceCount >= 20 && !hasDroppedNavItems) {
+        if (bounceCount >= 1500 && !hasDroppedNavItems) {
           dropNavItems();
         }
         
