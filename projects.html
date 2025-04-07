@@ -347,6 +347,35 @@
             font-size: 1.2rem;
             color: var(--light-text);
         }
+
+        .glow {
+            position: relative;
+        }
+
+        .glow::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--secondary-color), transparent, var(--secondary-color));
+            z-index: -1;
+            border-radius: 12px;
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .glow:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
         
         @media (max-width: 768px) {
             .menu-btn {
@@ -388,7 +417,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="logo">Fire Exe</a>
+            <a href="index.html" class="logo glow">Fire Exe</a>
             <button class="menu-btn">☰</button>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
