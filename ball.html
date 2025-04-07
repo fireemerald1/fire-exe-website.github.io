@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bouncing Logo Game</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background-color: rgb(15, 15, 15);
+      color: white;
+      height: 100vh;
+      position: relative;
+    }
+    
+    #game-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    
+    #logo {
+      position: absolute;
+      width: 100px;
+      height: auto;
+      cursor: grab;
+    }
+    
+    #logo:active {
+      cursor: grabbing;
+    }
+    
+    #bounce-count {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 200px;
+      color: rgba(255, 255, 255, 1);
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0;
+    }
+    
+    #milestone-message {
+      position: absolute;
+      width: 100%;
+      top: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      color: rgba(255, 255, 255, 0.8);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    /* Navbar styles from Contact page */
+    header {
+      background-color: rgba(0, 0, 0, 0.95);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem 0;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      top: 0; /* Always visible at the top */
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #ff0000; /* --primary-color */
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-links li {
+      margin-left: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #e0e0e0; /* --text-color */
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #00ffff; /* --secondary-color */
+    }
+
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #e0e0e0; /* --text-color */
+    }
+
+    /* Styles for falling navbar items */
+    .nav-item {
+      position: absolute;
+      padding: 5px 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      font-size: 16px;
+      color: #e0e0e0;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .nav-item:active {
+      cursor: grabbing;
+    }
+
+    .nav-item a {
+      color: #e0e0e0;
+      text-decoration: none;
+    }
+
+    .nav-item a:hover {
+      color: #00ffff;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background-color: #000000; /* --bg-color */
+        flex-direction: column;
+        align-items: center;
+        padding-top: 50px;
+        transition: left 0.3s;
+      }
+
+      .nav-links.active {
+        left: 0;
+      }
+
+      .nav-links li {
+        margin: 0 0 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="navbar">
+    <nav>
+      <a href="index.html" class="logo glow">Fire Exe</a>
+      <button class="menu-btn">☰</button>
+      <ul class="nav-links">
+        <li><a href="ball.html" class="active">balls</a></li>
+        <li><a href="index.html" id="nav-home">Home</a></li>
+        <li><a href="About_me.html" id="nav-about">About me</a></li>
+        <li><a href="projects.html" id="nav-project">Project</a></li>
+        <li><a href="contact.html" id="nav-contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div id="game-container">
+    <div id="bounce-count">0</div>
+    <div id="milestone-message"></div>
+    <img id="logo" src="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20no%20svg.png?raw=true" alt="Logo">
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const logo = document.getElementById('logo');
+      const bounceCountDisplay = document.getElementById('bounce-count');
+      const milestoneMessage = document.getElementById('milestone-message');
+      const navbar = document.getElementById('navbar');
+      const navLinks = document.querySelector('.nav-links');
+      
+      // Game state
+      let bounceCount = -3;
+      let navbarHeight = navbar.offsetHeight; // This will be updated on resize
+      let hasDroppedNavItems = false; // Track if nav items have been dropped
+      
+      // Physics parameters
+      const gravity = 0.5;
+      const friction = 0.98;
+      const elasticity = 0.33;
+      const holdThreshold = 4000; // 4 seconds in milliseconds
+      
+      // Array to store all physics objects (logo + nav items)
+      const objects = [];
+      
+      // Physics object for the logo
+      const logoObject = {
+        element: logo,
+        posX: window.innerWidth / 2 - 50,
+        posY: 50,
+        velocityX: 0,
+        velocityY: 0,
+        isDragging: false,
+        offsetX: 0,
+        offsetY: 0,
+        dragStartTime: null, // Track when dragging starts
+        width: 100, // Logo width
+        height: logo.offsetHeight, // Will be updated after image loads
+        countsBounces: true, // Logo bounces increment the counter
+      };
+      objects.push(logoObject);
+      
+      // Wait for the logo image to load to get its height
+      logo.onload = function() {
+        logoObject.height = logo.offsetHeight;
+      };
+      
+      // Milestone messages
+      const milestones = {
+        50: "cool, how did you find this thing",
+        100: "You are very bored aren't you?",
+        200: "You really don't have a job, do you?",
+        300: "Wow, you have determination to go to 1000, don't you?",
+        400: "You are the definition of unemployed",
+        500: "Why are you doing this?",
+        600: "Ok, why are you doing this instead of doing useful things?",
+        700: "Wow, you actually have determination",
+        800: "I'm serious, why are you doing this?",
+        900: "Ok... you are very bored ._.",
+        1000: "Ok... here's a reward, new icon to bounce!",
+        1500: "Ok... why are you keep doing this",
+        2000: "Ok... gg",
+      };
+      
+      // Set initial position
+      updatePosition(logoObject);
+      
+      // Function to create falling nav items at 1500 bounces
+      function dropNavItems() {
+        if (hasDroppedNavItems) return;
+        hasDroppedNavItems = true;
+        
+        const navItems = [
+          { id: 'nav-home', text: 'Home', href: 'index.html' },
+          { id: 'nav-about', text: 'About me', href: 'About_me.html' },
+          { id: 'nav-project', text: 'Project', href: 'projects.html' },
+          { id: 'nav-contact', text: 'Contact', href: 'contact.html' },
+        ];
+        
+        // Remove nav items from navbar
+        navItems.forEach(item => {
+          const navElement = document.getElementById(item.id);
+          if (navElement) navElement.remove();
+        });
+        
+        // Create new falling elements
+        const navWidth = window.innerWidth / (navItems.length + 1);
+        navItems.forEach((item, index) => {
+          const navElement = document.createElement('div');
+          navElement.className = 'nav-item';
+          const link = document.createElement('a');
+          link.href = item.href;
+          link.textContent = item.text;
+          link.style.color = '#e0e0e0';
+          link.style.textDecoration = 'none';
+          navElement.appendChild(link);
+          document.getElementById('game-container').appendChild(navElement);
+          
+          const navObject = {
+            element: navElement,
+            posX: navWidth * (index + 1) - navElement.offsetWidth / 2,
+            posY: navbarHeight + 10,
+            velocityX: 0,
+            velocityY: 0,
+            isDragging: false,
+            offsetX: 0,
+            offsetY: 0,
+            dragStartTime: null, // Track when dragging starts
+            width: navElement.offsetWidth,
+            height: navElement.offsetHeight,
+            countsBounces: false, // Nav items don't increment bounce counter
+          };
+          objects.push(navObject);
+          
+          // Add drag events for nav items
+          addDragEvents(navObject);
+        });
+      }
+      
+      // Animation loop
+      function animateLoop() {
+        objects.forEach(obj => {
+          if (!obj.isDragging) {
+            obj.velocityY += gravity;
+            obj.posX += obj.velocityX;
+            obj.posY += obj.velocityY;
+            obj.velocityX *= friction;
+            
+            const rect = obj.element.getBoundingClientRect();
+            
+            // Right and left edges
+            if (obj.posX + rect.width > window.innerWidth) {
+              obj.posX = window.innerWidth - rect.width;
+              if (Math.abs(obj.velocityX) > 1) {
+                if (obj.countsBounces) registerBounce();
+              }
+              obj.velocityX = -obj.velocityX * elasticity;
+            } else if (obj.posX < 0) {
+              obj.posX = 0;
+              if (Math.abs(obj.velocityX) > 1) {
+                if (obj.countsBounces) registerBounce();
+              }
+              obj.velocityX = -obj.velocityX * elasticity;
+            }
+            
+            // Bottom edge (ground)
+            if (obj.posY + rect.height > window.innerHeight) {
+              obj.posY = window.innerHeight - rect.height;
+              if (Math.abs(obj.velocityY) > 1) {
+                if (obj.countsBounces) registerBounce();
+                obj.velocityY = -obj.velocityY * elasticity;
+              } else {
+                obj.velocityY = 0;
+              }
+            }
+            // Top edge (navbar)
+            else if (obj.posY < navbarHeight) {
+              obj.posY = navbarHeight;
+              if (Math.abs(obj.velocityY) > 1) {
+                if (obj.countsBounces) registerBounce();
+              }
+              obj.velocityY = -obj.velocityY * elasticity;
+            }
+            
+            updatePosition(obj);
+          }
+        });
+        
+        // Check for collisions between objects
+        for (let i = 0; i < objects.length; i++) {
+          for (let j = i + 1; j < objects.length; j++) {
+            handleCollision(objects[i], objects[j]);
+          }
+        }
+        
+        // Drop nav items at 1500 bounces
+        if (bounceCount >= 20 && !hasDroppedNavItems) {
+          dropNavItems();
+        }
+        
+        requestAnimationFrame(animateLoop);
+      }
+      
+      function updatePosition(obj) {
+        obj.element.style.left = obj.posX + 'px';
+        obj.element.style.top = obj.posY + 'px';
+      }
+      
+      function registerBounce() {
+        bounceCount++;
+        bounceCountDisplay.textContent = bounceCount;
+        if (bounceCount >= 1) {
+          const opacity = Math.min(0.5, (bounceCount - 1) / (20 - 1) * 0.5);
+          bounceCountDisplay.style.opacity = opacity;
+        }
+        checkMilestones();
+      }
+      
+      function checkMilestones() {
+        if (milestones[bounceCount]) {
+          showMilestoneMessage(milestones[bounceCount]);
+          if (bounceCount === 1000) {
+            logo.src = "https://github.com/fireemerald1/bg/blob/main/cube_1.png?raw=true";
+          }
+        }
+      }
+      
+      function showMilestoneMessage(message) {
+        milestoneMessage.textContent = message;
+        milestoneMessage.style.opacity = 1;
+        setTimeout(() => milestoneMessage.style.opacity = 0, 60000);
+      }
+      
+      // Track mouse position for velocity and add drag events
+      function addDragEvents(obj) {
+        const positionHistory = [];
+        const maxHistoryLength = 5;
+        
+        function addPositionToHistory(x, y, time) {
+          positionHistory.push({ x, y, time });
+          if (positionHistory.length > maxHistoryLength) positionHistory.shift();
+        }
+        
+        function calculateVelocityFromHistory() {
+          if (positionHistory.length < 2) return { x: 0, y: 0 };
+          const oldest = positionHistory[0];
+          const newest = positionHistory[positionHistory.length - 1];
+          const dt = newest.time - oldest.time;
+          if (dt <= 0) return { x: 0, y: 0 };
+          const amplifier = 20;
+          return {
+            x: (newest.x - oldest.x) / dt * amplifier,
+            y: (newest.y - oldest.y) / dt * amplifier
+          };
+        }
+        
+        // Mouse drag events
+        obj.element.addEventListener('mousedown', function(e) {
+          obj.isDragging = true;
+          obj.offsetX = e.clientX - obj.posX;
+          obj.offsetY = e.clientY - obj.posY;
+          obj.dragStartTime = Date.now(); // Record the start time
+          obj.element.style.cursor = 'grabbing';
+          positionHistory.length = 0;
+          obj.velocityX = 0;
+          obj.velocityY = 0;
+          e.preventDefault();
+        });
+        
+        document.addEventListener('mousemove', function(e) {
+          if (obj.isDragging) {
+            addPositionToHistory(e.clientX, e.clientY, Date.now());
+            obj.posX = e.clientX - obj.offsetX;
+            obj.posY = e.clientY - obj.offsetY;
+            updatePosition(obj);
+          }
+        });
+        
+        document.addEventListener('mouseup', function(e) {
+          if (obj.isDragging) {
+            obj.isDragging = false;
+            obj.element.style.cursor = 'grab';
+            const holdDuration = Date.now() - obj.dragStartTime; // Calculate hold duration
+            const velocity = calculateVelocityFromHistory();
+            obj.velocityX = Math.max(-60, Math.min(60, velocity.x));
+            obj.velocityY = Math.max(-60, Math.min(60, velocity.y));
+            
+            // If held for more than 4 seconds, prevent navigation
+            if (holdDuration > holdThreshold) {
+              const link = obj.element.querySelector('a');
+              if (link) {
+                // Temporarily disable the link by preventing the click event
+                const preventClick = (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  link.removeEventListener('click', preventClick); // Remove after one use
+                };
+                link.addEventListener('click', preventClick);
+              }
+            }
+            obj.dragStartTime = null; // Reset drag start time
+          }
+        });
+        
+        // Touch drag events for mobile
+        obj.element.addEventListener('touchstart', function(e) {
+          obj.isDragging = true;
+          obj.offsetX = e.touches[0].clientX - obj.posX;
+          obj.offsetY = e.touches[0].clientY - obj.posY;
+          obj.dragStartTime = Date.now(); // Record the start time
+          positionHistory.length = 0;
+          obj.velocityX = 0;
+          obj.velocityY = 0;
+          e.preventDefault();
+        });
+        
+        document.addEventListener('touchmove', function(e) {
+          if (obj.isDragging) {
+            addPositionToHistory(e.touches[0].clientX, e.touches[0].clientY, Date.now());
+            obj.posX = e.touches[0].clientX - obj.offsetX;
+            obj.posY = e.touches[0].clientY - obj.offsetY;
+            updatePosition(obj);
+            e.preventDefault();
+          }
+        });
+        
+        document.addEventListener('touchend', function(e) {
+          if (obj.isDragging) {
+            obj.isDragging = false;
+            const holdDuration = Date.now() - obj.dragStartTime; // Calculate hold duration
+            const velocity = calculateVelocityFromHistory();
+            obj.velocityX = Math.max(-60, Math.min(60, velocity.x));
+            obj.velocityY = Math.max(-60, Math.min(60, velocity.y));
+            
+            // If held for more than 4 seconds, prevent navigation
+            if (holdDuration > holdThreshold) {
+              const link = obj.element.querySelector('a');
+              if (link) {
+                const preventClick = (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  link.removeEventListener('click', preventClick); // Remove after one use
+                };
+                link.addEventListener('click', preventClick);
+              }
+            }
+            obj.dragStartTime = null; // Reset drag start time
+          }
+        });
+      }
+      
+      // Add drag events to the logo
+      addDragEvents(logoObject);
+      
+      // Collision detection and resolution
+      function handleCollision(obj1, obj2) {
+        // Approximate objects as circles for simpler collision detection
+        const center1X = obj1.posX + obj1.width / 2;
+        const center1Y = obj1.posY + obj1.height / 2;
+        const center2X = obj2.posX + obj2.width / 2;
+        const center2Y = obj2.posY + obj2.height / 2;
+        
+        // Use average of width and height as radius
+        const radius1 = (obj1.width + obj1.height) / 4;
+        const radius2 = (obj2.width + obj2.height) / 4;
+        
+        const dx = center2X - center1X;
+        const dy = center2Y - center1Y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < radius1 + radius2) {
+          // Collision detected, resolve it
+          const angle = Math.atan2(dy, dx);
+          const overlap = (radius1 + radius2) - distance;
+          
+          // Push objects apart
+          const pushX = Math.cos(angle) * overlap / 2;
+          const pushY = Math.sin(angle) * overlap / 2;
+          
+          if (!obj1.isDragging) {
+            obj1.posX -= pushX;
+            obj1.posY -= pushY;
+          }
+          if (!obj2.isDragging) {
+            obj2.posX += pushX;
+            obj2.posY += pushY;
+          }
+          
+          // Update velocities (simple elastic collision)
+          const mass1 = obj1.width * obj1.height;
+          const mass2 = obj2.width * obj2.height;
+          const totalMass = mass1 + mass2;
+          
+          const v1x = obj1.velocityX;
+          const v1y = obj1.velocityY;
+          const v2x = obj2.velocityX;
+          const v2y = obj2.velocityY;
+          
+          if (!obj1.isDragging) {
+            obj1.velocityX = ((mass1 - mass2) * v1x + 2 * mass2 * v2x) / totalMass * elasticity;
+            obj1.velocityY = ((mass1 - mass2) * v1y + 2 * mass2 * v2y) / totalMass * elasticity;
+          }
+          if (!obj2.isDragging) {
+            obj2.velocityX = ((mass2 - mass1) * v2x + 2 * mass1 * v1x) / totalMass * elasticity;
+            obj2.velocityY = ((mass2 - mass1) * v2y + 2 * mass1 * v1y) / totalMass * elasticity;
+          }
+        }
+      }
+      
+      // Mobile menu toggle
+      document.querySelector('.menu-btn').addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.toggle('active');
+      });
+
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function() {
+          document.querySelector('.nav-links').classList.remove('active');
+        });
+      });
+      
+      // Start animation
+      animateLoop();
+      
+      // Handle window resize
+      window.addEventListener('resize', function() {
+        // Update navbar height on resize
+        navbarHeight = navbar.offsetHeight;
+        
+        // Adjust positions if needed
+        objects.forEach(obj => {
+          if (obj.posX + obj.width > window.innerWidth) {
+            obj.posX = window.innerWidth - obj.width;
+          }
+          if (obj.posY + obj.height > window.innerHeight) {
+            obj.posY = window.innerHeight - obj.height;
+          }
+          if (obj.posY < navbarHeight) {
+            obj.posY = navbarHeight;
+          }
+          updatePosition(obj);
+        });
+      });
+    });
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92c6da1838ccbfff',t:'MTc0NDAwMDg3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
