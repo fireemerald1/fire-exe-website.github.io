@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Exe - Contacts</title>
+    <style>
+        /* Styles from the professional portfolio template */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        /* Color variables matching About_me.html */
+        :root {
+            --primary-color: #ff0000; /* Red */
+            --secondary-color: #00ffff; /* Cyan */
+            --accent-color: #ff3333; /* Lighter Red */
+            --text-color: #e0e0e0; /* Light Gray */
+            --light-text: #a0a0a0; /* Medium Gray */
+            --bg-color: #000000; /* Black */
+            --card-bg: #1a1a1a; /* Dark Gray */
+            --border-color: #333333; /* Even Darker Gray */
+            --contact-bg: #282828; /* Gray background for contact section */
+        }
+
+        /* Custom Scrollbar for WebKit Browsers (Chrome, Edge, Safari) */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent; /* Make the track transparent by default */
+            border: none; /* Remove the border to avoid any visible outline */
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: transparent; /* Make the thumb transparent by default */
+            border-radius: 6px;
+            border: none; /* Remove the border */
+            opacity: 0; /* Ensure the thumb is fully hidden */
+            transition: opacity 0.3s ease, background 0.3s ease; /* Smooth transition for visibility */
+        }
+
+        /* Show the scrollbar when hovering over the page */
+        html:hover ::-webkit-scrollbar-track {
+            background: #000000; /* Black track on hover */
+            border: 1px solid #333333; /* Restore the border */
+        }
+
+        html:hover ::-webkit-scrollbar-thumb {
+            background: #ff0000; /* Red thumb on hover */
+            border: 2px solid #000000; /* Restore the border */
+            opacity: 1; /* Make the thumb fully visible */
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff3333; /* Slightly lighter red on direct hover for interactivity */
+        }
+
+        /* Custom Scrollbar for Firefox */
+        html {
+            scrollbar-width: none; /* Completely hide the scrollbar by default */
+        }
+
+        /* Show the scrollbar in Firefox when hovering */
+        html:hover {
+            scrollbar-width: thin; /* Show a thin scrollbar on hover */
+            scrollbar-color: #ff0000 #000000; /* Red thumb, black track */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar styles matching About_me.html */
+        header {
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--secondary-color);
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+        
+        /* Contact Content Styles - Updated with gray background and adjusted layout */
+        .content {
+            flex: 1;
+            padding-top: 6rem; /* Add padding to account for fixed header */
+        }
+        
+        .contact-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: var(--contact-bg); /* Gray background */
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--secondary-color);
+        }
+        
+        .contact-layout {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Move content to right */
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .fire-exe {
+            transform: rotate(270deg);
+            font-weight: bold;
+            font-size: 24px;
+            margin-right: 20px;
+            color: var(--primary-color);
+        }
+        
+        /* Style the Fire Exe link to match the existing appearance */
+        .fire-exe a {
+            color: var(--primary-color);
+            text-decoration: none; /* Remove underline */
+        }
+
+        .fire-exe a:hover {
+            color: var(--secondary-color); /* Cyan on hover for interactivity */
+        }
+        
+        .vertical-line {
+            border-left: 2px solid var(--border-color);
+            height: 150px;
+            margin: 0 20px;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 60%;
+            margin-right: 200px; /* Make space for logo */
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-label {
+            font-weight: bold;
+            margin-right: 10px;
+            color: var(--text-color);
+            min-width: 120px;
+        }
+        
+        .contact-value {
+            color: var(--light-text);
+        }
+        
+        .contact-value a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        
+        .contact-value a:hover {
+            text-decoration: underline;
+        }
+
+        /* Logo styling */
+        .logo-container {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 180px;
+            height: 180px;
+        }
+        
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Ensure consistent sizing for dynamic content */
+        .static-number, .static-location {
+            display: inline-block;
+        }
+
+        .static-number {
+            width: 130px; /* Adjusted for XXX-XXXX-XXXX (11 digits + 2 hyphens) */
+            text-align: left;
+        }
+
+        .static-location {
+            width: 300px;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Footer styles matching About_me.html */
+        footer {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 50px 0 20px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--secondary-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-links span {
+            color: #ffffff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            transition: background-color 0.3s, transform 0.3s;
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            transform: scale(1.1);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .glow {
+            position: relative;
+        }
+
+        .glow::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--secondary-color), transparent, var(--secondary-color));
+            z-index: -1;
+            border-radius: 12px;
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .glow:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: var(--bg-color);
+                flex-direction: column;
+                align-items: center;
+                padding-top: 50px;
+                transition: left 0.3s;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 0 0 30px;
+            }
+            
+            .contact-layout {
+                flex-direction: column;
+                justify-content: center;
+            }
+            
+            .fire-exe {
+                transform: none;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .vertical-line {
+                border-left: none;
+                border-top: 2px solid var(--border-color);
+                height: auto;
+                width: 100px;
+                margin: 20px 0;
+            }
+            
+            .contact-info {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 200px; /* Space for logo below on mobile */
+            }
+            
+            .logo-container {
+                top: auto;
+                bottom: 20px;
+                right: 50%;
+                transform: translateX(50%);
+            }
+        }
+    </style>
+    <script>
+        // Function to generate random numbers for static effect
+        function generateRandomDigits(length) {
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += Math.floor(Math.random() * 10);
+            }
+            return result;
+        }
+        
+        // Function to generate random province name-like strings
+        function generateRandomProvince() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ';
+            let result = '';
+            const nameLength = 8; // Fixed length for consistency
+            result += characters[Math.floor(Math.random() * 26)].toUpperCase();
+            for (let i = 1; i < nameLength; i++) {
+                result += characters[Math.floor(Math.random() * characters.length)];
+            }
+            return result;
+        }
+        
+        // Update the static elements
+        function updateStaticElements() {
+            // Update phone number in the format XXX-XXXX-XXXX
+            const phoneElement = document.getElementById('static-phone-number');
+            if (phoneElement) {
+                const part1 = generateRandomDigits(3); // 3 digits
+                const part2 = generateRandomDigits(4); // 4 digits
+                const part3 = generateRandomDigits(4); // 4 digits
+                phoneElement.textContent = `${part1}-${part2}-${part3}`; // Format with hyphens
+            }
+            
+            // Update location
+            const locationElement = document.getElementById('static-location');
+            if (locationElement) {
+                const province1 = generateRandomProvince();
+                const province2 = generateRandomProvince();
+                locationElement.textContent = `${province1}, ${province2}, Indonesia`;
+            }
+            
+            // Update every 100ms
+            setTimeout(updateStaticElements, 100);
+        }
+
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            document.querySelector('.menu-btn').addEventListener('click', function() {
+                document.querySelector('.nav-links').classList.toggle('active');
+            });
+
+            // Close menu when clicking a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    document.querySelector('.nav-links').classList.remove('active');
+                });
+            });
+            
+            // Start the static effect
+            updateStaticElements();
+        });
+    </script>
+</head>
+<body>
+    <!-- Navigation Bar - Updated to match About_me.html -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo glow">Fire Exe</a>
+            <button class="menu-btn">☰</button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="About_me.html">About me</a></li>
+                <li><a href="projects.html">Project</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Main Content - Updated with gray background and logo -->
+    <div class="content">
+        <div class="contact-container">
+            <h1>Contact</h1>
+            
+            <div class="contact-layout">
+                <div class="fire-exe"><a href="ball.html">Fire Exe</a></div>
+                
+                <div class="vertical-line"></div>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-label">Email</span>:&nbsp;<span class="contact-value">fireexecontact@gmail.com</span>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <span class="contact-label">Geometry Dash</span>:&nbsp;<span class="contact-value">FireExegd</span>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <span class="contact-label">Discord</span>:&nbsp;<span class="contact-value">.fire_exe1</span>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <span class="contact-label">Number</span>:&nbsp;<span class="contact-value">+62 <span class="static-number" id="static-phone-number">123-4567-8901</span></span>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <span class="contact-label">Location</span>:&nbsp;<span class="contact-value"><span class="static-location" id="static-location">West Java, East Java, Indonesia</span></span>
+                    </div>
+                </div>
+                
+                <!-- Added logo on the right -->
+                <div class="logo-container">
+                    <img src="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20no%20svg.png?raw=true" alt="Fire Exe Logo">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer - Updated to match About_me.html -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About</h3>
+                <p>Beginner programmer from Indonesia, exploring the world of development and creation.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="About_me.html">About me</a></li>
+                    <li><a href="projects.html">Project</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Skills</h3>
+                <ul class="footer-links">
+                    <li><span style="color: white;">Python</span></li>
+                    <li><span style="color: white;">Geometry Dash</span></li>
+                    <li><span style="color: white;">Adobe Illustrator</span></li>
+                    <li><a href="About_me.html">More Skills</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul class="footer-links">
+                    <li>Email: fireexecontact@gmail.com</li>
+                    <li>Location: Indonesia</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Fire Exe Property. All Rights Reserved.
+            <p><a href="contact.html" style="color: var(--light-text); text-decoration: none;">Contact Me</a></p>
+        </div>
+    </footer>
+</html>
