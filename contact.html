@@ -176,6 +176,16 @@
             color: var(--primary-color);
         }
         
+        /* Style the Fire Exe link to match the existing appearance */
+        .fire-exe a {
+            color: var(--primary-color);
+            text-decoration: none; /* Remove underline */
+        }
+
+        .fire-exe a:hover {
+            color: var(--secondary-color); /* Cyan on hover for interactivity */
+        }
+        
         .vertical-line {
             border-left: 2px solid var(--border-color);
             height: 150px;
@@ -343,6 +353,35 @@
             font-size: 0.9rem;
         }
 
+        .glow {
+            position: relative;
+        }
+
+        .glow::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--secondary-color), transparent, var(--secondary-color));
+            z-index: -1;
+            border-radius: 12px;
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .glow:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .menu-btn {
@@ -471,7 +510,7 @@
     <!-- Navigation Bar - Updated to match About_me.html -->
     <header>
         <nav>
-            <div class="logo">Fire Exe</div>
+            <a href="index.html" class="logo glow">Fire Exe</a>
             <button class="menu-btn">☰</button>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
@@ -488,13 +527,13 @@
             <h1>Contact</h1>
             
             <div class="contact-layout">
-                <div class="fire-exe">Fire Exe</div>
+                <div class="fire-exe"><a href="ball.html">Fire Exe</a></div>
                 
                 <div class="vertical-line"></div>
                 
                 <div class="contact-info">
                     <div class="contact-item">
-                        <span class="contact-label">Email</span>:&nbsp;<span class="contact-value">fireexecontact@gmail.com</span>
+                        <span class="contact-label">Email</span>:&nbsp;<span class="contact-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b4929d8691918c91979b9a80959780b49399959d98da979b99">[email&#160;protected]</a></span>
                     </div>
                     
                     <div class="contact-item">
@@ -550,7 +589,7 @@
             <div class="footer-section">
                 <h3>Contact</h3>
                 <ul class="footer-links">
-                    <li>Email: fireexecontact@gmail.com</li>
+                    <li>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9dfdf2e9fefee3fef8f4f5effaf8efdbfcf6faf2f7b5f8f4f6">[email&#160;protected]</a></li>
                     <li>Location: Indonesia</li>
                 </ul>
             </div>
@@ -560,4 +599,5 @@
             <p><a href="contact.html" style="color: var(--light-text); text-decoration: none;">Contact Me</a></p>
         </div>
     </footer>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92c6ce672d656777',t:'MTc0NDAwMDQwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
