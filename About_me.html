@@ -101,6 +101,7 @@
             font-weight: 700;
             font-size: 1.8rem;
             color: var(--primary-color);
+            text-decoration: none; /* Add this line to remove the underline */
         }
 
         .nav-links {
@@ -359,6 +360,35 @@
             font-size: 0.9rem;
         }
 
+        .glow {
+            position: relative;
+        }
+
+        .glow::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--secondary-color), transparent, var(--secondary-color));
+            z-index: -1;
+            border-radius: 12px;
+            animation: glowing 20s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .glow:hover::before {
+            opacity: 1;
+        }
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .menu-btn {
@@ -409,7 +439,7 @@
     <!-- Navbar -->
     <header>
         <nav>
-            <div class="logo">Fire Exe</div>
+            <a href="index.html" class="logo glow">Fire Exe</a>
             <button class="menu-btn">☰</button>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
