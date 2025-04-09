@@ -25,50 +25,46 @@
             box-sizing: border-box;
         }
 
-        /* Custom Scrollbar for WebKit Browsers (Chrome, Edge, Safari) */
         ::-webkit-scrollbar {
             width: 12px;
         }
 
         ::-webkit-scrollbar-track {
-            background: transparent; /* Make the track transparent by default */
-            border: none; /* Remove the border to avoid any visible outline */
+            background: transparent;
+            border: none;
             border-radius: 6px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: transparent; /* Make the thumb transparent by default */
+            background: transparent;
             border-radius: 6px;
-            border: none; /* Remove the border */
-            opacity: 0; /* Ensure the thumb is fully hidden */
-            transition: opacity 0.3s ease, background 0.3s ease; /* Smooth transition for visibility */
+            border: none;
+            opacity: 0;
+            transition: opacity 0.3s ease, background 0.3s ease;
         }
 
-        /* Show the scrollbar when hovering over the page */
         html:hover ::-webkit-scrollbar-track {
-            background: #000000; /* Black track on hover */
-            border: 1px solid #333333; /* Restore the border */
+            background: #000000;
+            border: 1px solid #333333;
         }
 
         html:hover ::-webkit-scrollbar-thumb {
-            background: #ff0000; /* Red thumb on hover */
-            border: 2px solid #000000; /* Restore the border */
-            opacity: 1; /* Make the thumb fully visible */
+            background: #ff0000;
+            border: 2px solid #000000;
+            opacity: 1;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #ff3333; /* Slightly lighter red on direct hover for interactivity */
+            background: #ff3333;
         }
 
-        /* Custom Scrollbar for Firefox */
         html {
-            scrollbar-width: none; /* Completely hide the scrollbar by default */
+            scrollbar-width: none;
         }
 
-        /* Show the scrollbar in Firefox when hovering */
         html:hover {
-            scrollbar-width: thin; /* Show a thin scrollbar on hover */
-            scrollbar-color: #ff0000 #000000; /* Red thumb, black track */
+            scrollbar-width: thin;
+            scrollbar-color: #ff0000 #000000;
         }
 
         body {
@@ -508,6 +504,23 @@
             font-size: 0.9rem;
         }
 
+        /* Updated Active Card and Glow Styles */
+        .active-card {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(15px);
+        }
+
+        .active-card .client-info h4 {
+            color: var(--primary-color); /* Red color for the title */
+        }
+
+        .active-glow::before {
+            opacity: 1 !important; /* Makes the glow always visible */
+            background: linear-gradient(45deg, var(--primary-color), transparent, var(--primary-color)) !important; /* Red glow */
+        }
+
         .contact-preview {
             padding: 100px 0;
             background-color: var(--bg-color);
@@ -691,6 +704,136 @@
             100% { background-position: 0 0; }
         }
 
+        /* Ad Styles */
+        .ad-container {
+            position: fixed;
+            width: 320px;
+            z-index: 2000;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .ad-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .ad-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .ad-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ad-wrapper:hover .ad-overlay {
+            opacity: 1;
+        }
+
+        /* New Button Styles for Ad */
+        .ad-button {
+            position: relative;
+            margin: 0;
+            padding: 17px 35px;
+            outline: none;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            text-transform: uppercase;
+            background-color: #fff;
+            border: 1px solid rgba(22, 76, 167, 0.6);
+            border-radius: 10px;
+            color: #1d89ff;
+            font-weight: 400;
+            font-family: inherit;
+            z-index: 0;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
+        }
+
+        .ad-button span {
+            color: #164ca7;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.7px;
+        }
+
+        .ad-button:hover {
+            animation: rotate624 0.7s ease-in-out both;
+        }
+
+        .ad-button:hover span {
+            animation: storm1261 0.7s ease-in-out both;
+            animation-delay: 0.06s;
+        }
+
+        @keyframes rotate624 {
+            0% { transform: rotate(0deg) translate3d(0, 0, 0); }
+            25% { transform: rotate(3deg) translate3d(0, 0, 0); }
+            50% { transform: rotate(-3deg) translate3d(0, 0, 0); }
+            75% { transform: rotate(1deg) translate3d(0, 0, 0); }
+            100% { transform: rotate(0deg) translate3d(0, 0, 0); }
+        }
+
+        @keyframes storm1261 {
+            0% { transform: translate3d(0, 0, 0) translateZ(0); }
+            25% { transform: translate3d(4px, 0, 0) translateZ(0); }
+            50% { transform: translate3d(-3px, 0, 0) translateZ(0); }
+            75% { transform: translate3d(2px, 0, 0) translateZ(0); }
+            100% { transform: translate3d(0, 0, 0) translateZ(0); }
+        }
+
+        .ad-button.btn-shine {
+            border: 1px solid;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ad-button.btn-shine span {
+            z-index: 20;
+        }
+
+        .ad-button.btn-shine:after {
+            background: #38ef7d;
+            content: "";
+            height: 155px;
+            left: -75px;
+            opacity: 0.4;
+            position: absolute;
+            top: -50px;
+            transform: rotate(35deg);
+            transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+            width: 50px;
+            z-index: -10;
+        }
+
+        .ad-button.btn-shine:hover:after {
+            left: 120%;
+            transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
         @media (max-width: 768px) {
             .menu-btn {
                 display: block;
@@ -733,6 +876,10 @@
 
             .stats-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .ad-container {
+                display: none !important;
             }
         }
 
@@ -846,10 +993,10 @@
                 <h2>Journey</h2>
             </div>
             <div class="services-grid">
-                <div class="testimonial-card glass-card glow">
+                <div class="testimonial-card glass-card glow active-card active-glow">
                     <div class="client">
                         <div class="client-info">
-                            <h4 style="color: var(--secondary-color);">Currently Doing</h4>
+                            <h4>Currently Doing</h4>
                             <p>Making GD Botto</p>
                         </div>
                     </div>
@@ -979,7 +1126,7 @@
                 <div class="footer-section">
                     <h3>Contact</h3>
                     <ul class="footer-links">
-                        <li>Email: fireexecontact@gmail.com</li>
+                        <li>Email: <a href="mailto:fireemerald1@gmail.com">fireemerald1@gmail.com</a></li>
                         <li>Location: Indonesia</li>
                     </ul>
                 </div>
@@ -991,6 +1138,16 @@
         </div>
     </footer>
 
+    <div class="ad-container">
+        <div class="ad-wrapper">
+            <img src="" alt="Advertisement" class="ad-image">
+            <div class="ad-overlay">
+                <a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a>
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Image loading for hero section
@@ -1008,7 +1165,6 @@
                 imagesLoaded++;
                 if (imagesLoaded === totalImages) {
                     heroSection.classList.add('loaded');
-                    // Start the typewriter animation once images are loaded
                     typeWriter();
                 }
             }
@@ -1024,7 +1180,6 @@
                 document.querySelector('.nav-links').classList.toggle('active');
             });
 
-            // Close menu when clicking a link
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.addEventListener('click', function() {
                     document.querySelector('.nav-links').classList.remove('active');
@@ -1087,7 +1242,83 @@
                     }
                 }
             }
+
+            // Ad functionality
+            const adContainer = document.querySelector('.ad-container');
+            const adImage = document.querySelector('.ad-image');
+            const adButton = document.querySelector('.ad-button');
+            const initialDelay = 60 * 1000; // 1 minute initial delay
+            const adDisplayTime = 15 * 1000; // 15 seconds ad display
+            const adIntervalTime = 60 * 1000; // 1 minute wait between ads
+            const positions = [
+                { top: '20px', right: '20px', bottom: 'auto', left: 'auto' }, // Top Right
+                { top: 'auto', right: '20px', bottom: '20px', left: 'auto' }, // Bottom Right
+                { top: 'auto', right: 'auto', bottom: '20px', left: '20px' }, // Bottom Left
+                { top: '20px', right: 'auto', bottom: 'auto', left: '20px' }  // Top Left
+            ];
+
+            function isDesktop() {
+                return window.innerWidth > 768;
+            }
+
+            function setRandomPosition() {
+                const randomPosition = positions[Math.floor(Math.random() * positions.length)];
+                adContainer.style.top = randomPosition.top;
+                adContainer.style.right = randomPosition.right;
+                adContainer.style.bottom = randomPosition.bottom;
+                adContainer.style.left = randomPosition.left;
+            }
+
+            function loadRandomAd() {
+                fetch('https://raw.githubusercontent.com/fireemerald1/ads-woah/refs/heads/main/ad.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.ads && data.ads.length > 0) {
+                            const randomAd = data.ads[Math.floor(Math.random() * data.ads.length)];
+                            adImage.src = randomAd.image;
+                            adButton.href = randomAd.link;
+                            setRandomPosition(); // Set random position before showing
+                            adContainer.style.display = 'block';
+                            setTimeout(hideAd, adDisplayTime);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading ads:', error);
+                        adContainer.style.display = 'none';
+                    });
+            }
+
+            function hideAd() {
+                adContainer.style.display = 'none';
+            }
+
+            function showAdCycle() {
+                if (isDesktop()) {
+                    // Initial 1-minute delay before starting the ad cycle
+                    setTimeout(() => {
+                        // Start the loop: 1-minute wait -> 15-second ad display
+                        loadRandomAd(); // Show the first ad after the initial delay
+                        setInterval(() => {
+                            if (isDesktop()) {
+                                loadRandomAd(); // Show ad for 15 seconds
+                            }
+                        }, adIntervalTime + adDisplayTime); // Total cycle: 1 minute wait + 15 seconds display
+                    }, initialDelay);
+                }
+            }
+
+            // Start the ad cycle only if on desktop
+            if (isDesktop()) {
+                showAdCycle();
+            }
+
+            window.addEventListener('resize', function() {
+                if (!isDesktop()) {
+                    adContainer.style.display = 'none';
+                }
+            });
         });
     </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92d039056f5c6740',t:'MTc0NDA5OTEzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
