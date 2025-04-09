@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fice Exe - DVD</title>
+  <link rel="icon" type="image/png" href="https://github.com/fireemerald1/bg/blob/main/dvd.png?raw=true">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #0f0f0f;
+      width: 100vw;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    
+    #container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    
+    #logo {
+      position: absolute;
+      width: 150px;
+      height: auto;
+      filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
+      z-index: 10;
+    }
+    
+    #counter {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 120px;
+      font-family: Arial, sans-serif;
+      color: rgba(255, 255, 255, 0.3);
+      font-weight: bold;
+      z-index: -1;
+    }
+    
+    #message {
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 36px;
+      font-family: Arial, sans-serif;
+      color: #FFF;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+      opacity: 0;
+      transition: opacity 0.5s;
+      text-align: center;
+      z-index: 5;
+    }
+    
+    /* Navbar styles from the provided document */
+    header {
+      background-color: rgba(0, 0, 0, 0.95);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem 0;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      top: 0;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #ff0000;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-links li {
+      margin-left: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #e0e0e0;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #00ffff;
+    }
+
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #e0e0e0;
+    }
+
+    @media (max-width: 768px) {
+      .menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background-color: #000000;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 50px;
+        transition: left 0.3s;
+      }
+
+      .nav-links.active {
+        left: 0;
+      }
+
+      .nav-links li {
+        margin: 0 0 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar from the provided document -->
+  <header id="navbar">
+    <nav>
+      <a href="index.html" class="logo glow">Fire Exe</a>
+      <button class="menu-btn">☰</button>
+      <ul class="nav-links">
+        <li><a href="firelogo.html" class="active">logo</a></li>
+        <li><a href="index.html" id="nav-home">Home</a></li>
+        <li><a href="About_me.html" id="nav-about">About me</a></li>
+        <li><a href="projects.html" id="nav-project">Project</a></li>
+        <li><a href="contact.html" id="nav-contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div id="container">
+    <div id="counter">0</div>
+    <div id="message"></div>
+    <img id="logo" src="https://raw.githubusercontent.com/fireemerald1/bg/refs/heads/main/fire%20exe%20logo%20no%20svg.png" alt="Fire EXE Logo">
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const logo = document.getElementById('logo');
+      const container = document.getElementById('container');
+      const counter = document.getElementById('counter');
+      const message = document.getElementById('message');
+      const navbar = document.getElementById('navbar');
+      
+      // Get navbar height for bounce calculations
+      const navbarHeight = navbar.offsetHeight;
+      
+      // Bounce counter
+      let bounceCount = 0;
+      
+      // Initial position
+      let x = Math.random() * (container.clientWidth - logo.clientWidth);
+      let y = navbarHeight + Math.random() * (container.clientHeight - logo.clientHeight - navbarHeight);
+      
+      // Random speed (pixels per frame)
+      let dx = (Math.random() * 2 + 1) * (Math.random() > 0.5 ? 1 : -1);
+      let dy = (Math.random() * 2 + 1) * (Math.random() > 0.5 ? 1 : -1);
+      
+      // Milestone messages
+      const milestones = {
+        50: "Ok, why are you still here",
+        70: "You amazed by my logo or cant move ?",
+        100: "Yes, i made the logo by myself(except the fire). The more detailed one is actually explaining what im good and love at",
+        120: "You still here ? Damn, you are actually amazed by my logo",
+        150: "Or not ig, you just leave it here",
+        200: "Huh",
+        250: "Damn, you have dedication",
+        300: "Just why are you still here ???",
+        500: "Ok.... im impressed you waste most of your time here",
+        1000: "Do you actually watch until this far or you just leave the monitor or pc on ?",
+        1500: "If you actually go until this far, screenshot this and sent this to my discord to get something"
+      };
+      
+      // Message timeout
+      let messageTimeout;
+      
+      // Random color change on bounce
+      function getRandomColor() {
+        const colors = [
+          '#FF0000', '#00FF00', '#0000FF', '#FFFF00', 
+          '#FF00FF', '#00FFFF', '#FFA500', '#800080'
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
+      }
+      
+      function showMessage(text) {
+        clearTimeout(messageTimeout);
+        message.textContent = text;
+        message.style.opacity = 1;
+        
+        // Hide message after 3 seconds
+        messageTimeout = setTimeout(() => {
+          message.style.opacity = 0;
+        }, 3000);
+      }
+      
+      function updateCounter() {
+        counter.textContent = bounceCount;
+        
+        // Check for milestones
+        if (milestones[bounceCount]) {
+          showMessage(milestones[bounceCount]);
+        }
+      }
+      
+      function animate() {
+        // Get current dimensions
+        const logoWidth = logo.clientWidth;
+        const logoHeight = logo.clientHeight;
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
+        
+        // Update position
+        x += dx;
+        y += dy;
+        
+        // Check for collisions with edges
+        let bounced = false;
+        
+        if (x <= 0 || x + logoWidth >= containerWidth) {
+          dx = -dx;
+          bounced = true;
+        }
+        
+        // Check for collision with navbar
+        if (y <= navbarHeight) {
+          y = navbarHeight;
+          dy = -dy;
+          bounced = true;
+        } else if (y + logoHeight >= containerHeight) {
+          y = containerHeight - logoHeight;
+          dy = -dy;
+          bounced = true;
+        }
+        
+        // Update bounce count and display
+        if (bounced) {
+          bounceCount++;
+          updateCounter();
+          logo.style.filter = `drop-shadow(0 0 10px ${getRandomColor()})`;
+        }
+        
+        // Apply new position
+        logo.style.left = x + 'px';
+        logo.style.top = y + 'px';
+        
+        requestAnimationFrame(animate);
+      }
+      
+      // Mobile menu toggle
+      document.querySelector('.menu-btn').addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.toggle('active');
+      });
+      
+      // Start animation
+      animate();
+      
+      // Handle window resize
+      window.addEventListener('resize', function() {
+        const navbarHeight = navbar.offsetHeight;
+        
+        // Ensure logo stays within bounds after resize
+        if (x + logo.clientWidth > container.clientWidth) {
+          x = container.clientWidth - logo.clientWidth;
+        }
+        
+        if (y < navbarHeight) {
+          y = navbarHeight;
+        } else if (y + logo.clientHeight > container.clientHeight) {
+          y = container.clientHeight - logo.clientHeight;
+        }
+        
+        logo.style.left = x + 'px';
+        logo.style.top = y + 'px';
+      });
+    });
+  </script>
+</body>
+</html>
