@@ -62,19 +62,17 @@
         .main-sections-wrapper section {
             position: relative;
             z-index: 1;
-            background: rgba(0, 0, 0, 0.6); /* Adjusted opacity to show particles */
+            background: rgba(0, 0, 0, 0.6);
         }
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 12px;
         }
-
         ::-webkit-scrollbar-track {
             background: transparent;
             border: none;
             border-radius: 6px;
         }
-
         ::-webkit-scrollbar-thumb {
             background: transparent;
             border-radius: 6px;
@@ -82,37 +80,30 @@
             opacity: 0;
             transition: opacity 0.3s ease, background 0.3s ease;
         }
-
         html:hover ::-webkit-scrollbar-track {
             background: #000000;
             border: 1px solid #333333;
         }
-
         html:hover ::-webkit-scrollbar-thumb {
             background: #ff0000;
             border: 2px solid #000000;
             opacity: 1;
         }
-
         ::-webkit-scrollbar-thumb:hover {
             background: #ff3333;
         }
-
         html {
             scrollbar-width: none;
         }
-
         html:hover {
             scrollbar-width: thin;
             scrollbar-color: #ff0000 #000000;
         }
-        
         /* Enhanced Progress Bar Styles */
         .skill-level {
             position: relative;
             overflow: hidden;
         }
-        
         .skill-level::after {
             content: '';
             position: absolute;
@@ -128,7 +119,6 @@
             animation: shimmer 2s infinite linear;
             transform: translateX(-100%);
         }
-        
         @keyframes shimmer {
             0% {
                 transform: translateX(-100%);
@@ -137,15 +127,23 @@
                 transform: translateX(100%);
             }
         }
-        
         .skill-bg-red {
             background: linear-gradient(90deg, #ff0000, #ff3333);
             box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         }
-        
         .skill-bg-cyan {
             background: linear-gradient(90deg, #00ffff, #33ffff);
             box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        /* Styles for Hero section */
+        #hero {
+            padding-top: 80px;
+        }
+        .dynamic-text-container {
+            display: inline-block;
+            vertical-align: top;
+            min-height: 1.5em;
+            overflow: visible;
         }
     </style>
 </head>
@@ -183,7 +181,9 @@
         <div class="relative text-center px-4 max-w-4xl mx-auto z-10">
             <h1 class="text-5xl md:text-7xl font-extrabold text-fire-red mb-6">Fire Exe</h1>
             <p class="text-lg md:text-xl text-fire-cyan mb-4">
-                Random <span id="changing-text" class="font-semibold">Beginner Python Programmer</span> from Indonesia
+                <span class="dynamic-text-container">
+                    Random <span id="changing-text" class="font-semibold">Beginner Python Programmer</span> from Indonesia
+                </span>
             </p>
             <p class="text-gray-400 max-w-2xl mx-auto mb-6">
                 Crafting creative Python projects and designs with a passion for gaming and innovation. I've built over 5 projects, blending code and creativity to bring ideas to life.
@@ -230,7 +230,6 @@
                         </div>
                         <p class="text-gray-400 text-sm mt-2">Used Python to build bots like GD Botto and Moonlight, focusing on automation and API integration.</p>
                     </div>
-                    
                     <div class="glass p-4 rounded-lg">
                         <div class="flex justify-between mb-2">
                             <div class="flex items-center">
@@ -244,7 +243,6 @@
                         </div>
                         <p class="text-gray-400 text-sm mt-2">Capturing moments with a focus on nature and abstract art, often using my photos in design projects.</p>
                     </div>
-                    
                     <div class="glass p-4 rounded-lg">
                         <div class="flex justify-between mb-2">
                             <div class="flex items-center">
@@ -462,7 +460,7 @@
     </div>
 
     <!-- JavaScript -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile menu toggle
@@ -473,7 +471,7 @@
                 mobileMenu.classList.toggle('flex');
             });
 
-            // Animate skill bars on scroll
+            // Animate skill bars immediately
             const skillLevels = document.querySelectorAll('.skill-level');
             function animateSkills() {
                 skillLevels.forEach(skill => {
@@ -481,15 +479,7 @@
                     skill.style.width = percentage + '%';
                 });
             }
-
-            const skillsSection = document.querySelector('section:nth-of-type(2)');
-            const observer = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting) {
-                    animateSkills();
-                    observer.unobserve(skillsSection);
-                }
-            }, { threshold: 0.5 });
-            observer.observe(skillsSection);
+            animateSkills(); // Call immediately on load
 
             // Changing Text Animation
             const changingTextElement = document.getElementById('changing-text');
@@ -533,7 +523,7 @@
                     projects.forEach(project => {
                         // Create project card
                         const projectCard = document.createElement('a');
-                        projectCard.href = project.link || '#'; // Use the link from JSON, fallback to '#' if not present
+                        projectCard.href = project.link || '#';
                         projectCard.className = 'relative group rounded-lg overflow-hidden shadow-2xl glass block';
                         projectCard.innerHTML = `
                             <img src="${project.image}" alt="${project.name}" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
@@ -660,7 +650,7 @@
                     this.size = Math.random() * 5 + 1;
                     this.speedX = Math.random() * 1 - 0.5;
                     this.speedY = Math.random() * 1 - 0.5;
-                    this.color = Math.random() > 0.5 ? '#ff0000' : '#00ffff'; // Fire-red or fire-cyan
+                    this.color = Math.random() > 0.5 ? '#ff0000' : '#00ffff';
                     this.opacity = Math.random() * 0.5 + 0.2;
                 }
 
@@ -684,7 +674,7 @@
                     ctx.fillStyle = this.color;
                     ctx.globalAlpha = this.opacity;
                     ctx.fill();
-                    ctx.globalAlpha = 1; // Reset opacity
+                    ctx.globalAlpha = 1;
                 }
             }
 

@@ -19,15 +19,15 @@
             },
         };
     </script>
-    <!-- Font Awesome for Icons -->
+    <!-- Font Awesome for Icons - Using a faster version -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Original styles preserved */
+        /* Base styles - optimized */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         :root {
@@ -41,33 +41,15 @@
             --border-color: #333333;
         }
 
+        /* Simplified scrollbar styles */
         ::-webkit-scrollbar {
             width: 12px;
         }
 
-        ::-webkit-scrollbar-track {
-            background: transparent;
-            border: none;
-            border-radius: 6px;
-        }
-
         ::-webkit-scrollbar-thumb {
-            background: transparent;
-            border-radius: 6px;
-            border: none;
-            opacity: 0;
-            transition: opacity 0.3s ease, background 0.3s ease;
-        }
-
-        html:hover ::-webkit-scrollbar-track {
-            background: #000000;
-            border: 1px solid #333333;
-        }
-
-        html:hover ::-webkit-scrollbar-thumb {
             background: #ff0000;
+            border-radius: 6px;
             border: 2px solid #000000;
-            opacity: 1;
         }
 
         ::-webkit-scrollbar-thumb:hover {
@@ -75,10 +57,6 @@
         }
 
         html {
-            scrollbar-width: none;
-        }
-
-        html:hover {
             scrollbar-width: thin;
             scrollbar-color: #ff0000 #000000;
         }
@@ -91,63 +69,16 @@
             min-height: 100vh;
         }
 
-        /* Add the sea wave animation */
-        .wave {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.3;
-        }
-
-        .wave1 {
-            background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 0, 0.1));
-            animation: wave 20s linear infinite;
-        }
-
-        .wave2 {
-            background: linear-gradient(-45deg, rgba(255, 0, 0, 0.1), rgba(0, 255, 255, 0.1));
-            animation: wave 15s linear infinite;
-            animation-delay: -5s;
-        }
-
-        .wave3 {
-            background: linear-gradient(60deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 0, 0.1));
-            animation: wave 30s linear infinite;
-            animation-delay: -2s;
-        }
-
-        .wave4 {
-            background: linear-gradient(-60deg, rgba(255, 0, 0, 0.1), rgba(0, 255, 255, 0.1));
-            animation: wave 25s linear infinite;
-            animation-delay: -7s;
-        }
-
-        @keyframes wave {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Dark overlay with animated gradient */
+        /* Simplified background effect - using CSS gradients instead of multiple elements */
         body::before {
             content: '';
-            position: absolute;
+            position: fixed; /* Changed from absolute to fixed */
             inset: 0;
             background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 0, 0.1), rgba(0, 255, 255, 0.1));
             background-size: 200% 200%;
-            animation: gradientMove 10s ease infinite;
+            animation: gradientMove 15s ease infinite;
             z-index: -1;
-        }
-
-        body::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: -2;
+            pointer-events: none;
         }
 
         @keyframes gradientMove {
@@ -162,13 +93,12 @@
             padding: 5rem 1.5rem 2rem;
         }
         
-        /* Contact Content Styles */
+        /* Contact Content Styles - simplified */
         .contact-container {
             max-width: 1000px;
             margin: 50px auto;
             padding: 30px;
-            background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(10px);
+            background: rgba(26, 26, 26, 0.7);
             border: 1px solid var(--border-color);
             border-radius: 10px;
             position: relative;
@@ -224,7 +154,7 @@
         
         .contact-item {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
         }
         
         .contact-label {
@@ -236,6 +166,7 @@
         
         .contact-value {
             color: var(--light-text);
+            word-break: break-word;
         }
         
         .contact-value a {
@@ -264,39 +195,14 @@
             object-fit: contain;
         }
 
-        .static-number, .static-location {
-            display: inline-block;
-        }
-
-        .static-number {
-            width: 130px;
-            text-align: left;
-        }
-
-        .static-location {
-            width: 300px;
-            text-align: left;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Glass effect */
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .glow:hover {
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .contact-layout {
                 flex-direction: column;
                 justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 0 10px;
             }
             
             .fire-exe {
@@ -317,34 +223,77 @@
                 width: 100%;
                 margin-right: 0;
                 margin-bottom: 200px;
+                align-items: center;
+            }
+            
+            .contact-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                width: 100%;
+            }
+            
+            .contact-label {
+                margin-right: 0;
+                margin-bottom: 5px;
+                min-width: unset;
+            }
+
+            .colon-separator {
+                display: none;
             }
             
             .logo-container {
+                position: relative;
                 top: auto;
-                bottom: 20px;
-                right: 50%;
-                transform: translateX(50%);
+                right: auto;
+                transform: none;
+                margin: 20px auto;
+                width: 150px;
+                height: 150px;
+            }
+            
+            .contact-container {
+                padding: 20px 15px;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+                margin-bottom: 20px;
+            }
+            
+            main {
+                padding: 4.5rem 1rem 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .contact-info {
+                margin-bottom: 160px;
+            }
+            
+            .logo-container {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .contact-item {
+                padding: 0 5px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Wave animation backgrounds -->
-    <div class="wave wave1"></div>
-    <div class="wave wave2"></div>
-    <div class="wave wave3"></div>
-    <div class="wave wave4"></div>
-
-    <!-- Navbar from About_me.html -->
+    <!-- Navbar -->
     <nav class="fixed top-0 w-full bg-fire-black/80 backdrop-blur-md z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
-            <a href="index.html" class="text-2xl font-bold text-fire-red transition-transform hover:scale-105 glow">Fire Exe</a>
+            <a href="index.html" class="text-2xl font-bold text-fire-red">Fire Exe</a>
             <button class="sm:hidden text-fire-cyan text-2xl focus:outline-none" id="menu-btn">☰</button>
             <ul class="hidden sm:flex space-x-6">
-                <li><a href="index.html" class="text-white hover:text-fire-red transition-colors glow">Home</a></li>
-                <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors glow">About Me</a></li>
-                <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors glow">Projects</a></li>
-                <li><a href="contact.html" class="text-fire-red hover:text-fire-cyan transition-colors glow">Contact</a></li>
+                <li><a href="index.html" class="text-white hover:text-fire-red transition-colors">Home</a></li>
+                <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors">About Me</a></li>
+                <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors">Projects</a></li>
+                <li><a href="contact.html" class="text-fire-red hover:text-fire-cyan transition-colors">Contact</a></li>
             </ul>
         </div>
         <!-- Mobile Menu -->
@@ -358,33 +307,40 @@
     
     <!-- Main Content -->
     <main>
-        <div class="contact-container glass">
+        <div class="contact-container">
             <h1>Contact</h1>
             
             <div class="contact-layout">
-                <div class="fire-exe"><a href="fan.html">Fire Exe</a></div>
+                <div class="fire-exe"><a href="#" id="fire-exe-link">Fire Exe</a></div>
                 
                 <div class="vertical-line"></div>
                 
                 <div class="contact-info">
                     <div class="contact-item">
-                        <span class="contact-label">Email</span>:&nbsp;<span class="contact-value">fireexecontact@gmail.com</span>
+                        <span class="contact-label">Email</span><span class="colon-separator">:&nbsp;</span><span class="contact-value">fireexecontact@gmail.com</span>
                     </div>
                     
                     <div class="contact-item">
-                        <span class="contact-label">Geometry Dash</span>:&nbsp;<span class="contact-value">FireExegd</span>
+                        <span class="contact-label">Geometry Dash</span><span class="colon-separator">:&nbsp;</span><span class="contact-value">FireExegd</span>
                     </div>
                     
                     <div class="contact-item">
-                        <span class="contact-label">Discord</span>:&nbsp;<span class="contact-value">.fire_exe1</span>
+                        <span class="contact-label">Discord</span><span class="colon-separator">:&nbsp;</span><span class="contact-value">.fire_exe1</span>
                     </div>
                     
                     <div class="contact-item">
-                        <span class="contact-label">Number</span>:&nbsp;<span class="contact-value">+62 <span class="static-number" id="static-phone-number">123-4567-8901</span></span>
+                        <span class="contact-label">Number</span><span class="colon-separator">:&nbsp;</span>
+                        <span class="contact-value">
+                            <div class="phone-container">
+                                <span class="country-code">+62</span>
+                                <span id="static-phone-number">123-4567-8901</span>
+                            </div>
+                        </span>
                     </div>
                     
                     <div class="contact-item">
-                        <span class="contact-label">Location</span>:&nbsp;<span class="contact-value"><span class="static-location" id="static-location">West Java, East Java, Indonesia</span></span>
+                        <span class="contact-label">Location</span><span class="colon-separator">:&nbsp;</span>
+                        <span class="contact-value"><span id="static-location">no peaking :3</span></span>
                     </div>
                 </div>
                 
@@ -396,7 +352,7 @@
         </div>
     </main>
     
-    <!-- Footer from About_me.html -->
+    <!-- Footer -->
     <footer class="bg-fire-black py-12 border-t border-gray-800 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
@@ -442,69 +398,7 @@
     </footer>
 
     <script>
-        // Function to generate random phone numbers for static effect
-        function generateRandomDigits(length) {
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                result += Math.floor(Math.random() * 10);
-            }
-            return result;
-        }
-        
-        // Function to generate random province name-like strings
-        function generateRandomProvince() {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ';
-            let result = '';
-            const nameLength = 8; // Fixed length for consistency
-            result += characters[Math.floor(Math.random() * 26)].toUpperCase();
-            for (let i = 1; i < nameLength; i++) {
-                result += characters[Math.floor(Math.random() * characters.length)];
-            }
-            return result;
-        }
-        
-        // Update the static elements
-        function updateStaticElements() {
-            // Update phone number in the format XXX-XXXX-XXXX
-            const phoneElement = document.getElementById('static-phone-number');
-            if (phoneElement) {
-                const part1 = generateRandomDigits(3); // 3 digits
-                const part2 = generateRandomDigits(4); // 4 digits
-                const part3 = generateRandomDigits(4); // 4 digits
-                phoneElement.textContent = `${part1}-${part2}-${part3}`; // Format with hyphens
-            }
-            
-            // Update location
-            const locationElement = document.getElementById('static-location');
-            if (locationElement) {
-                const province1 = generateRandomProvince();
-                const province2 = generateRandomProvince();
-                locationElement.textContent = `${province1}, ${province2}, Indonesia`;
-            }
-            
-            // Update every 100ms
-            setTimeout(updateStaticElements, 1);
-        }
-
-        // Function to randomly redirect to one of the three pages
-        function randomRedirect() {
-            const pages = ['ball.html', 'fan.html', 'firelogo.html'];
-            const randomIndex = Math.floor(Math.random() * 3); // Random number 0, 1, or 2
-            window.location.href = pages[randomIndex]; // Redirect to the selected page
-        }
-
-        // Function to cycle the Fire Exe link destination every second
-        function cycleFireExeLink() {
-            const pages = ['ball.html', 'fan.html', 'firelogo.html'];
-            let currentIndex = 0;
-            const fireExeLink = document.querySelector('.fire-exe a');
-
-            setInterval(() => {
-                fireExeLink.setAttribute('href', pages[currentIndex]);
-                currentIndex = (currentIndex + 1) % 3; // Cycle through 0, 1, 2
-            }, 1000); // Update every 1 second
-        }
-
+        // Optimized script with 2x faster static effect (500ms instead of 1000ms)
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile menu toggle
             const menuBtn = document.getElementById('menu-btn');
@@ -514,17 +408,80 @@
                 mobileMenu.classList.toggle('flex');
             });
 
-            // Add click event to the Fire Exe link for random redirect
-            document.querySelector('.fire-exe a').addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent the default link behavior
-                randomRedirect(); // Trigger the random redirect
-            });
-
-            // Start the static effect
-            updateStaticElements();
-
-            // Start cycling the Fire Exe link
-            cycleFireExeLink();
+            // Static elements
+            const phoneElement = document.getElementById('static-phone-number');
+            const locationElement = document.getElementById('static-location');
+            const fireExeLink = document.getElementById('fire-exe-link');
+            
+            // Pages for Fire Exe link
+            const pages = ['ball.html', 'fan.html', 'firelogo.html'];
+            let currentPage = 0;
+            let lastUpdateTime = 0;
+            
+            // Update interval - 500ms (2x faster than original 1000ms)
+            const UPDATE_INTERVAL = 200;
+            
+            // Function to generate random digits - optimized for speed
+            function generateRandomDigits(length) {
+                return Array.from({length}, () => Math.floor(Math.random() * 10)).join('');
+            }
+            
+            // Function to generate random province - optimized for speed
+            function generateRandomProvince() {
+                const patterns = [
+                    'North', 'South', 'East', 'West', 'Central', 'New'
+                ];
+                const names = [
+                    "Sumatra", "Java", "Borneo", "Sulawesi", "Bali", "Lombok", "Sumbawa", "Flores", "Timor", "Seram", "Halmahera", "New Guinea", "Nias", "Mentawai", "Bangka", "Belitung", "Madura", "Bintan", "Batam", "Natuna", "Karimun", "Ternate", "Tidore", "Alor", "Wetar", "Ambon", "Kai Islands", "Aru Islands", "Rote Island", "Savu Island", "Buru", "Sangihe Islands", "Talaud Islands", "Banggai Islands", "Selayar Islands", "Kangean Islands", "Thousand Islands", "Simeulue", "Enggano", "Banda Islands", "Misool", "Waigeo", "Salawati", "Yapen", "Biak"
+                ];
+                
+                return patterns[Math.floor(Math.random() * patterns.length)] + ' ' + 
+                       names[Math.floor(Math.random() * names.length)];
+            }
+            
+            // Optimized animation loop with faster update interval
+            function updateElements(timestamp) {
+                // Update elements every 500ms (2x faster than before)
+                if (timestamp - lastUpdateTime >= UPDATE_INTERVAL) {
+                    lastUpdateTime = timestamp;
+                    
+                    // Update phone number
+                    if (phoneElement) {
+                        const part1 = generateRandomDigits(3);
+                        const part2 = generateRandomDigits(4);
+                        const part3 = generateRandomDigits(4);
+                        phoneElement.textContent = `${part1}-${part2}-${part3}`;
+                    }
+                    
+                    // Update location
+                    if (locationElement) {
+                        const province1 = generateRandomProvince();
+                        locationElement.textContent = `${province1}, Indonesia`;
+                    }
+                    
+                    // Update Fire Exe link
+                    if (fireExeLink) {
+                        fireExeLink.setAttribute('href', pages[currentPage]);
+                        currentPage = (currentPage + 1) % pages.length;
+                    }
+                }
+                
+                // Continue animation
+                requestAnimationFrame(updateElements);
+            }
+            
+            // Random redirect for Fire Exe link
+            function randomRedirect(event) {
+                event.preventDefault();
+                const randomIndex = Math.floor(Math.random() * pages.length);
+                window.location.href = pages[randomIndex];
+            }
+            
+            // Add click event to the Fire Exe link
+            fireExeLink.addEventListener('click', randomRedirect);
+            
+            // Start the animation loop
+            requestAnimationFrame(updateElements);
         });
     </script>
 </body>
