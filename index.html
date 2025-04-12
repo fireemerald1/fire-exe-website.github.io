@@ -106,6 +106,47 @@
             scrollbar-width: thin;
             scrollbar-color: #ff0000 #000000;
         }
+        
+        /* Enhanced Progress Bar Styles */
+        .skill-level {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-level::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.1) 25%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                rgba(255, 255, 255, 0.1) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+            transform: translateX(-100%);
+        }
+        
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        
+        .skill-bg-red {
+            background: linear-gradient(90deg, #ff0000, #ff3333);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        
+        .skill-bg-cyan {
+            background: linear-gradient(90deg, #00ffff, #33ffff);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
     </style>
 </head>
 <body class="bg-fire-black text-white font-sans antialiased overflow-x-hidden">
@@ -145,14 +186,14 @@
                 Random <span id="changing-text" class="font-semibold">Beginner Python Programmer</span> from Indonesia
             </p>
             <p class="text-gray-400 max-w-2xl mx-auto mb-6">
-                Crafting creative Python projects and designs with a passion for gaming and innovation. I’ve built over 5 projects, blending code and creativity to bring ideas to life.
+                Crafting creative Python projects and designs with a passion for gaming and innovation. I've built over 5 projects, blending code and creativity to bring ideas to life.
             </p>
             <div class="flex justify-center space-x-4 mb-8">
                 <a href="projects.html" class="bg-fire-red text-fire-black px-6 py-3 rounded-lg font-medium hover:bg-fire-cyan hover:text-fire-black transition-all duration-300 transform hover:scale-105 glow">View My Work</a>
                 <a href="contact.html" class="border-2 border-fire-red text-fire-red px-6 py-3 rounded-lg font-medium hover:bg-fire-red hover:text-fire-black transition-all duration-300 transform hover:scale-105 glow">Get In Touch</a>
             </div>
             <p class="text-gray-400 max-w-2xl mx-auto mb-6">
-                Hello, I'm Fire Exe, also known as Fire Emerald. I'm a Beginner Python Programmer and Designer with 3 years in Python and 2 years in design, creating fun projects. I’m passionate about Geometry Dash, photography, and exploring new tech trends.
+                Hello, I'm Fire Exe, also known as Fire Emerald. I'm a Beginner Python Programmer and Designer with 3 years in Python and 2 years in design, creating fun projects. I'm passionate about Geometry Dash, photography, and exploring new tech trends.
             </p>
             <img src="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20no%20svg.png?raw=true" alt="Fire Exe Logo" class="w-24 h-24 mx-auto rounded-full shadow-lg hover:scale-110 transition-transform duration-300 glow">
             <!-- Social Links -->
@@ -176,33 +217,47 @@
                     <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-fire-red"></span>
                 </h2>
                 <div class="space-y-6 max-w-2xl mx-auto">
-                    <div class="grid grid-cols-[40px_150px_1fr_40px] items-center gap-4 glass p-4 rounded-lg">
-                        <i class="fab fa-python text-fire-red text-2xl"></i>
-                        <span class="text-white">Python</span>
-                        <div class="bg-gray-800 rounded-full h-6 overflow-hidden">
-                            <div class="skill-level bg-fire-red h-full rounded-full transition-all duration-1000" data-skill="40" style="width: 0%;"></div>
+                    <div class="glass p-4 rounded-lg">
+                        <div class="flex justify-between mb-2">
+                            <div class="flex items-center">
+                                <i class="fab fa-python text-fire-red text-2xl mr-3"></i>
+                                <span class="text-white">Python</span>
+                            </div>
+                            <span class="text-white">40%</span>
                         </div>
-                        <span class="text-white">40%</span>
-                    </div>
-                    <p class="text-gray-400 text-sm text-center">Used Python to build bots like GD Botto and Moonlight, focusing on automation and API integration.</p>
-                    <div class="grid grid-cols-[40px_150px_1fr_40px] items-center gap-4 glass p-4 rounded-lg">
-                        <i class="fas fa-camera text-fire-cyan text-2xl"></i>
-                        <span class="text-white">Photography</span>
-                        <div class="bg-gray-800 rounded-full h-6 overflow-hidden">
-                            <div class="skill-level bg-fire-cyan h-full rounded-full transition-all duration-1000" data-skill="70" style="width: 0%;"></div>
+                        <div class="bg-gray-800 rounded-full h-6 overflow-hidden relative">
+                            <div class="skill-level skill-bg-red h-full rounded-full transition-all duration-1000" data-skill="40" style="width: 0%;"></div>
                         </div>
-                        <span class="text-white">70%</span>
+                        <p class="text-gray-400 text-sm mt-2">Used Python to build bots like GD Botto and Moonlight, focusing on automation and API integration.</p>
                     </div>
-                    <p class="text-gray-400 text-sm text-center">Capturing moments with a focus on nature and abstract art, often using my photos in design projects.</p>
-                    <div class="grid grid-cols-[40px_150px_1fr_40px] items-center gap-4 glass p-4 rounded-lg">
-                        <i class="fas fa-paint-brush text-fire-red text-2xl"></i>
-                        <span class="text-white">Adobe Illustrator</span>
-                        <div class="bg-gray-800 rounded-full h-6 overflow-hidden">
-                            <div class="skill-level bg-fire-red h-full rounded-full transition-all duration-1000" data-skill="20" style="width: 0%;"></div>
+                    
+                    <div class="glass p-4 rounded-lg">
+                        <div class="flex justify-between mb-2">
+                            <div class="flex items-center">
+                                <i class="fas fa-camera text-fire-cyan text-2xl mr-3"></i>
+                                <span class="text-white">Photography</span>
+                            </div>
+                            <span class="text-white">70%</span>
                         </div>
-                        <span class="text-white">20%</span>
+                        <div class="bg-gray-800 rounded-full h-6 overflow-hidden relative">
+                            <div class="skill-level skill-bg-cyan h-full rounded-full transition-all duration-1000" data-skill="70" style="width: 0%;"></div>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-2">Capturing moments with a focus on nature and abstract art, often using my photos in design projects.</p>
                     </div>
-                    <p class="text-gray-400 text-sm text-center">Learning to create vector art and logos, currently experimenting with minimalist designs.</p>
+                    
+                    <div class="glass p-4 rounded-lg">
+                        <div class="flex justify-between mb-2">
+                            <div class="flex items-center">
+                                <i class="fas fa-paint-brush text-fire-red text-2xl mr-3"></i>
+                                <span class="text-white">Adobe Illustrator</span>
+                            </div>
+                            <span class="text-white">20%</span>
+                        </div>
+                        <div class="bg-gray-800 rounded-full h-6 overflow-hidden relative">
+                            <div class="skill-level skill-bg-red h-full rounded-full transition-all duration-1000" data-skill="20" style="width: 0%;"></div>
+                        </div>
+                        <p class="text-gray-400 text-sm mt-2">Learning to create vector art and logos, currently experimenting with minimalist designs.</p>
+                    </div>
                 </div>
                 <div class="text-center mt-8">
                     <a href="About_me.html" class="border-2 border-fire-cyan text-fire-cyan px-6 py-3 rounded-lg font-medium hover:bg-fire-cyan hover:text-fire-black transition-all duration-300 glow">More Skills →</a>
@@ -271,7 +326,7 @@
                     </div>
                 </div>
                 <p class="text-gray-400 text-center mt-8 max-w-2xl mx-auto">
-                    My journey has been about growth and experimentation. I’m excited to keep learning and creating projects for fun that combine my love for coding and design.
+                    My journey has been about growth and experimentation. I'm excited to keep learning and creating projects for fun that combine my love for coding and design.
                 </p>
             </div>
         </section>
@@ -352,7 +407,7 @@
             <div>
                 <h3 class="text-fire-red text-xl font-semibold mb-4">About</h3>
                 <p class="text-gray-400">Beginner programmer from Indonesia, exploring development and creation.</p>
-                <p class="text-gray-400 mt-4">Fun Fact: i’m still a student</p>
+                <p class="text-gray-400 mt-4">Fun Fact: i'm still a student</p>
             </div>
             <div>
                 <h3 class="text-fire-red text-xl font-semibold mb-4">Quick Links</h3>
