@@ -89,7 +89,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            background-image: url('https://github.com/fireemerald1/bg/blob/main/bgforprojectidklmao.png?raw=true');
+            background-image: url('https://github.com/fireemerald1/asdbhjawbhdkjabnsdkjbwa/blob/main/bannerforaboutmewoah.png?raw=true');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -163,7 +163,7 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s; /* Made transition faster */
+            transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
             padding-top: 56.25%; /* 16:9 aspect ratio */
             border: 1px solid var(--border-color);
@@ -189,7 +189,7 @@
             width: 100%;
             background-size: cover;
             background-position: center;
-            transition: transform 0.3s ease; /* Reduced from 0.5s to 0.3s */
+            transition: transform 0.5s ease;
         }
 
         .project-card:hover .project-image {
@@ -205,7 +205,7 @@
             background: rgba(0, 0, 0, 0.7);
             color: var(--text-color);
             opacity: 0;
-            transition: opacity 0.15s ease; /* Reduced from 0.3s to 0.15s */
+            transition: opacity 0.3s ease;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -277,48 +277,10 @@
 
     <!-- Main content -->
     <div class="container">
-        <h2 class="section-title">My Projects</h2>
-        <p class="section-subtitle">A showcase of all my best work</p>
-        <div class="project-grid">
-            <!-- Code Card -->
-            <a href="code.html" class="project-card">
-                <div class="project-image-container">
-                    <div class="project-image" style="background-image: url('https://github.com/fireemerald1/bg/blob/main/codebg.png?raw=true');"></div>
-                    <div class="project-overlay">
-                        <h3 class="project-title">Code</h3>
-                        <p class="project-description">Explore my programming projects and scripts.</p>
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <!-- Photography Card -->
-            <a href="photography.html" class="project-card">
-                <div class="project-image-container">
-                    <div class="project-image" style="background-image: url('https://github.com/fireemerald1/bg/blob/main/photobg.png?raw=true');"></div>
-                    <div class="project-overlay">
-                        <h3 class="project-title">Photography</h3>
-                        <p class="project-description">A collection of my captures</p>
-                        <div class="project-tags">
-                            <span class="tag">Picture</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <!-- Geometry Dash Card -->
-            <a href="geometry-dash.html" class="project-card">
-                <div class="project-image-container">
-                    <div class="project-image" style="background-image: url('https://github.com/fireemerald1/bg/blob/main/gdbg.png?raw=true');"></div>
-                    <div class="project-overlay">
-                        <h3 class="project-title">Geometry Dash</h3>
-                        <p class="project-description">Few level i have been made</p>
-                        <div class="project-tags">
-                            <span class="tag">Gaming</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
+        <h2 class="section-title">Code</h2>
+        <p class="section-subtitle">A showcase of my best coding work</p>
+        <div class="project-grid" id="project-container">
+            <!-- Project cards will be dynamically loaded here -->
         </div>
     </div>
 
@@ -376,6 +338,51 @@
                 mobileMenu.classList.toggle('hidden');
                 mobileMenu.classList.toggle('flex');
             });
+
+            // Fetch and load project data from JSON file
+            fetch('https://raw.githubusercontent.com/fireemerald1/asdbhjawbhdkjabnsdkjbwa/refs/heads/main/storage.json')
+                .then(response => response.json())
+                .then(projects => {
+                    const projectContainer = document.getElementById('project-container');
+                    
+                    // Clear any existing content
+                    projectContainer.innerHTML = '';
+                    
+                    // Loop through each project and create a card
+                    projects.forEach(project => {
+                        // Create tag elements from the tags array
+                        const tagElements = project.tag ? project.tag.map(tag => 
+                            `<span class="tag">${tag}</span>`
+                        ).join('') : '';
+                        
+                        // Create a new project card
+                        const projectCard = `
+                            <a href="${project.link}" class="project-card" target="_blank">
+                                <div class="project-image-container">
+                                    <div class="project-image" style="background-image: url('${project.image}');"></div>
+                                    <div class="project-overlay">
+                                        <h3 class="project-title">${project.name}</h3>
+                                        <p class="project-description">${project.description}</p>
+                                        <div class="project-tags">
+                                            ${tagElements}
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        `;
+                        
+                        // Add the card to the container
+                        projectContainer.innerHTML += projectCard;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading project data:', error);
+                    document.getElementById('project-container').innerHTML = `
+                        <div class="col-span-3 text-center text-fire-red">
+                            <p>Failed to load project data. Please try again later.</p>
+                        </div>
+                    `;
+                });
         });
     </script>
 </body>

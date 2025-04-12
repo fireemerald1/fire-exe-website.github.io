@@ -4,8 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fire Exe - Contacts</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'fire-black': '#000000',
+                        'fire-cyan': '#00ffff',
+                        'fire-red': '#ff0000',
+                    },
+                },
+            },
+        };
+    </script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Styles from the professional portfolio template */
+        /* Original styles preserved */
         * {
             margin: 0;
             padding: 0;
@@ -13,142 +30,146 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
 
-        /* Color variables matching About_me.html */
         :root {
-            --primary-color: #ff0000; /* Red */
-            --secondary-color: #00ffff; /* Cyan */
-            --accent-color: #ff3333; /* Lighter Red */
-            --text-color: #e0e0e0; /* Light Gray */
-            --light-text: #a0a0a0; /* Medium Gray */
-            --bg-color: #000000; /* Black */
-            --card-bg: #1a1a1a; /* Dark Gray */
-            --border-color: #333333; /* Even Darker Gray */
-            --contact-bg: #282828; /* Gray background for contact section */
+            --primary-color: #ff0000;
+            --secondary-color: #00ffff;
+            --accent-color: #ff3333;
+            --text-color: #e0e0e0;
+            --light-text: #a0a0a0;
+            --bg-color: #000000;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
         }
 
-        /* Custom Scrollbar for WebKit Browsers (Chrome, Edge, Safari) */
         ::-webkit-scrollbar {
             width: 12px;
         }
 
         ::-webkit-scrollbar-track {
-            background: transparent; /* Make the track transparent by default */
-            border: none; /* Remove the border to avoid any visible outline */
+            background: transparent;
+            border: none;
             border-radius: 6px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: transparent; /* Make the thumb transparent by default */
+            background: transparent;
             border-radius: 6px;
-            border: none; /* Remove the border */
-            opacity: 0; /* Ensure the thumb is fully hidden */
-            transition: opacity 0.3s ease, background 0.3s ease; /* Smooth transition for visibility */
+            border: none;
+            opacity: 0;
+            transition: opacity 0.3s ease, background 0.3s ease;
         }
 
-        /* Show the scrollbar when hovering over the page */
         html:hover ::-webkit-scrollbar-track {
-            background: #000000; /* Black track on hover */
-            border: 1px solid #333333; /* Restore the border */
+            background: #000000;
+            border: 1px solid #333333;
         }
 
         html:hover ::-webkit-scrollbar-thumb {
-            background: #ff0000; /* Red thumb on hover */
-            border: 2px solid #000000; /* Restore the border */
-            opacity: 1; /* Make the thumb fully visible */
+            background: #ff0000;
+            border: 2px solid #000000;
+            opacity: 1;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #ff3333; /* Slightly lighter red on direct hover for interactivity */
+            background: #ff3333;
         }
 
-        /* Custom Scrollbar for Firefox */
         html {
-            scrollbar-width: none; /* Completely hide the scrollbar by default */
+            scrollbar-width: none;
         }
 
-        /* Show the scrollbar in Firefox when hovering */
         html:hover {
-            scrollbar-width: thin; /* Show a thin scrollbar on hover */
-            scrollbar-color: #ff0000 #000000; /* Red thumb, black track */
+            scrollbar-width: thin;
+            scrollbar-color: #ff0000 #000000;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            display: flex;
-            flex-direction: column;
+            position: relative;
             min-height: 100vh;
         }
 
-        /* Navbar styles matching About_me.html */
-        header {
-            background-color: rgba(0, 0, 0, 0.95);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem 0;
-            position: fixed;
+        /* Add the sea wave animation */
+        .wave {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
         }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
+        .wave1 {
+            background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 0, 0.1));
+            animation: wave 20s linear infinite;
+        }
+
+        .wave2 {
+            background: linear-gradient(-45deg, rgba(255, 0, 0, 0.1), rgba(0, 255, 255, 0.1));
+            animation: wave 15s linear infinite;
+            animation-delay: -5s;
+        }
+
+        .wave3 {
+            background: linear-gradient(60deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 0, 0.1));
+            animation: wave 30s linear infinite;
+            animation-delay: -2s;
+        }
+
+        .wave4 {
+            background: linear-gradient(-60deg, rgba(255, 0, 0, 0.1), rgba(0, 255, 255, 0.1));
+            animation: wave 25s linear infinite;
+            animation-delay: -7s;
+        }
+
+        @keyframes wave {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Dark overlay with animated gradient */
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 0, 0.1), rgba(0, 255, 255, 0.1));
+            background-size: 200% 200%;
+            animation: gradientMove 10s ease infinite;
+            z-index: -1;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: -2;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        main {
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-links li {
-            margin-left: 2rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--secondary-color);
-        }
-
-        .menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-color);
+            padding: 5rem 1.5rem 2rem;
         }
         
-        /* Contact Content Styles - Updated with gray background and adjusted layout */
-        .content {
-            flex: 1;
-            padding-top: 6rem; /* Add padding to account for fixed header */
-        }
-        
+        /* Contact Content Styles */
         .contact-container {
             max-width: 1000px;
             margin: 50px auto;
             padding: 30px;
-            background-color: var(--contact-bg); /* Gray background */
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
             position: relative;
             overflow: hidden;
@@ -158,12 +179,13 @@
             text-align: center;
             margin-bottom: 30px;
             color: var(--secondary-color);
+            font-size: 2rem;
         }
         
         .contact-layout {
             display: flex;
             align-items: center;
-            justify-content: flex-end; /* Move content to right */
+            justify-content: flex-end;
             margin: 40px 0;
             position: relative;
         }
@@ -176,14 +198,14 @@
             color: var(--primary-color);
         }
         
-        /* Style the Fire Exe link to match the existing appearance */
         .fire-exe a {
             color: var(--primary-color);
-            text-decoration: none; /* Remove underline */
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
 
         .fire-exe a:hover {
-            color: var(--secondary-color); /* Cyan on hover for interactivity */
+            color: var(--secondary-color);
         }
         
         .vertical-line {
@@ -197,7 +219,7 @@
             flex-direction: column;
             gap: 15px;
             width: 60%;
-            margin-right: 200px; /* Make space for logo */
+            margin-right: 200px;
         }
         
         .contact-item {
@@ -219,13 +241,14 @@
         .contact-value a {
             color: var(--secondary-color);
             text-decoration: none;
+            transition: color 0.3s ease;
         }
         
         .contact-value a:hover {
             text-decoration: underline;
+            color: var(--primary-color);
         }
 
-        /* Logo styling */
         .logo-container {
             position: absolute;
             right: 30px;
@@ -241,13 +264,12 @@
             object-fit: contain;
         }
 
-        /* Ensure consistent sizing for dynamic content */
         .static-number, .static-location {
             display: inline-block;
         }
 
         .static-number {
-            width: 130px; /* Adjusted for XXX-XXXX-XXXX (11 digits + 2 hyphens) */
+            width: 130px;
             text-align: left;
         }
 
@@ -259,156 +281,19 @@
             text-overflow: ellipsis;
         }
 
-        /* Footer styles matching About_me.html */
-        footer {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 50px 0 20px;
-            border-top: 1px solid var(--border-color);
-            margin-top: 4rem;
+        /* Glass effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 0 2rem;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-            color: var(--primary-color);
-        }
-
-        .footer-section h3::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 50px;
-            height: 2px;
-            background-color: var(--secondary-color);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-
-        .footer-links a {
-            color: var(--light-text);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--secondary-color);
-        }
-
-        .footer-links span {
-            color: #ffffff;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--card-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-color);
-            transition: background-color 0.3s, transform 0.3s;
-            border: 1px solid var(--border-color);
-            font-size: 1rem;
-            text-decoration: none;
-        }
-
-        .social-link:hover {
-            background-color: var(--primary-color);
-            color: var(--bg-color);
-            transform: scale(1.1);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-            color: var(--light-text);
-            font-size: 0.9rem;
-        }
-
-        .glow {
-            position: relative;
-        }
-
-        .glow::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--secondary-color), transparent, var(--secondary-color));
-            z-index: -1;
-            border-radius: 12px;
-            animation: glowing 20s linear infinite;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .glow:hover::before {
-            opacity: 1;
-        }
-
-        @keyframes glowing {
-            0% { background-position: 0 0; }
-            50% { background-position: 400% 0; }
-            100% { background-position: 0 0; }
+        .glow:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .menu-btn {
-                display: block;
-            }
-
-            .nav-links {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 70px);
-                background-color: var(--bg-color);
-                flex-direction: column;
-                align-items: center;
-                padding-top: 50px;
-                transition: left 0.3s;
-            }
-
-            .nav-links.active {
-                left: 0;
-            }
-
-            .nav-links li {
-                margin: 0 0 30px;
-            }
-            
             .contact-layout {
                 flex-direction: column;
                 justify-content: center;
@@ -431,7 +316,7 @@
             .contact-info {
                 width: 100%;
                 margin-right: 0;
-                margin-bottom: 200px; /* Space for logo below on mobile */
+                margin-bottom: 200px;
             }
             
             .logo-container {
@@ -442,8 +327,122 @@
             }
         }
     </style>
+</head>
+<body>
+    <!-- Wave animation backgrounds -->
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+    <div class="wave wave4"></div>
+
+    <!-- Navbar from About_me.html -->
+    <nav class="fixed top-0 w-full bg-fire-black/80 backdrop-blur-md z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+            <a href="index.html" class="text-2xl font-bold text-fire-red transition-transform hover:scale-105 glow">Fire Exe</a>
+            <button class="sm:hidden text-fire-cyan text-2xl focus:outline-none" id="menu-btn">☰</button>
+            <ul class="hidden sm:flex space-x-6">
+                <li><a href="index.html" class="text-white hover:text-fire-red transition-colors glow">Home</a></li>
+                <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors glow">About Me</a></li>
+                <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors glow">Projects</a></li>
+                <li><a href="contact.html" class="text-fire-red hover:text-fire-cyan transition-colors glow">Contact</a></li>
+            </ul>
+        </div>
+        <!-- Mobile Menu -->
+        <ul class="hidden sm:hidden flex-col absolute top-16 left-0 w-full bg-fire-black/95 p-6 space-y-4" id="mobile-menu">
+            <li><a href="index.html" class="text-white hover:text-fire-red transition-colors">Home</a></li>
+            <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors">About Me</a></li>
+            <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors">Projects</a></li>
+            <li><a href="contact.html" class="text-fire-red hover:text-fire-cyan transition-colors">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Main Content -->
+    <main>
+        <div class="contact-container glass">
+            <h1>Contact</h1>
+            
+            <div class="contact-layout">
+                <div class="fire-exe"><a href="fan.html">Fire Exe</a></div>
+                
+                <div class="vertical-line"></div>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-label">Email</span>:&nbsp;<span class="contact-value">fireexecontact@gmail.com</span>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <span class="contact-label">Geometry Dash</span>:&nbsp;<span class="contact-value">FireExegd</span>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <span class="contact-label">Discord</span>:&nbsp;<span class="contact-value">.fire_exe1</span>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <span class="contact-label">Number</span>:&nbsp;<span class="contact-value">+62 <span class="static-number" id="static-phone-number">123-4567-8901</span></span>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <span class="contact-label">Location</span>:&nbsp;<span class="contact-value"><span class="static-location" id="static-location">West Java, East Java, Indonesia</span></span>
+                    </div>
+                </div>
+                
+                <!-- Logo on the right -->
+                <div class="logo-container">
+                    <img src="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20with%20something%20transparent%20full.png?raw=true" alt="Fire Exe Logo">
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer from About_me.html -->
+    <footer class="bg-fire-black py-12 border-t border-gray-800 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">About</h3>
+                <p class="text-gray-400">Beginner programmer from Indonesia, exploring development and creation.</p>
+                <p class="text-gray-400 mt-4">Fun Fact: I'm still a student</p>
+            </div>
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Home</a></li>
+                    <li><a href="About_me.html" class="text-gray-400 hover:text-fire-cyan transition-colors">About Me</a></li>
+                    <li><a href="projects.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Projects</a></li>
+                    <li><a href="contact.html" class="text-gray-400 hover:text-fire-red transition-colors">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">Skills</h3>
+                <ul class="space-y-2">
+                    <li><span class="text-white">Python</span></li>
+                    <li><span class="text-white">Geometry Dash</span></li>
+                    <li><span class="text-white">Adobe Illustrator</span></li>
+                    <li><a href="About_me.html" class="text-gray-400 hover:text-fire-cyan transition-colors">More Skills</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">Contact</h3>
+                <ul class="space-y-2">
+                    <li>Email: <a href="mailto:fireexecontact@gmail.com" class="text-gray-400 hover:text-fire-cyan transition-colors">fireexecontact@gmail.com</a></li>
+                    <li class="text-gray-400">Location: Indonesia</li>
+                </ul>
+                <div class="flex space-x-4 mt-4">
+                    <a href="https://github.com/fireemerald1" class="text-fire-cyan hover:text-fire-red transition-colors"><i class="fab fa-github text-2xl"></i></a>
+                    <a href="https://www.youtube.com/@fireexeGD" class="text-fire-cyan hover:text-fire-red transition-colors"><i class="fab fa-youtube text-2xl"></i></a>
+                    <a href="https://discord.com/users/1330170447588888651" class="text-fire-cyan hover:text-fire-red transition-colors"><i class="fab fa-discord text-2xl"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-8 pt-8 border-t border-gray-800 text-gray-400">
+            © 2025 Fire Exe Property. All Rights Reserved.
+            <p><a href="contact.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Contact Me</a></p>
+        </div>
+    </footer>
+
     <script>
-        // Function to generate random numbers for static effect
+        // Function to generate random phone numbers for static effect
         function generateRandomDigits(length) {
             let result = '';
             for (let i = 0; i < length; i++) {
@@ -484,7 +483,7 @@
             }
             
             // Update every 100ms
-            setTimeout(updateStaticElements, 100);
+            setTimeout(updateStaticElements, 1);
         }
 
         // Function to randomly redirect to one of the three pages
@@ -506,20 +505,15 @@
             }, 1000); // Update every 1 second
         }
 
-        // Mobile menu toggle and event listeners
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile menu toggle
-            document.querySelector('.menu-btn').addEventListener('click', function() {
-                document.querySelector('.nav-links').classList.toggle('active');
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('flex');
             });
 
-            // Close menu when clicking a link
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.addEventListener('click', function() {
-                    document.querySelector('.nav-links').classList.remove('active');
-                });
-            });
-            
             // Add click event to the Fire Exe link for random redirect
             document.querySelector('.fire-exe a').addEventListener('click', function(event) {
                 event.preventDefault(); // Prevent the default link behavior
@@ -533,99 +527,5 @@
             cycleFireExeLink();
         });
     </script>
-</head>
-<body>
-    <!-- Navigation Bar - Updated to match About_me.html -->
-    <header>
-        <nav>
-            <a href="index.html" class="logo glow">Fire Exe</a>
-            <button class="menu-btn">☰</button>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="About_me.html">About me</a></li>
-                <li><a href="projects.html">Project</a></li>
-                <li><a href="contact.html" class="active">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    
-    <!-- Main Content - Updated with gray background and logo -->
-    <div class="content">
-        <div class="contact-container">
-            <h1>Contact</h1>
-            
-            <div class="contact-layout">
-                <div class="fire-exe"><a href="fan.html">Fire Exe</a></div>
-                
-                <div class="vertical-line"></div>
-                
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <span class="contact-label">Email</span>:&nbsp;<span class="contact-value">fireexecontact@gmail.com</span>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <span class="contact-label">Geometry Dash</span>:&nbsp;<span class="contact-value">FireExegd</span>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <span class="contact-label">Discord</span>:&nbsp;<span class="contact-value">.fire_exe1</span>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <span class="contact-label">Number</span>:&nbsp;<span class="contact-value">+62 <span class="static-number" id="static-phone-number">123-4567-8901</span></span>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <span class="contact-label">Location</span>:&nbsp;<span class="contact-value"><span class="static-location" id="static-location">West Java, East Java, Indonesia</span></span>
-                    </div>
-                </div>
-                
-                <!-- Added logo on the right -->
-                <div class="logo-container">
-                    <img src="https://github.com/fireemerald1/bg/blob/main/webset%20logo%20woah.png?raw=true" alt="Fire Exe Logo">
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Footer - Updated to match About_me.html -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>About</h3>
-                <p>Beginner programmer from Indonesia, exploring the world of development and creation.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="About_me.html">About me</a></li>
-                    <li><a href="projects.html">Project</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Skills</h3>
-                <ul class="footer-links">
-                    <li><span style="color: white;">Python</span></li>
-                    <li><span style="color: white;">Geometry Dash</span></li>
-                    <li><span style="color: white;">Adobe Illustrator</span></li>
-                    <li><a href="About_me.html">More Skills</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact</h3>
-                <ul class="footer-links">
-                    <li>Email: fireexecontact@gmail.com</a></li>
-                    <li>Location: Indonesia</li>
-                </ul>
-            </div>
-        </div>
-        <div class="copyright">
-            © 2025 Fire Exe Property. All Rights Reserved.
-            <p><a href="contact.html" style="color: var(--light-text); text-decoration: none;">Contact Me</a></p>
-        </div>
-    </footer>
 </body>
 </html>

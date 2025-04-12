@@ -89,7 +89,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            background-image: url('https://github.com/fireemerald1/bg/blob/main/bgforprojectidklmao.png?raw=true');
+            background-image: url('https://github.com/fireemerald1/asdbhjawbhdkjabnsdkjbwa/blob/main/bannerforaboutmewoah.png?raw=true');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -163,11 +163,12 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s; /* Made transition faster */
+            transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
-            padding-top: 56.25%; /* 16:9 aspect ratio */
             border: 1px solid var(--border-color);
             text-decoration: none; /* Ensure no underline on link */
+            display: flex;
+            flex-direction: column;
         }
 
         .project-card:hover {
@@ -176,45 +177,30 @@
         }
 
         .project-image-container {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+            overflow: hidden;
+        }
+
+        .project-image {
             position: absolute;
             top: 0;
             left: 0;
             height: 100%;
             width: 100%;
-            overflow: hidden;
-        }
-
-        .project-image {
-            height: 100%;
-            width: 100%;
             background-size: cover;
             background-position: center;
-            transition: transform 0.3s ease; /* Reduced from 0.5s to 0.3s */
+            transition: transform 0.5s ease;
         }
 
         .project-card:hover .project-image {
             transform: scale(1.1);
         }
 
-        .project-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: var(--text-color);
-            opacity: 0;
-            transition: opacity 0.15s ease; /* Reduced from 0.3s to 0.15s */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .project-card:hover .project-overlay {
-            opacity: 1;
+        .project-content {
+            padding: 1rem;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-top: 1px solid var(--border-color);
         }
 
         .project-title {
@@ -233,8 +219,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-top: auto;
-            justify-content: center;
+            margin-top: 0.5rem;
         }
 
         .tag {
@@ -244,6 +229,57 @@
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 500;
+        }
+
+        /* ID badge styling */
+        .id-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--secondary-color);
+            font-weight: bold;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            z-index: 10;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .id-badge:hover {
+            background-color: var(--secondary-color);
+            color: var(--bg-color);
+        }
+
+        .id-badge.copied {
+            background-color: var(--primary-color);
+            animation: pulse 1s;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Tooltip for copy feedback */
+        .tooltip {
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 100;
+        }
+
+        .tooltip.show {
+            opacity: 1;
         }
 
         /* Responsive design */
@@ -277,50 +313,15 @@
 
     <!-- Main content -->
     <div class="container">
-        <h2 class="section-title">My Projects</h2>
-        <p class="section-subtitle">A showcase of all my best work</p>
-        <div class="project-grid">
-            <!-- Code Card -->
-            <a href="code.html" class="project-card">
-                <div class="project-image-container">
-                    <div class="project-image" style="background-image: url('https://github.com/fireemerald1/bg/blob/main/codebg.png?raw=true');"></div>
-                    <div class="project-overlay">
-                        <h3 class="project-title">Code</h3>
-                        <p class="project-description">Explore my programming projects and scripts.</p>
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <!-- Photography Card -->
-            <a href="photography.html" class="project-card">
-                <div class="project-image-container">
-                    <div class="project-image" style="background-image: url('https://github.com/fireemerald1/bg/blob/main/photobg.png?raw=true');"></div>
-                    <div class="project-overlay">
-                        <h3 class="project-title">Photography</h3>
-                        <p class="project-description">A collection of my captures</p>
-                        <div class="project-tags">
-                            <span class="tag">Picture</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <!-- Geometry Dash Card -->
-            <a href="geometry-dash.html" class="project-card">
-                <div class="project-image-container">
-                    <div class="project-image" style="background-image: url('https://github.com/fireemerald1/bg/blob/main/gdbg.png?raw=true');"></div>
-                    <div class="project-overlay">
-                        <h3 class="project-title">Geometry Dash</h3>
-                        <p class="project-description">Few level i have been made</p>
-                        <div class="project-tags">
-                            <span class="tag">Gaming</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
+        <h2 class="section-title">My YouTube Projects</h2>
+        <p class="section-subtitle">A showcase of my Geometry Dash level</p>
+        <div class="project-grid" id="project-container">
+            <!-- Project cards will be dynamically loaded here -->
         </div>
     </div>
+
+    <!-- Tooltip element for copy feedback -->
+    <div class="tooltip" id="tooltip"></div>
 
     <!-- Footer from index.html/About_me.html -->
     <footer class="bg-fire-black py-12 border-t border-gray-800 relative">
@@ -376,6 +377,101 @@
                 mobileMenu.classList.toggle('hidden');
                 mobileMenu.classList.toggle('flex');
             });
+
+            // Tooltip functionality
+            const tooltip = document.getElementById('tooltip');
+            
+            function showTooltip(text, x, y) {
+                tooltip.textContent = text;
+                tooltip.style.left = `${x}px`;
+                tooltip.style.top = `${y}px`;
+                tooltip.classList.add('show');
+                
+                setTimeout(() => {
+                    tooltip.classList.remove('show');
+                }, 2000);
+            }
+            
+            // Fetch and load project data from JSON file
+            fetch('https://raw.githubusercontent.com/fireemerald1/abdskjbshkjabbansdkbwabnkjdsabnjk/refs/heads/main/gduhh.json')
+                .then(response => response.json())
+                .then(projects => {
+                    const projectContainer = document.getElementById('project-container');
+                    
+                    // Clear any existing content
+                    projectContainer.innerHTML = '';
+                    
+                    // Loop through each project and create a card
+                    projects.forEach(project => {
+                        // Extract YouTube video ID from the link
+                        let videoId = '';
+                        if (project.link) {
+                            const urlParams = new URL(project.link).searchParams;
+                            videoId = urlParams.get('v');
+                        }
+                        
+                        // Generate YouTube thumbnail URL
+                        const thumbnailUrl = videoId ? 
+                            `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : 
+                            'https://via.placeholder.com/640x360?text=No+Thumbnail';
+                        
+                        // Create tag elements if any tags exist
+                        const tagElements = project.tag ? project.tag.map(tag => 
+                            `<span class="tag">${tag}</span>`
+                        ).join('') : '';
+                        
+                        // Create a new project card
+                        const projectCard = document.createElement('div');
+                        projectCard.className = 'project-card';
+                        projectCard.innerHTML = `
+                            <div class="id-badge" data-id="${project.id}">[${project.id}]</div>
+                            <a href="${project.link}" class="project-image-container" target="_blank">
+                                <div class="project-image" style="background-image: url('${thumbnailUrl}');"></div>
+                            </a>
+                            <div class="project-content">
+                                <h3 class="project-title">${project.name}</h3>
+                                <p class="project-description">${project.description}</p>
+                                <div class="project-tags">
+                                    ${tagElements}
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Add the card to the container
+                        projectContainer.appendChild(projectCard);
+                        
+                        // Add click event for ID badge to copy the ID
+                        const idBadge = projectCard.querySelector('.id-badge');
+                        idBadge.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            // Get the ID and copy to clipboard
+                            const id = this.getAttribute('data-id');
+                            navigator.clipboard.writeText(id).then(() => {
+                                // Show copied feedback
+                                this.classList.add('copied');
+                                
+                                // Show tooltip
+                                const rect = this.getBoundingClientRect();
+                                showTooltip('ID Copied!', rect.left, rect.bottom + 10);
+                                
+                                // Remove the copied class after animation
+                                setTimeout(() => {
+                                    this.classList.remove('copied');
+                                }, 1000);
+                            });
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading project data:', error);
+                    document.getElementById('project-container').innerHTML = `
+                        <div class="col-span-3 text-center text-fire-red">
+                            <p>Failed to load project data. Please try again later.</p>
+                        </div>
+                    `;
+                });
         });
     </script>
 </body>

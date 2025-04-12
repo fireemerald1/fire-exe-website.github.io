@@ -4,9 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fire Exe - About Me</title>
-    <link rel="icon" type="image/png" href="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20no%20svg.png?raw=true">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'fire-black': '#000000',
+                        'fire-cyan': '#00ffff',
+                        'fire-red': '#ff0000',
+                    },
+                },
+            },
+        };
+    </script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Styles from the professional portfolio template, adjusted for black background */
+        /* Original styles preserved */
         * {
             margin: 0;
             padding: 0;
@@ -14,164 +30,136 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
 
-        /* Color variables from the latest portfolio */
         :root {
-            --primary-color: #ff0000; /* Red */
-            --secondary-color: #00ffff; /* Cyan */
-            --accent-color: #ff3333; /* Lighter Red */
-            --text-color: #e0e0e0; /* Light Gray */
-            --light-text: #a0a0a0; /* Medium Gray */
-            --bg-color: #000000; /* Black */
-            --card-bg: #1a1a1a; /* Dark Gray */
-            --border-color: #333333; /* Even Darker Gray */
+            --primary-color: #ff0000;
+            --secondary-color: #00ffff;
+            --accent-color: #ff3333;
+            --text-color: #e0e0e0;
+            --light-text: #a0a0a0;
+            --bg-color: #000000;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
         }
 
-        /* Custom Scrollbar for WebKit Browsers (Chrome, Edge, Safari) */
         ::-webkit-scrollbar {
             width: 12px;
         }
 
         ::-webkit-scrollbar-track {
-            background: transparent; /* Make the track transparent by default */
-            border: none; /* Remove the border to avoid any visible outline */
+            background: transparent;
+            border: none;
             border-radius: 6px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: transparent; /* Make the thumb transparent by default */
+            background: transparent;
             border-radius: 6px;
-            border: none; /* Remove the border */
-            opacity: 0; /* Ensure the thumb is fully hidden */
-            transition: opacity 0.3s ease, background 0.3s ease; /* Smooth transition for visibility */
+            border: none;
+            opacity: 0;
+            transition: opacity 0.3s ease, background 0.3s ease;
         }
 
-        /* Show the scrollbar when hovering over the page */
         html:hover ::-webkit-scrollbar-track {
-            background: #000000; /* Black track on hover */
-            border: 1px solid #333333; /* Restore the border */
+            background: #000000;
+            border: 1px solid #333333;
         }
 
         html:hover ::-webkit-scrollbar-thumb {
-            background: #ff0000; /* Red thumb on hover */
-            border: 2px solid #000000; /* Restore the border */
-            opacity: 1; /* Make the thumb fully visible */
+            background: #ff0000;
+            border: 2px solid #000000;
+            opacity: 1;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #ff3333; /* Slightly lighter red on direct hover for interactivity */
+            background: #ff3333;
         }
 
-        /* Custom Scrollbar for Firefox */
         html {
-            scrollbar-width: none; /* Completely hide the scrollbar by default */
+            scrollbar-width: none;
         }
 
-        /* Show the scrollbar in Firefox when hovering */
         html:hover {
-            scrollbar-width: thin; /* Show a thin scrollbar on hover */
-            scrollbar-color: #ff0000 #000000; /* Red thumb, black track */
+            scrollbar-width: thin;
+            scrollbar-color: #ff0000 #000000;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
+            /* Background styles with your provided image */
+            background-image: url('https://github.com/fireemerald1/asdbhjawbhdkjabnsdkjbwa/blob/main/bannerforaboutmewoah.png?raw=true');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
         }
 
-        /* Navbar styles updated to match the latest screenshot */
-        header {
-            background-color: rgba(0, 0, 0, 0.95);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem 0;
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
+        /* Dark overlay with animated gradient from index.html */
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 0, 0.1), rgba(0, 255, 255, 0.1));
+            background-size: 200% 200%;
+            animation: gradientMove 10s ease infinite;
+            z-index: -1;
         }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
+        body::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: -2;
         }
 
-        .logo {
-            font-weight: 700;
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            text-decoration: none; /* Add this line to remove the underline */
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-links li {
-            margin-left: 2rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--secondary-color);
-        }
-
-        .menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-color);
-        }
-
-        /* Main content styles */
         main {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 8rem 2rem 4rem;
+            padding: 5rem 1.5rem 2rem;
         }
 
         .about-container {
             display: grid;
             grid-template-columns: 1fr 2fr;
-            gap: 3rem;
+            gap: 1.5rem;
             align-items: start;
         }
 
         .profile-image {
             width: 100%;
+            max-width: 250px;
             border-radius: 8px;
             box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
         }
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+        /* Updated styling for page titles */
+        .page-title {
+            font-size: 2.2rem;
+            margin-bottom: 0.8rem;
             color: var(--secondary-color);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            font-weight: bold;
+            letter-spacing: 0.5px;
         }
 
         .subtitle {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: var(--light-text);
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             font-weight: 500;
         }
 
         .about-content p {
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-            color: var(--text-color);
+            margin-bottom: 1rem;
+            font-size: 1rem;
         }
 
         .about-content strong {
@@ -179,61 +167,35 @@
         }
 
         .static-text {
-            font-family: monospace; /* Mimics a digital/static effect */
-            color: var(--secondary-color); /* Cyan for the static effect */
-            display: inline; /* Avoid spacing issues */
+            font-family: monospace;
+            color: var(--secondary-color);
+            display: inline;
         }
 
         #static-name, #static-province {
-            display: inline-block; /* Keep inline-block for name and province to set min-width */
-            min-width: 150px; /* Adjusted for name and province */
+            display: inline-block;
+            min-width: 130px;
         }
 
         #static-age {
-            display: inline-block; /* Inline-block for age to set a smaller min-width */
-            min-width: 30px; /* Increased slightly to accommodate two digits (1-99) */
+            display: inline-block;
+            min-width: 30px;
         }
 
-        .skills {
-            margin-top: 3rem;
+        .skills, .timeline {
+            margin-top: 1.5rem;
         }
 
-        .skills h2 {
+        .skills h2, .timeline h2 {
             color: #ffffff;
-        }
-
-        .skills h3 {
-            color: var(--text-color);
-        }
-
-        .progress-bar {
-            height: 20px;
-            background-color: var(--border-color);
-            border-radius: 0.5rem;
-            overflow: hidden;
-            margin-top: 8px;
-            margin-bottom: 16px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            border-radius: 0.5rem;
-            transition: width 0.5s ease-in-out;
-            background-color: var(--secondary-color);
-        }
-
-        .timeline {
-            margin-top: 3rem;
-        }
-
-        .timeline h2 {
-            color: #ffffff;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
         }
 
         .timeline-item {
-            padding-left: 2rem;
+            padding-left: 1.5rem;
             border-left: 2px solid var(--border-color);
-            padding-bottom: 2rem;
+            padding-bottom: 1rem;
             position: relative;
         }
 
@@ -244,212 +206,200 @@
         .timeline-item::before {
             content: '';
             position: absolute;
-            width: 15px;
-            height: 15px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             background-color: var(--secondary-color);
-            left: -8.5px;
+            left: -7px;
             top: 5px;
         }
 
         .timeline-date {
             font-weight: 600;
             color: var(--secondary-color);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
         }
 
         .timeline-title {
             font-weight: 600;
             color: var(--text-color);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
+            font-size: 1rem;
         }
 
         .timeline p {
             color: var(--light-text);
-        }
-
-        /* Footer styles */
-        footer {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 50px 0 20px;
-            border-top: 1px solid var(--border-color);
-            margin-top: 4rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 0 2rem;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-            color: var(--primary-color);
-        }
-
-        .footer-section h3::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 50px;
-            height: 2px;
-            background-color: var(--secondary-color);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-
-        .footer-links a {
-            color: var(--light-text);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--secondary-color);
-        }
-
-        .footer-links span {
-            color: #ffffff;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--card-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-color);
-            transition: background-color 0.3s, transform 0.3s;
-            border: 1px solid var(--border-color);
-            font-size: 1rem;
-        }
-
-        .social-link:hover {
-            background-color: var(--primary-color);
-            color: var(--bg-color);
-            transform: scale(1.1);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-            color: var(--light-text);
             font-size: 0.9rem;
         }
 
-        .glow {
+        /* Styles from index.html for navbar and footer */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glow:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        /* New styles for improved skills section */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Updated skill-section with blur effect */
+        .skill-section {
+            background: rgba(26, 26, 26, 0.5); /* More transparent background */
+            backdrop-filter: blur(10px); /* This adds the blur effect */
+            -webkit-backdrop-filter: blur(10px); /* For Safari support */
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid #333333;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-section:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            backdrop-filter: blur(5px); /* Less blur on hover for a subtle effect */
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #333333;
+            text-align: center;
+        }
+
+        .skill-item {
+            margin-bottom: 1.2rem;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-name {
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .skill-percent {
+            color: var(--secondary-color);
+        }
+
+        .progress-bar {
+            height: 16px;
+            background-color: #333333;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 8px;
+            transition: width 1s ease;
+            background: linear-gradient(90deg, #006666, #00ffff);
+        }
+
+        .items-list {
+            list-style-type: none;
+        }
+
+        .items-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
             position: relative;
         }
 
-        .glow::before {
-            content: '';
+        .items-list li::before {
+            content: '♦';
+            color: var(--secondary-color);
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--secondary-color), transparent, var(--secondary-color));
-            z-index: -1;
-            border-radius: 12px;
-            animation: glowing 20s linear infinite;
-            opacity: 0;
-            transition: opacity 0.3s;
+            left: 0;
         }
 
-        .glow:hover::before {
-            opacity: 1;
+        /* Adding blur to the about content section as well */
+        .about-content {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #333333;
         }
 
-@keyframes glowing {
-    0% { background-position: 0 0; }
-    50% { background-position: 400% 0; }
-    100% { background-position: 0 0; }
-}
+        /* Adding blur to timeline items */
+        .timeline-item {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 8px;
+            padding: 1rem 1rem 1rem 2rem;
+            border: 1px solid #333333;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--secondary-color);
+        }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .menu-btn {
-                display: block;
-            }
-
-            .nav-links {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 70px);
-                background-color: var(--bg-color);
-                flex-direction: column;
-                align-items: center;
-                padding-top: 50px;
-                transition: left 0.3s;
-            }
-
-            .nav-links.active {
-                left: 0;
-            }
-
-            .nav-links li {
-                margin: 0 0 30px;
-            }
-
             .about-container {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
 
             .profile-section {
                 text-align: center;
-                margin-bottom: 2rem;
+                margin-bottom: 1rem;
             }
 
             .profile-image {
-                max-width: 300px;
+                max-width: 200px;
             }
 
-            h1 {
-                font-size: 2rem;
+            .page-title {
+                font-size: 1.8rem;
+                text-align: center;
+            }
+            
+            .skills-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <header>
-        <nav>
-            <a href="index.html" class="logo glow">Fire Exe</a>
-            <button class="menu-btn">☰</button>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="About_me.html" class="active">About me</a></li>
-                <li><a href="projects.html">Project</a></li>
-                <li><a href="contact.html">Contact</a></li>
+    <!-- Navbar from index.html -->
+    <nav class="fixed top-0 w-full bg-fire-black/80 backdrop-blur-md z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+            <a href="index.html" class="text-2xl font-bold text-fire-red transition-transform hover:scale-105 glow">Fire Exe</a>
+            <button class="sm:hidden text-fire-cyan text-2xl focus:outline-none" id="menu-btn">☰</button>
+            <ul class="hidden sm:flex space-x-6">
+                <li><a href="index.html" class="text-white hover:text-fire-red transition-colors glow">Home</a></li>
+                <li><a href="About_me.html" class="text-fire-red hover:text-fire-cyan transition-colors glow">About Me</a></li>
+                <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors glow">Projects</a></li>
+                <li><a href="contact.html" class="text-white hover:text-fire-red transition-colors glow">Contact</a></li>
             </ul>
-        </nav>
-    </header>
+        </div>
+        <!-- Mobile Menu -->
+        <ul class="hidden sm:hidden flex-col absolute top-16 left-0 w-full bg-fire-black/95 p-6 space-y-4" id="mobile-menu">
+            <li><a href="index.html" class="text-white hover:text-fire-red transition-colors">Home</a></li>
+            <li><a href="About_me.html" class="text-fire-red hover:text-fire-cyan transition-colors">About Me</a></li>
+            <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors">Projects</a></li>
+            <li><a href="contact.html" class="text-white hover:text-fire-red transition-colors">Contact</a></li>
+        </ul>
+    </nav>
 
     <!-- Main content -->
     <main>
@@ -457,185 +407,245 @@
             <div class="profile-section">
                 <img src="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20no%20svg.png?raw=true" alt="Fire Exe Headshot" class="profile-image">
             </div>
-
             <div class="about-content">
-                <h1>About Me</h1>
+                <!-- Updated title styling to match other section titles -->
+                <h1 class="page-title">About Me</h1>
                 <p class="subtitle">Beginner Python Developer and Creative Hobbyist</p>
-
                 <p>
                     Hello, I'm Fire Exe, also known as Fire Emerald. I'm a Beginner Python Programmer and Designer.
-                    I have been using Python for the past 3 years and I have been designing for the past 2 years.
-                    I also have other skills other than Python and Design one of it is Photography.
-                    I have been making few python programs for fun, one of it is gd botto
+                    I have been using Python for 3 years and designing for 2 years. I also have skills in Photography
+                    and have made fun Python programs like GD Botto.
                 </p>
-
                 <p>
-                    <strong>Identity:</strong> My name is <span class="static-text" id="static-name">[static names]</span>, 
-                    i'm <span class="static-text" id="static-age">[static ages]</span> years old, 
-                    and I live in Indonesia, more accurately in <span class="static-text" id="static-province">[static province]</span>.
+                    <strong>Identity:</strong> My name is <span class="static-text" id="static-name">[static names]</span>,
+                    i'm <span class="static-text" id="static-age">[static ages]</span> years old,
+                    and I live in Indonesia, in <span class="static-text" id="static-province">[static province]</span>.
                 </p>
+            </div>
+        </div>
 
-                <div class="skills">
-                    <h2>Skills</h2>
-                    <div>
-                        <h3>Python</h3>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 40%;"></div>
+        <!-- Improved Skills, Hobbies & Interests Section -->
+        <div class="skills">
+            <h2 class="page-title text-center">Skills, Hobbies & Interests</h2>
+            
+            <div class="skills-container">
+                <!-- Technical Skills Section -->
+                <div class="skill-section">
+                    <h3 class="section-title">Technical Skills</h3>
+                    
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Python</span>
+                            <span class="skill-percent">40%</span>
                         </div>
-                        <h3>Photography</h3>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 70%;"></div>
+                            <div class="progress-fill" style="width: 40%"></div>
                         </div>
-                        <h3>Adobe Illustrator</h3>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 20%;"></div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Photography</span>
+                            <span class="skill-percent">70%</span>
                         </div>
-                        <h3>Microsoft Excel</h3>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 25%;"></div>
+                            <div class="progress-fill" style="width: 70%"></div>
                         </div>
-                        <h3>Microsoft Word</h3>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Adobe Illustrator</span>
+                            <span class="skill-percent">20%</span>
+                        </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 45%;"></div>
+                            <div class="progress-fill" style="width: 20%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Microsoft Excel</span>
+                            <span class="skill-percent">25%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 25%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Microsoft Word</span>
+                            <span class="skill-percent">45%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 45%"></div>
                         </div>
                     </div>
                 </div>
-
-                <div class="skills">
-                    <h2>Hobbies</h2>
-                    <p>Playing Piano</p>
-                    <p>Making a simple program</p>
+                
+                <!-- Hobbies Section -->
+                <div class="skill-section">
+                    <h3 class="section-title">Hobbies</h3>
+                    <ul class="items-list">
+                        <li>Playing Piano</li>
+                        <li>Making Simple Programs</li>
+                        <li>Photography</li>
+                        <li>Digital Design</li>
+                    </ul>
                 </div>
-
-                <div class="skills">
-                    <h2>Interests</h2>
-                    <p>Robotics</p>
-                    <p>Jazz and Pop Music</p>
+                
+                <!-- Interests Section -->
+                <div class="skill-section">
+                    <h3 class="section-title">Interests</h3>
+                    <ul class="items-list">
+                        <li>Robotics</li>
+                        <li>Jazz and Pop Music</li>
+                        <li>Programming</li>
+                        <li>Technology</li>
+                    </ul>
                 </div>
+            </div>
+        </div>
 
-                <div class="timeline">
-                    <h2>Journey</h2>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2025 January</div>
-                        <div class="timeline-title">The start of GD Botto making</div>
-                        <p>Started working on a discord bot for testing and enhancing my capabilities more</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2025 January</div>
-                        <div class="timeline-title">Moonlight bot V2 finished</div>
-                        <p>Finalized Moonlight bot V2, achieving another milestone in my programming journey.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2024 August</div>
-                        <div class="timeline-title">The start of Moonlight bot V2</div>
-                        <p>Began working on an upgraded version of Moonlight bot, with less feature and easy to understand</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2023 December</div>
-                        <div class="timeline-title">Moonlight bot finished</div>
-                        <p>Successfully completed the Moonlight bot project, marking a key achievement in my development journey.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2023 March</div>
-                        <div class="timeline-title">The start of Moonlight bot</div>
-                        <p>Initiated development of Moonlight bot, a project aimed at testing and enhancing my programming capabilities.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2023 January</div>
-                        <div class="timeline-title">Final game creation test</div>
-                        <p>Completed a significant milestone by testing my skills in game creation using Python.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2022 June</div>
-                        <div class="timeline-title">Started learning Python</div>
-                        <p>Began my journey into programming by learning Python, focusing on simple scripts and projects.</p>
-                    </div>
+        <!-- Timeline -->
+        <div class="timeline">
+            <h2 class="page-title text-center">Journey</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="timeline-item">
+                    <div class="timeline-date">2025 January</div>
+                    <div class="timeline-title">Started GD Botto</div>
+                    <p>Worked on a Discord bot to enhance my skills.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2025 January</div>
+                    <div class="timeline-title">Moonlight bot V2 finished</div>
+                    <p>Completed Moonlight bot V2, a key milestone.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2024 August</div>
+                    <div class="timeline-title">Started Moonlight bot V2</div>
+                    <p>Began an upgraded, simpler Moonlight bot.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2023 December</div>
+                    <div class="timeline-title">Moonlight bot finished</div>
+                    <p>Completed my first major bot project.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2023 March</div>
+                    <div class="timeline-title">Started Moonlight bot</div>
+                    <p>Initiated development to test my skills.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2023 January</div>
+                    <div class="timeline-title">Game creation test</div>
+                    <p>Tested my skills in Python game creation.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2022 June</div>
+                    <div class="timeline-title">Started learning Python</div>
+                    <p>Began programming with simple Python scripts.</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>About</h3>
-                <p>Beginner programmer from Indonesia, exploring the world of development and creation.</p>
+    <!-- Footer from index.html -->
+    <footer class="bg-fire-black py-12 border-t border-gray-800 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">About</h3>
+                <p class="text-gray-400">Beginner programmer from Indonesia, exploring development and creation.</p>
+                <p class="text-gray-400 mt-4">Fun Fact: I'm still a student</p>
             </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="About_me.html">About me</a></li>
-                    <li><a href="projects.html">Project</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Home</a></li>
+                    <li><a href="About_me.html" class="text-gray-400 hover:text-fire-cyan transition-colors">About Me</a></li>
+                    <li><a href="projects.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Projects</a></li>
+                    <li><a href="contact.html" class="text-gray-400 hover:text-fire-red transition-colors">Contact</a></li>
                 </ul>
             </div>
-            <div class="footer-section">
-                <h3>Skills</h3>
-                <ul class="footer-links">
-                    <li><span style="color: white;">Python</span></li>
-                    <li><span style="color: white;">Geometry Dash</span></li>
-                    <li><span style="color: white;">Adobe Illustrator</span></li>
-                    <li><a href="About_me.html">More Skills</a></li>
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">Skills</h3>
+                <ul class="space-y-2">
+                    <li><span class="text-white">Python</span></li>
+                    <li><span class="text-white">Geometry Dash</span></li>
+                    <li><span class="text-white">Adobe Illustrator</span></li>
+                    <li><a href="About_me.html" class="text-gray-400 hover:text-fire-cyan transition-colors">More Skills</a></li>
                 </ul>
             </div>
-            <div class="footer-section">
-                <h3>Contact</h3>
-                <ul class="footer-links">
-                    <li>Email: fireexecontact@gmail.com</li>
-                    <li>Location: Indonesia</li>
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">Contact</h3>
+                <ul class="space-y-2">
+                    <li>Email: <a href="mailto:fireexecontact@gmail.com" class="text-gray-400 hover:text-fire-cyan transition-colors">fireexecontact@gmail.com</a></li>
+                    <li class="text-gray-400">Location: Indonesia</li>
                 </ul>
+                <div class="flex space-x-4 mt-4">
+                    <a href="https://github.com/fireemerald1" class="text-fire-cyan hover:text-fire-red transition-colors"><i class="fab fa-github text-2xl"></i></a>
+                    <a href="https://www.youtube.com/@fireexeGD" class="text-fire-cyan hover:text-fire-red transition-colors"><i class="fab fa-youtube text-2xl"></i></a>
+                    <a href="https://discord.com/users/1330170447588888651" class="text-fire-cyan hover:text-fire-red transition-colors"><i class="fab fa-discord text-2xl"></i></a>
+                </div>
             </div>
         </div>
-        <div class="copyright">
+        <div class="text-center mt-8 pt-8 border-t border-gray-800 text-gray-400">
             © 2025 Fire Exe Property. All Rights Reserved.
-            <p><a href="contact.html" style="color: var(--light-text); text-decoration: none;">Contact Me</a></p>
+            <p><a href="contact.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Contact Me</a></p>
         </div>
     </footer>
 
     <script>
-        // Mobile menu toggle
-        document.querySelector('.menu-btn').addEventListener('click', function() {
-            document.querySelector('.nav-links').classList.toggle('active');
-        });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle from index.html
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('flex');
+            });
 
-        // Close menu when clicking a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', function() {
-                document.querySelector('.nav-links').classList.remove('active');
+            // Static effect for name, age, and province
+            const staticName = document.getElementById('static-name');
+            const staticAge = document.getElementById('static-age');
+            const staticProvince = document.getElementById('static-province');
+
+            function generateRandomString(length) {
+                const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ';
+                let result = '';
+                for (let i = 0; i < length; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            }
+
+            function generateRandomAge() {
+                return Math.floor(Math.random() * 99) + 1;
+            }
+
+            function updateStaticText() {
+                staticName.textContent = generateRandomString(14);
+                staticAge.textContent = generateRandomAge();
+                staticProvince.textContent = generateRandomString(20);
+            }
+
+            setInterval(updateStaticText, 1);
+            
+            // Animation for progress bars
+            const progressBars = document.querySelectorAll('.progress-fill');
+            
+            // Set initial width to 0
+            progressBars.forEach(bar => {
+                const targetWidth = bar.style.width;
+                bar.style.width = '0%';
+                
+                // Animate to target width
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 300);
             });
         });
-
-        // Static effect for name, age, and province
-        const staticName = document.getElementById('static-name');
-        const staticAge = document.getElementById('static-age');
-        const staticProvince = document.getElementById('static-province');
-
-        // Function to generate a random string of letters and spaces
-        function generateRandomString(length) {
-            const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ';
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
-        }
-
-        // Function to generate a random number between 1 and 99
-        function generateRandomAge() {
-            return Math.floor(Math.random() * 99) + 1; // 1 to 99
-        }
-
-        // Update the static text every millisecond
-        function updateStaticText() {
-            staticName.textContent = generateRandomString(14); // 14 characters for name
-            staticAge.textContent = generateRandomAge(); // Random age 1-99
-            staticProvince.textContent = generateRandomString(20); // 20 characters for province
-        }
-
-        // Run the update every millisecond
-        setInterval(updateStaticText, 1);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92c26d7c2a03e590',t:'MTc0Mzk1NDQ4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
