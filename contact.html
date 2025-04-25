@@ -39,6 +39,7 @@
             --bg-color: #000000;
             --card-bg: #1a1a1a;
             --border-color: #333333;
+            --contact-black-overlay-opacity: 0.6; /* Change this value for desired darkness */
         }
 
         /* Simplified scrollbar styles */
@@ -69,24 +70,6 @@
             min-height: 100vh;
         }
 
-        /* Simplified background effect - using CSS gradients instead of multiple elements */
-        body::before {
-            content: '';
-            position: fixed; /* Changed from absolute to fixed */
-            inset: 0;
-            background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 0, 0.1), rgba(0, 255, 255, 0.1));
-            background-size: 200% 200%;
-            animation: gradientMove 15s ease infinite;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
         main {
             max-width: 1000px;
             margin: 0 auto;
@@ -98,7 +81,12 @@
             max-width: 1000px;
             margin: 50px auto;
             padding: 30px;
-            background: rgba(26, 26, 26, 0.7);
+            background: rgba(20, 20, 28, 0.55) !important;
+            border-radius: 18px !important;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22) !important;
+            backdrop-filter: blur(18px) saturate(140%) !important;
+            -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
+            border: 1px solid rgba(255,255,255,0.08) !important;
             border: 1px solid var(--border-color);
             border-radius: 10px;
             position: relative;
@@ -195,6 +183,15 @@
             object-fit: contain;
         }
 
+        /* Black overlay layer for contact info separation */
+        .contact-black-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,var(--contact-black-overlay-opacity));
+            z-index: -1;
+            pointer-events: none;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .contact-layout {
@@ -281,19 +278,53 @@
                 padding: 0 5px;
             }
         }
+        
+        /* --- Animated Card Flip Background --- */
+        .card-bg-container {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+            grid-template-rows: repeat(auto-fill, minmax(48px, 1fr));
+            pointer-events: none;
+            background: rgba(0,0,0,0.4); /* 40% darker overlay */
+        }
+        .card-bg {
+            width: 100%; height: 100%;
+            aspect-ratio: 1/1;
+            background: rgba(0,0,0,0.7); /* darken each card */
+            display: flex; align-items: center; justify-content: center;
+            perspective: 400px;
+        }
+        .card-inner {
+            width: 90%; height: 90%;
+            border-radius: 8px;
+            background: #800000;
+            transition: transform 0.5s, background 0.5s;
+            transform-style: preserve-3d;
+        }
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+        .card-inner.cyan { background: #007777; }
+        .card-inner.red { background: #800000; }
+        .card-inner.black { background: rgba(0,0,0,0.6); }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    <div class="card-bg-container" id="cardBgContainer"></div>
+    <div class="contact-black-overlay"></div>
+    <!-- Navbar from About_me.html unified style -->
     <nav class="fixed top-0 w-full bg-fire-black/80 backdrop-blur-md z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
-            <a href="index.html" class="text-2xl font-bold text-fire-red">Fire Exe</a>
+            <a href="index.html" class="text-2xl font-bold text-fire-red transition-transform hover:scale-105 glow">Fire Exe</a>
             <button class="sm:hidden text-fire-cyan text-2xl focus:outline-none" id="menu-btn">☰</button>
             <ul class="hidden sm:flex space-x-6">
-                <li><a href="index.html" class="text-white hover:text-fire-red transition-colors">Home</a></li>
-                <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors">About Me</a></li>
-                <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors">Projects</a></li>
-                <li><a href="contact.html" class="text-fire-red hover:text-fire-cyan transition-colors">Contact</a></li>
+                <li><a href="index.html" class="text-white hover:text-fire-red transition-colors glow">Home</a></li>
+                <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors glow">About Me</a></li>
+                <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors glow">Projects</a></li>
+                <li><a href="contact.html" class="text-fire-red hover:text-fire-cyan transition-colors glow">Contact</a></li>
             </ul>
         </div>
         <!-- Mobile Menu -->
@@ -392,7 +423,7 @@
             </div>
         </div>
         <div class="text-center mt-8 pt-8 border-t border-gray-800 text-gray-400">
-            © 2025 Fire Exe Property. All Rights Reserved.
+            &copy; 2025 Fire Exe Property. All Rights Reserved.
             <p><a href="contact.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Contact Me</a></p>
         </div>
     </footer>
@@ -483,6 +514,59 @@
             // Start the animation loop
             requestAnimationFrame(updateElements);
         });
+        
+        // --- Animated Card Flip Background (flip only on color change) ---
+        const cols = Math.ceil(window.innerWidth / 48);
+        const rows = Math.ceil(window.innerHeight / 48);
+        const colors = ['red', 'cyan', 'black'];
+        const container = document.getElementById('cardBgContainer');
+        let cards = [];
+        function createCards() {
+            container.innerHTML = '';
+            cards = [];
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const card = document.createElement('div');
+                    card.className = 'card-bg';
+                    const inner = document.createElement('div');
+                    const color = colors[Math.floor(Math.random()*colors.length)];
+                    inner.className = 'card-inner ' + color;
+                    inner.dataset.color = color;
+                    card.appendChild(inner);
+                    container.appendChild(card);
+                    cards.push(inner);
+                }
+            }
+        }
+        createCards();
+        window.addEventListener('resize', () => {
+            setTimeout(createCards, 200);
+        });
+        function flipRandomCard() {
+            const idx = Math.floor(Math.random() * cards.length);
+            const card = cards[idx];
+            let oldColor = card.dataset.color;
+            let newColor = colors[Math.floor(Math.random()*colors.length)];
+            let tries = 0;
+            while (newColor === oldColor && tries < 5) {
+                newColor = colors[Math.floor(Math.random()*colors.length)];
+                tries++;
+            }
+            if (newColor !== oldColor) {
+                card.classList.add('flipped');
+                setTimeout(() => {
+                    card.classList.remove('red','cyan','black');
+                    card.classList.add(newColor);
+                    card.dataset.color = newColor;
+                    card.classList.remove('flipped');
+                }, 300);
+            }
+        }
+        setInterval(() => {
+            for (let i = 0; i < Math.max(1, Math.floor(cards.length/12)); i++) {
+                flipRandomCard();
+            }
+        }, 350);
     </script>
 </body>
 </html>

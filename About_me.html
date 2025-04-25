@@ -87,299 +87,376 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            /* Background styles with your provided image */
-            background-image: url('https://github.com/fireemerald1/asdbhjawbhdkjabnsdkjbwa/blob/main/bannerforaboutmewoah.png?raw=true');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
             position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* Dark overlay with animated gradient from index.html */
+        /* Enhanced background effects */
         body::before {
             content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 0, 0.1), rgba(0, 255, 255, 0.1));
-            background-size: 200% 200%;
-            animation: gradientMove 10s ease infinite;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255, 0, 0, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(0, 255, 255, 0.15) 0%, transparent 40%);
             z-index: -1;
+            animation: pulseGradient 15s ease-in-out infinite;
+        }
+
+        @keyframes pulseGradient {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 0.8; }
         }
 
         body::after {
             content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
             z-index: -2;
         }
 
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Grid background with improved animation */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: grid;
+            grid-template-columns: repeat(30, 1fr);
+            grid-template-rows: repeat(30, 1fr);
+            gap: 2px;
+            padding: 2px;
+            opacity: 0.3;
         }
 
+        .grid-cell {
+            background-color: #000000;
+            transition: background-color 1.5s ease;
+            aspect-ratio: 1;
+        }
+
+        .grid-cell.active-red {
+            background-color: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .grid-cell.active-cyan {
+            background-color: var(--secondary-color);
+            box-shadow: 0 0 10px var(--secondary-color);
+        }
+
+        /* Enhanced section styling with more compact design */
+        .section {
+            margin-bottom: 1.5rem; /* Reduced from 3rem */
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px; /* Slightly reduced from 12px */
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.25rem; /* Reduced from 2rem */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Reduced shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        /* More compact main container */
         main {
-            max-width: 1000px;
+            max-width: 900px; /* Slightly reduced from 1000px */
             margin: 0 auto;
-            padding: 5rem 1.5rem 2rem;
+            padding: 4rem 1rem 1.5rem; /* Reduced padding */
         }
 
+        /* More compact about container */
         .about-container {
             display: grid;
             grid-template-columns: 1fr 2fr;
-            gap: 1.5rem;
+            gap: 1rem; /* Reduced from 1.5rem */
             align-items: start;
         }
 
+        /* Compact profile image */
         .profile-image {
             width: 100%;
-            max-width: 250px;
-            border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
-        }
-
-        /* Updated styling for page titles */
-        .page-title {
-            font-size: 2.2rem;
-            margin-bottom: 0.8rem;
-            color: var(--secondary-color);
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--light-text);
-            margin-bottom: 1rem;
-            font-weight: 500;
-        }
-
-        .about-content p {
-            margin-bottom: 1rem;
-            font-size: 1rem;
-        }
-
-        .about-content strong {
-            color: #ffffff;
-        }
-
-        .static-text {
-            font-family: monospace;
-            color: var(--secondary-color);
-            display: inline;
-        }
-
-        #static-name, #static-province {
-            display: inline-block;
-            min-width: 130px;
-        }
-
-        #static-age {
-            display: inline-block;
-            min-width: 30px;
-        }
-
-        .skills, .timeline {
-            margin-top: 1.5rem;
-        }
-
-        .skills h2, .timeline h2 {
-            color: #ffffff;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-item {
-            padding-left: 1.5rem;
-            border-left: 2px solid var(--border-color);
-            padding-bottom: 1rem;
+            max-width: 200px; /* Reduced from 250px */
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 12px rgba(255, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
+            z-index: 1;
         }
 
-        .timeline-item:last-child {
-            padding-bottom: 0;
+        .profile-image:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 255, 255, 0.4);
         }
 
-        .timeline-item::before {
+        .profile-image::after {
             content: '';
             position: absolute;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: var(--secondary-color);
-            left: -7px;
-            top: 5px;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            z-index: -1;
+            border-radius: 15px;
+            opacity: 0.5;
+            filter: blur(8px);
         }
 
-        .timeline-date {
-            font-weight: 600;
-            color: var(--secondary-color);
-            margin-bottom: 0.25rem;
-            font-size: 0.9rem;
-        }
-
-        .timeline-title {
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 0.25rem;
-            font-size: 1rem;
-        }
-
-        .timeline p {
-            color: var(--light-text);
-            font-size: 0.9rem;
-        }
-
-        /* Styles from index.html for navbar and footer */
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .glow:hover {
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
-        }
-
-        /* New styles for improved skills section */
+        /* More compact skills container */
         .skills-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 1.5rem;
+            gap: 1rem; /* Reduced from 2rem */
+            margin-top: 1rem; /* Reduced from 1.5rem */
         }
 
-        /* Updated skill-section with blur effect */
+        /* More compact skill section */
         .skill-section {
-            background: rgba(26, 26, 26, 0.5); /* More transparent background */
-            backdrop-filter: blur(10px); /* This adds the blur effect */
-            -webkit-backdrop-filter: blur(10px); /* For Safari support */
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            border: 1px solid #333333;
-            transition: all 0.3s ease;
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 8px; /* Reduced from 10px */
+            padding: 1rem; /* Reduced from 1.5rem */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
+
         .skill-section:hover {
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
-            backdrop-filter: blur(5px); /* Less blur on hover for a subtle effect */
-            -webkit-backdrop-filter: blur(5px);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
 
-        .section-title {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #333333;
-            text-align: center;
-        }
-
-        .skill-item {
-            margin-bottom: 1.2rem;
-        }
-
-        .skill-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-
-        .skill-name {
-            font-weight: 500;
-            color: #ffffff;
-        }
-
-        .skill-percent {
+        .skill-section h3 {
             color: var(--secondary-color);
+            font-size: 1.1rem; /* Reduced from 1.3rem */
+            margin-bottom: 0.75rem; /* Reduced from 1rem */
+            position: relative;
+            display: inline-block;
         }
 
+        .skill-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), transparent);
+        }
+
+        /* Enhanced progress bars */
         .progress-bar {
-            height: 16px;
-            background-color: #333333;
+            height: 12px; /* Reduced from 16px */
+            background-color: rgba(51, 51, 51, 0.5);
             border-radius: 8px;
             overflow: hidden;
-            margin-bottom: 8px;
+            margin-bottom: 6px; /* Reduced from 8px */
+            position: relative;
         }
 
         .progress-fill {
             height: 100%;
             border-radius: 8px;
-            transition: width 1s ease;
-            background: linear-gradient(90deg, #006666, #00ffff);
-        }
-
-        .items-list {
-            list-style-type: none;
-        }
-
-        .items-list li {
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
             position: relative;
+            overflow: hidden;
         }
 
-        .items-list li::before {
-            content: '♦';
-            color: var(--secondary-color);
+        .progress-fill::after {
+            content: '';
             position: absolute;
+            top: 0;
             left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                rgba(255, 255, 255, 0.1) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
         }
 
-        /* Adding blur to the about content section as well */
-        .about-content {
-            background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 10px;
-            padding: 1.5rem;
-            border: 1px solid #333333;
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
 
-        /* Adding blur to timeline items */
+        .python { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); }
+        .html { background: linear-gradient(90deg, var(--primary-color), #ff6600); }
+        .css { background: linear-gradient(90deg, #0066ff, var(--secondary-color)); }
+        .javascript { background: linear-gradient(90deg, #ffcc00, var(--primary-color)); }
+        .php { background: linear-gradient(90deg, #6600cc, var(--secondary-color)); }
+        .gd { background: linear-gradient(90deg, var(--primary-color), #ff9900); }
+
+        /* Enhanced timeline items */
         .timeline-item {
             background: rgba(26, 26, 26, 0.5);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border-radius: 8px;
-            padding: 1rem 1rem 1rem 2rem;
-            border: 1px solid #333333;
-            margin-bottom: 1rem;
-            border-left: 3px solid var(--secondary-color);
+            padding: 1rem 1rem 1rem 1.5rem; /* Reduced padding */
+            margin-bottom: 1rem; /* Reduced from 1.5rem */
+            position: relative;
+            border-left: 2px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-left-color 0.3s ease;
         }
 
-        /* Responsive Design */
+        .timeline-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-left-color: var(--primary-color);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 12px; /* Reduced from 16px */
+            height: 12px; /* Reduced from 16px */
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            left: -7px; /* Adjusted for smaller dot */
+            top: 1.5rem;
+            box-shadow: 0 0 10px var(--secondary-color);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .timeline-item:hover::before {
+            background-color: var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        /* More compact headings */
+        .section-title {
+            font-size: 1.3rem; /* Reduced from 1.5rem */
+            margin-bottom: 0.75rem; /* Reduced from 1rem */
+        }
+
+        .skill-section h3 {
+            font-size: 1.1rem; /* Reduced from 1.3rem */
+            margin-bottom: 0.75rem; /* Reduced from 1rem */
+        }
+
+        /* More compact text */
+        .page-title {
+            font-size: 1.8rem; /* Reduced from 2.2rem */
+            margin-bottom: 0.5rem; /* Reduced from 0.8rem */
+        }
+
+        .subtitle {
+            font-size: 1rem; /* Reduced from 1.1rem */
+            margin-bottom: 0.75rem; /* Reduced from 1rem */
+        }
+
+        /* Adjust responsive breakpoints for more compact layout */
         @media (max-width: 768px) {
             .about-container {
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
 
-            .profile-section {
-                text-align: center;
-                margin-bottom: 1rem;
-            }
-
             .profile-image {
-                max-width: 200px;
+                max-width: 180px;
+                margin: 0 auto 1rem;
             }
 
-            .page-title {
-                font-size: 1.8rem;
-                text-align: center;
+            .skills-container {
+                grid-template-columns: repeat(2, 1fr);
             }
-            
+        }
+
+        @media (max-width: 576px) {
             .skills-container {
                 grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: 4rem 0.75rem 1rem;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+        }
+
+        /* Static text styles */
+        .identity-static {
+            font-family: monospace;
+            display: inline-block;
+            background: none;
+            color: inherit;
+            font-size: 1em;
+            width: 13ch;
+            min-width: 13ch;
+            max-width: 13ch;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
+            line-height: 1.2;
+            white-space: nowrap;
+            letter-spacing: 0.03em;
+        }
+        .identity-static.age {
+            width: 3ch;
+            min-width: 3ch;
+            max-width: 3ch;
+        }
+        .identity-static.province {
+            width: 18ch;
+            min-width: 18ch;
+            max-width: 18ch;
+        }
+
+        /* Main glass wrapper */
+        .main-glass {
+            background: rgba(15, 15, 20, 0.55);
+            border-radius: 22px;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22);
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
+            border: 1px solid rgba(255,255,255,0.08);
+            margin: 48px auto 32px auto;
+            padding: 2.5rem 1.5rem;
+            max-width: 900px;
+        }
+        @media (max-width: 600px) {
+            .main-glass {
+                padding: 1rem 0.5rem;
+                margin: 32px 0 16px 0;
             }
         }
     </style>
 </head>
 <body>
+    <div class="grid-background" id="gridBackground"></div>
     <!-- Navbar from index.html -->
     <nav class="fixed top-0 w-full bg-fire-black/80 backdrop-blur-md z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
@@ -402,154 +479,92 @@
     </nav>
 
     <!-- Main content -->
-    <main>
-        <div class="about-container">
-            <div class="profile-section">
-                <img src="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20no%20svg.png?raw=true" alt="Fire Exe Headshot" class="profile-image">
-            </div>
-            <div class="about-content">
-                <!-- Updated title styling to match other section titles -->
-                <h1 class="page-title">About Me</h1>
-                <p class="subtitle">Beginner Python Developer and Creative Hobbyist</p>
-                <p>
-                    Hello, I'm Fire Exe, also known as Fire Emerald. I'm a Beginner Python Programmer and Designer.
-                    I have been using Python for 3 years and designing for 2 years. I also have skills in Photography
-                    and have made fun Python programs like GD Botto.
-                </p>
-                <p>
-                    <strong>Identity:</strong> My name is <span class="static-text" id="static-name">[static names]</span>,
-                    i'm <span class="static-text" id="static-age">[static ages]</span> years old,
-                    and I live in Indonesia, in <span class="static-text" id="static-province">[static province]</span>.
-                </p>
-            </div>
-        </div>
+    <div class="main-glass">
+        <main>
+            <section class="max-w-3xl mx-auto px-4 py-16 text-center">
+                <img src="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20no%20svg.png?raw=true" alt="Fire Exe Logo" class="mx-auto mb-4" style="width:90px;height:auto;">
+                <h1 class="text-4xl font-bold text-fire-red mb-2">About Me</h1>
+                <p class="text-lg text-fire-cyan mb-4">Beginner Python Developer and Creative Hobbyist</p>
+                <p class="mb-3">Hello, I'm Fire Exe, also known as Fire Emerald. I'm a Beginner Python Programmer and Designer. I have been using Python for 3 years and designing for 2 years. I also have skills in Photography and have made fun Python programs like GD Botto.</p>
+                <p class="mb-3"><strong>Identity:</strong> My name is <span class="identity-static" id="static-name">[static names]</span>, I'm <span class="identity-static age" id="static-age">[static ages]</span> years old, and I live in Indonesia, in <span class="identity-static province" id="static-province">[static province]</span>.</p>
+            </section>
 
-        <!-- Improved Skills, Hobbies & Interests Section -->
-        <div class="skills">
-            <h2 class="page-title text-center">Skills, Hobbies & Interests</h2>
-            
-            <div class="skills-container">
-                <!-- Technical Skills Section -->
-                <div class="skill-section">
-                    <h3 class="section-title">Technical Skills</h3>
-                    
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <span class="skill-name">Python</span>
-                            <span class="skill-percent">40%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 40%"></div>
-                        </div>
+            <section class="max-w-3xl mx-auto px-4 py-8">
+                <h2 class="text-2xl font-bold text-fire-red mb-3">Skills, Hobbies & Interests</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-fire-cyan mb-2">Technical Skills</h3>
+                        <ul class="list-disc list-inside text-gray-300">
+                            <li>Python</li>
+                            <li>Photography</li>
+                            <li>Adobe Illustrator</li>
+                            <li>Microsoft Excel</li>
+                            <li>Microsoft Word</li>
+                        </ul>
                     </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <span class="skill-name">Photography</span>
-                            <span class="skill-percent">70%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 70%"></div>
-                        </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-fire-cyan mb-2">Hobbies</h3>
+                        <ul class="list-disc list-inside text-gray-300">
+                            <li>Playing Piano</li>
+                            <li>Making Simple Programs</li>
+                            <li>Photography</li>
+                            <li>Digital Design</li>
+                        </ul>
                     </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <span class="skill-name">Adobe Illustrator</span>
-                            <span class="skill-percent">20%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 20%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <span class="skill-name">Microsoft Excel</span>
-                            <span class="skill-percent">25%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 25%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <span class="skill-name">Microsoft Word</span>
-                            <span class="skill-percent">45%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 45%"></div>
-                        </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-fire-cyan mb-2">Interests</h3>
+                        <ul class="list-disc list-inside text-gray-300">
+                            <li>Robotics</li>
+                            <li>Jazz and Pop Music</li>
+                            <li>Programming</li>
+                            <li>Technology</li>
+                        </ul>
                     </div>
                 </div>
-                
-                <!-- Hobbies Section -->
-                <div class="skill-section">
-                    <h3 class="section-title">Hobbies</h3>
-                    <ul class="items-list">
-                        <li>Playing Piano</li>
-                        <li>Making Simple Programs</li>
-                        <li>Photography</li>
-                        <li>Digital Design</li>
-                    </ul>
-                </div>
-                
-                <!-- Interests Section -->
-                <div class="skill-section">
-                    <h3 class="section-title">Interests</h3>
-                    <ul class="items-list">
-                        <li>Robotics</li>
-                        <li>Jazz and Pop Music</li>
-                        <li>Programming</li>
-                        <li>Technology</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+            </section>
 
-        <!-- Timeline -->
-        <div class="timeline">
-            <h2 class="page-title text-center">Journey</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="timeline-item">
-                    <div class="timeline-date">2025 January</div>
-                    <div class="timeline-title">Started GD Botto</div>
-                    <p>Worked on a Discord bot to enhance my skills.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2025 January</div>
-                    <div class="timeline-title">Moonlight bot V2 finished</div>
-                    <p>Completed Moonlight bot V2, a key milestone.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2024 August</div>
-                    <div class="timeline-title">Started Moonlight bot V2</div>
-                    <p>Began an upgraded, simpler Moonlight bot.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2023 December</div>
-                    <div class="timeline-title">Moonlight bot finished</div>
-                    <p>Completed my first major bot project.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2023 March</div>
-                    <div class="timeline-title">Started Moonlight bot</div>
-                    <p>Initiated development to test my skills.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2023 January</div>
-                    <div class="timeline-title">Game creation test</div>
-                    <p>Tested my skills in Python game creation.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2022 June</div>
-                    <div class="timeline-title">Started learning Python</div>
-                    <p>Began programming with simple Python scripts.</p>
-                </div>
-            </div>
-        </div>
-    </main>
+            <section class="max-w-3xl mx-auto px-4 py-8">
+                <h2 class="text-2xl font-bold text-fire-red mb-3">Journey</h2>
+                <ol class="relative border-l border-fire-cyan ml-2">
+                    <li class="mb-6 ml-6">
+                        <span class="absolute -left-3 flex items-center justify-center w-6 h-6 bg-fire-cyan rounded-full ring-8 ring-fire-black"> </span>
+                        <span class="font-semibold text-fire-cyan">2025 January</span> – Started GD Botto<br>
+                        <span class="text-gray-400">Worked on a Discord bot to enhance my skills.</span>
+                    </li>
+                    <li class="mb-6 ml-6">
+                        <span class="absolute -left-3 flex items-center justify-center w-6 h-6 bg-fire-cyan rounded-full ring-8 ring-fire-black"> </span>
+                        <span class="font-semibold text-fire-cyan">2025 January</span> – Moonlight bot V2 finished<br>
+                        <span class="text-gray-400">Completed Moonlight bot V2, a key milestone.</span>
+                    </li>
+                    <li class="mb-6 ml-6">
+                        <span class="absolute -left-3 flex items-center justify-center w-6 h-6 bg-fire-cyan rounded-full ring-8 ring-fire-black"> </span>
+                        <span class="font-semibold text-fire-cyan">2024 August</span> – Started Moonlight bot V2<br>
+                        <span class="text-gray-400">Began an upgraded, simpler Moonlight bot.</span>
+                    </li>
+                    <li class="mb-6 ml-6">
+                        <span class="absolute -left-3 flex items-center justify-center w-6 h-6 bg-fire-cyan rounded-full ring-8 ring-fire-black"> </span>
+                        <span class="font-semibold text-fire-cyan">2023 December</span> – Moonlight bot finished<br>
+                        <span class="text-gray-400">Completed my first major bot project.</span>
+                    </li>
+                    <li class="mb-6 ml-6">
+                        <span class="absolute -left-3 flex items-center justify-center w-6 h-6 bg-fire-cyan rounded-full ring-8 ring-fire-black"> </span>
+                        <span class="font-semibold text-fire-cyan">2023 March</span> – Started Moonlight bot<br>
+                        <span class="text-gray-400">Initiated development to test my skills.</span>
+                    </li>
+                    <li class="mb-6 ml-6">
+                        <span class="absolute -left-3 flex items-center justify-center w-6 h-6 bg-fire-cyan rounded-full ring-8 ring-fire-black"> </span>
+                        <span class="font-semibold text-fire-cyan">2023 January</span> – Game creation test<br>
+                        <span class="text-gray-400">Tested my skills in Python game creation.</span>
+                    </li>
+                    <li class="mb-6 ml-6">
+                        <span class="absolute -left-3 flex items-center justify-center w-6 h-6 bg-fire-cyan rounded-full ring-8 ring-fire-black"> </span>
+                        <span class="font-semibold text-fire-cyan">2022 June</span> – Started learning Python<br>
+                        <span class="text-gray-400">Began programming with simple Python scripts.</span>
+                    </li>
+                </ol>
+            </section>
+        </main>
+    </div>
 
     <!-- Footer from index.html -->
     <footer class="bg-fire-black py-12 border-t border-gray-800 relative">
@@ -591,12 +606,76 @@
             </div>
         </div>
         <div class="text-center mt-8 pt-8 border-t border-gray-800 text-gray-400">
-            © 2025 Fire Exe Property. All Rights Reserved.
+            2025 Fire Exe Property. All Rights Reserved.
             <p><a href="contact.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Contact Me</a></p>
         </div>
     </footer>
 
     <script>
+        // Create grid cells to fill the screen
+        const gridContainer = document.getElementById('gridBackground');
+        const gridSize = 30 * 30; // 30x30 grid
+        
+        for (let i = 0; i < gridSize; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('grid-cell');
+            gridContainer.appendChild(cell);
+        }
+
+        // Animation for grid cells
+        const cells = document.querySelectorAll('.grid-cell');
+        const totalCells = cells.length;
+        
+        // Constants for animation
+        const MIN_ACTIVE_CELLS = 20;
+        const MAX_ACTIVE_CELLS = 50;
+        const MIN_ANIMATION_DELAY = 100;
+        const MAX_ANIMATION_DELAY = 2000;
+        const MIN_ACTIVE_DURATION = 1000;
+        const MAX_ACTIVE_DURATION = 5000;
+        
+        // Fire-red and fire-cyan colors (darkened to 50% as per user preference)
+        const FIRE_RED = '#800000'; // Darkened red
+        const FIRE_CYAN = '#007777'; // Darkened cyan
+        
+        // Function to randomly activate cells
+        function activateRandomCells() {
+            // Determine how many cells to activate
+            const activeCellCount = Math.floor(Math.random() * (MAX_ACTIVE_CELLS - MIN_ACTIVE_CELLS + 1)) + MIN_ACTIVE_CELLS;
+            
+            // Select random cells to activate
+            const cellsToActivate = new Set();
+            while (cellsToActivate.size < activeCellCount) {
+                const randomIndex = Math.floor(Math.random() * totalCells);
+                cellsToActivate.add(randomIndex);
+            }
+            
+            // Activate selected cells
+            cellsToActivate.forEach(index => {
+                const cell = cells[index];
+                
+                // Randomly choose between red and cyan
+                const colorClass = Math.random() > 0.5 ? 'active-red' : 'active-cyan';
+                
+                // Add the color class
+                cell.classList.add(colorClass);
+                
+                // Set a timeout to deactivate the cell after a random duration
+                const activeDuration = Math.floor(Math.random() * (MAX_ACTIVE_DURATION - MIN_ACTIVE_DURATION + 1)) + MIN_ACTIVE_DURATION;
+                
+                setTimeout(() => {
+                    cell.classList.remove(colorClass);
+                }, activeDuration);
+            });
+            
+            // Schedule the next activation
+            const nextActivationDelay = Math.floor(Math.random() * (MAX_ANIMATION_DELAY - MIN_ANIMATION_DELAY + 1)) + MIN_ANIMATION_DELAY;
+            setTimeout(activateRandomCells, nextActivationDelay);
+        }
+        
+        // Start the animation
+        setTimeout(activateRandomCells, 1000);
+
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile menu toggle from index.html
             const menuBtn = document.getElementById('menu-btn');
@@ -607,10 +686,6 @@
             });
 
             // Static effect for name, age, and province
-            const staticName = document.getElementById('static-name');
-            const staticAge = document.getElementById('static-age');
-            const staticProvince = document.getElementById('static-province');
-
             function generateRandomString(length) {
                 const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ';
                 let result = '';
@@ -619,17 +694,14 @@
                 }
                 return result;
             }
-
             function generateRandomAge() {
                 return Math.floor(Math.random() * 99) + 1;
             }
-
             function updateStaticText() {
-                staticName.textContent = generateRandomString(14);
-                staticAge.textContent = generateRandomAge();
-                staticProvince.textContent = generateRandomString(20);
+                document.getElementById('static-name').textContent = generateRandomString(13);
+                document.getElementById('static-age').textContent = generateRandomAge();
+                document.getElementById('static-province').textContent = generateRandomString(18);
             }
-
             setInterval(updateStaticText, 1);
             
             // Animation for progress bars

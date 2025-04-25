@@ -90,35 +90,35 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            background-image: url('https://github.com/fireemerald1/asdbhjawbhdkjabnsdkjbwa/blob/main/bannerforaboutmewoah.png?raw=true');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
             position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 0, 0.1), rgba(0, 255, 255, 0.1));
-            background-size: 200% 200%;
-            animation: gradientMove 10s ease infinite;
-            z-index: -1;
+            overflow-x: hidden;
         }
 
         body::after {
             content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black; /* Solid black background */
             z-index: -2;
         }
 
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes gradientShift {
+            0% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(180deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
         }
 
         /* Navbar styles from index.html/About_me.html */
@@ -256,7 +256,8 @@
     </style>
 </head>
 <body>
-    <!-- Navbar from index.html/About_me.html -->
+    <canvas class="matrix-bg" id="codeCanvas"></canvas>
+    <!-- Navbar from About_me.html unified style -->
     <nav class="fixed top-0 w-full bg-fire-black/80 backdrop-blur-md z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
             <a href="index.html" class="text-2xl font-bold text-fire-red transition-transform hover:scale-105 glow">Fire Exe</a>
@@ -264,15 +265,18 @@
             <ul class="hidden sm:flex space-x-6">
                 <li><a href="index.html" class="text-white hover:text-fire-red transition-colors glow">Home</a></li>
                 <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors glow">About Me</a></li>
-                <li><a href="projects.html" class="text-fire-red hover:text-fire-cyan transition-colors glow">Projects</a></li>
+                <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors glow">Projects</a></li>
                 <li><a href="contact.html" class="text-white hover:text-fire-red transition-colors glow">Contact</a></li>
+                <li><a href="code.html" class="text-fire-red hover:text-fire-cyan transition-colors glow">Code</a></li>
             </ul>
         </div>
+        <!-- Mobile Menu -->
         <ul class="hidden sm:hidden flex-col absolute top-16 left-0 w-full bg-fire-black/95 p-6 space-y-4" id="mobile-menu">
             <li><a href="index.html" class="text-white hover:text-fire-red transition-colors">Home</a></li>
             <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors">About Me</a></li>
-            <li><a href="projects.html" class="text-fire-red hover:text-fire-cyan transition-colors">Projects</a></li>
+            <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors">Projects</a></li>
             <li><a href="contact.html" class="text-white hover:text-fire-red transition-colors">Contact</a></li>
+            <li><a href="code.html" class="text-fire-red hover:text-fire-cyan transition-colors">Code</a></li>
         </ul>
     </nav>
 
@@ -300,6 +304,7 @@
                     <li><a href="About_me.html" class="text-gray-400 hover:text-fire-cyan transition-colors">About Me</a></li>
                     <li><a href="projects.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Projects</a></li>
                     <li><a href="contact.html" class="text-gray-400 hover:text-fire-red transition-colors">Contact</a></li>
+                    <li><a href="code.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Code</a></li>
                 </ul>
             </div>
             <div>
@@ -325,7 +330,7 @@
             </div>
         </div>
         <div class="text-center mt-8 pt-8 border-t border-gray-800 text-gray-400">
-            © 2025 Fire Exe Property. All Rights Reserved.
+            &copy; 2025 Fire Exe Property. All Rights Reserved.
             <p><a href="contact.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Contact Me</a></p>
         </div>
     </footer>
@@ -338,6 +343,94 @@
             menuBtn.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
                 mobileMenu.classList.toggle('flex');
+            });
+
+            // Matrix code rain effect
+            const canvas = document.getElementById('codeCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas dimensions
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Characters to display (code-like characters)
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>{}[]|\/?!@#$%^&*()_+-=;:",.~`';
+            
+            // Column settings
+            const fontSize = 14;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = [];
+            
+            // Initialize drops at random positions
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.floor(Math.random() * canvas.height / fontSize) * -1;
+            }
+            
+            // Draw the matrix effect
+            function draw() {
+                // Semi-transparent black to create fade effect
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Set text style
+                ctx.font = `${fontSize}px monospace`;
+                
+                // Draw characters
+                for (let i = 0; i < drops.length; i++) {
+                    // Random character
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    
+                    // First character in each column is brighter (leading character)
+                    if (drops[i] * fontSize > 0 && drops[i] * fontSize < canvas.height) {
+                        // Leading character (bright fire-red or fire-cyan)
+                        if (Math.random() > 0.5) {
+                            ctx.fillStyle = '#ff0000'; // fire-red
+                        } else {
+                            ctx.fillStyle = '#00ffff'; // fire-cyan
+                        }
+                        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                        
+                        // Trailing characters (dimmer)
+                        for (let j = 1; j < 10; j++) {
+                            const trailY = drops[i] * fontSize - j * fontSize;
+                            if (trailY > 0) {
+                                // Fade out trail
+                                const opacity = (10 - j) / 10;
+                                if (Math.random() > 0.5) {
+                                    ctx.fillStyle = `rgba(255, 0, 0, ${opacity * 0.7})`; // fire-red with opacity
+                                } else {
+                                    ctx.fillStyle = `rgba(0, 255, 255, ${opacity * 0.7})`; // fire-cyan with opacity
+                                }
+                                ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fontSize, trailY);
+                            }
+                        }
+                    }
+                    
+                    // Move drops down
+                    drops[i]++;
+                    
+                    // Reset drops when they reach bottom or randomly
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                }
+            }
+            
+            // Animation loop
+            setInterval(draw, 33);
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                const newColumns = Math.floor(canvas.width / fontSize);
+                
+                // Adjust drops array for new width
+                if (newColumns > columns) {
+                    for (let i = drops.length; i < newColumns; i++) {
+                        drops[i] = Math.floor(Math.random() * canvas.height / fontSize) * -1;
+                    }
+                }
             });
 
             // Fetch and load project data from JSON file

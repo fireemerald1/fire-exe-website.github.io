@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fire Exe - Photography</title>
     <link rel="icon" type="image/png" href="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20no%20svg.png?raw=true">
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS CDN with specific imports -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -20,19 +20,17 @@
             },
         };
     </script>
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome with specific icons only -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css">
     <style>
-        /* Root variables from original projects.html */
         :root {
             --primary-color: #ff0000;
             --secondary-color: #00ffff;
-            --accent-color: #ff3333;
             --text-color: #e0e0e0;
-            --light-text: #a0a0a0;
             --bg-color: #000000;
-            --card-bg: #1a1a1a;
-            --border-color: #333333;
+            --card-bg: rgba(0, 0, 0, 0.5);
+            --hologram-red: rgba(255, 0, 0, 0.7);
+            --hologram-cyan: rgba(0, 255, 255, 0.7);
         }
 
         * {
@@ -42,119 +40,199 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Scrollbar styles from original projects.html */
+        /* Simplified scrollbar styles */
         ::-webkit-scrollbar {
-            width: 12px;
+            width: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: transparent;
-            border: none;
-            border-radius: 6px;
+            background: #000000;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: transparent;
-            border-radius: 6px;
-            border: none;
-            opacity: 0;
-            transition: opacity 0.3s ease, background 0.3s ease;
-        }
-
-        html:hover ::-webkit-scrollbar-track {
-            background: #000000;
-            border: 1px solid #333333;
-        }
-
-        html:hover ::-webkit-scrollbar-thumb {
             background: #ff0000;
-            border: 2px solid #000000;
-            opacity: 1;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #ff3333;
+            border-radius: 4px;
         }
 
         html {
-            scrollbar-width: none;
-        }
-
-        html:hover {
             scrollbar-width: thin;
             scrollbar-color: #ff0000 #000000;
         }
 
-        /* Body with background from About_me.html */
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            background-image: url('https://github.com/fireemerald1/bg/blob/main/bgforprojectidklmao.png?raw=true');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
             position: relative;
+            overflow-x: hidden;
         }
 
-        body::before {
-            content: '';
+        /* 3D Hologram Cube Background */
+        .cube-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            perspective: 1000px;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .cube {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 0, 0.1), rgba(0, 255, 255, 0.1));
-            background-size: 200% 200%;
-            animation: gradientMove 10s ease infinite;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            transform-style: preserve-3d;
+            animation: spin 20s infinite linear;
+        }
+
+        .cube-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid var(--hologram-cyan);
+            opacity: 0.45;
+            background-color: rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0 20px var(--hologram-cyan), 
+                        inset 0 0 20px var(--hologram-cyan);
+        }
+
+        .cube-face:nth-child(1) { transform: translateZ(150px); }
+        .cube-face:nth-child(2) { transform: rotateY(180deg) translateZ(150px); }
+        .cube-face:nth-child(3) { transform: rotateY(90deg) translateZ(150px); }
+        .cube-face:nth-child(4) { transform: rotateY(-90deg) translateZ(150px); }
+        .cube-face:nth-child(5) { transform: rotateX(90deg) translateZ(150px); }
+        .cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(150px); }
+
+        .cube-face:nth-child(odd) {
+            border-color: var(--hologram-red);
+            box-shadow: 0 0 20px var(--hologram-red), 
+                        inset 0 0 20px var(--hologram-red);
+        }
+
+        .cube-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, var(--hologram-cyan) 1px, transparent 1px) 0 0 / 20px 20px,
+                linear-gradient(0deg, var(--hologram-red) 1px, transparent 1px) 0 0 / 20px 20px;
+            opacity: 0.45;
+        }
+
+        .cube-inner {
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            width: 50%;
+            height: 50%;
+            transform-style: preserve-3d;
+            animation: spin-reverse 15s infinite linear;
+        }
+
+        .cube-inner-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--hologram-red);
+            opacity: 0.75;
+            background-color: rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 15px var(--hologram-red), 
+                        inset 0 0 15px var(--hologram-red);
+        }
+
+        .cube-inner-face:nth-child(1) { transform: translateZ(75px); }
+        .cube-inner-face:nth-child(2) { transform: rotateY(180deg) translateZ(75px); }
+        .cube-inner-face:nth-child(3) { transform: rotateY(90deg) translateZ(75px); }
+        .cube-inner-face:nth-child(4) { transform: rotateY(-90deg) translateZ(75px); }
+        .cube-inner-face:nth-child(5) { transform: rotateX(90deg) translateZ(75px); }
+        .cube-inner-face:nth-child(6) { transform: rotateX(-90deg) translateZ(75px); }
+
+        .cube-inner-face:nth-child(even) {
+            border-color: var(--hologram-cyan);
+            box-shadow: 0 0 15px var(--hologram-cyan), 
+                        inset 0 0 15px var(--hologram-cyan);
+        }
+
+        .hologram-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             z-index: -1;
         }
 
-        body::after {
-            content: '';
+        .particle {
             position: absolute;
+            background: var(--hologram-cyan);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        .particle:nth-child(even) {
+            background: var(--hologram-red);
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotateX(0) rotateY(0) rotateZ(0); }
+            100% { transform: translate(-50%, -50%) rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+
+        @keyframes spin-reverse {
+            0% { transform: rotateX(0) rotateY(0) rotateZ(0); }
+            100% { transform: rotateX(-360deg) rotateY(-360deg) rotateZ(-360deg); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-100px) scale(0); opacity: 0; }
+        }
+
+        /* Overlay to darken the background */
+        body::before {
+            content: '';
+            position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: -2;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
         }
 
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Navbar styles from index.html/About_me.html */
         .glass {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .glow:hover {
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
-        }
-
-        /* Main content styles from original projects.html */
         .container {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 5rem 2rem 4rem; /* Adjusted for navbar height consistency */
+            margin: 6rem auto 2rem;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
         }
 
         .section-title {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--secondary-color);
+            font-size: 2.5rem;
+            color: var(--primary-color);
             text-align: center;
+            margin-bottom: 1rem;
         }
 
         .section-subtitle {
             text-align: center;
-            color: var(--light-text);
+            color: var(--text-color);
             margin-bottom: 2rem;
         }
 
         .project-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Fixed to 3 columns */
+            grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
             margin-top: 2rem;
         }
@@ -164,54 +242,67 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s; /* Made transition faster */
-            position: relative;
-            padding-top: 56.25%; /* 16:9 aspect ratio */
-            border: 1px solid var(--border-color);
-            text-decoration: none; /* Ensure no underline on link */
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            color: var(--text-color);
+            height: 100%;
         }
 
         .project-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
 
         .project-image-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
+            position: relative;
+            padding-top: 56.25%;
             overflow: hidden;
         }
 
         .project-image {
-            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.3s ease; /* Reduced from 0.5s to 0.3s */
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: scale(1);
+            transition: transform 0.2s ease;
         }
 
-        .project-card:hover .project-image {
-            transform: scale(1.1);
+        .project-image svg {
+            width: 70%;
+            height: 70%;
+            max-width: 150px;
+        }
+
+        .project-image svg path,
+        .project-image svg rect,
+        .project-image svg circle {
+            fill: #fff;
+            stroke: #fff;
+            stroke-width: 1px;
+        }
+
+        .project-image:hover svg path,
+        .project-image:hover svg rect,
+        .project-image:hover svg circle {
+            fill: #fff;
+            stroke: #fff;
         }
 
         .project-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: rgba(0, 0, 0, 0.7);
             color: var(--text-color);
             opacity: 0;
-            transition: opacity 0.15s ease; /* Reduced from 0.3s to 0.15s */
+            transition: opacity 0.2s ease;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 1.5rem;
-            text-align: center;
         }
 
         .project-card:hover .project-overlay {
@@ -219,44 +310,60 @@
         }
 
         .project-title {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
-            color: var(--secondary-color);
         }
 
         .project-description {
-            color: var(--light-text);
-            margin-bottom: 1rem;
             font-size: 0.9rem;
+            margin-bottom: 1rem;
         }
 
         .project-tags {
             display: flex;
-            flex-wrap: wrap;
             gap: 0.5rem;
-            margin-top: auto;
-            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .tag {
-            background-color: var(--primary-color);
+            background: var(--primary-color);
             color: var(--bg-color);
             padding: 0.25rem 0.75rem;
             border-radius: 20px;
             font-size: 0.8rem;
-            font-weight: 500;
         }
 
-        /* Responsive design */
         @media (max-width: 768px) {
             .project-grid {
-                grid-template-columns: 1fr; /* Stack cards on mobile */
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar from index.html/About_me.html -->
+    <!-- 3D Hologram Cube Background -->
+    <div class="cube-container">
+        <div class="cube">
+            <div class="cube-face"><div class="cube-lines"></div></div>
+            <div class="cube-face"><div class="cube-lines"></div></div>
+            <div class="cube-face"><div class="cube-lines"></div></div>
+            <div class="cube-face"><div class="cube-lines"></div></div>
+            <div class="cube-face"><div class="cube-lines"></div></div>
+            <div class="cube-face"><div class="cube-lines"></div></div>
+            
+            <div class="cube-inner">
+                <div class="cube-inner-face"></div>
+                <div class="cube-inner-face"></div>
+                <div class="cube-inner-face"></div>
+                <div class="cube-inner-face"></div>
+                <div class="cube-inner-face"></div>
+                <div class="cube-inner-face"></div>
+            </div>
+        </div>
+        <div class="hologram-particles" id="particles"></div>
+    </div>
+
+    <!-- Navbar from About_me.html unified style -->
     <nav class="fixed top-0 w-full bg-fire-black/80 backdrop-blur-md z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
             <a href="index.html" class="text-2xl font-bold text-fire-red transition-transform hover:scale-105 glow">Fire Exe</a>
@@ -268,6 +375,7 @@
                 <li><a href="contact.html" class="text-white hover:text-fire-red transition-colors glow">Contact</a></li>
             </ul>
         </div>
+        <!-- Mobile Menu -->
         <ul class="hidden sm:hidden flex-col absolute top-16 left-0 w-full bg-fire-black/95 p-6 space-y-4" id="mobile-menu">
             <li><a href="index.html" class="text-white hover:text-fire-red transition-colors">Home</a></li>
             <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors">About Me</a></li>
@@ -284,7 +392,19 @@
             <!-- Code Card -->
             <a href="code.html" class="project-card">
                 <div class="project-image-container">
-                    <div class="project-image" style="background-image: url('https://github.com/fireemerald1/bg/blob/main/codebg.png?raw=true');"></div>
+                    <div class="project-image">
+                        <svg viewBox="0 0 1732.09 1359.01">
+                            <g>
+                                <path d="M445.92,1074.85c-24.46,0-48.17-8.78-66.77-24.71L36.38,756.43C11.34,734.98-1.93,702.54,.87,669.63v-.02s.02-.19,.02-.19c2.85-25.94,15.37-49.63,35.25-66.65l15.05-12.9L378.91,309.06c18.6-15.94,42.32-24.71,66.77-24.71,30.05,0,58.49,13.07,78.02,35.87,15.93,18.6,24.71,42.31,24.71,66.77,0,30.05-13.07,58.49-35.87,78.03l-250.31,214.47,250.55,214.69c22.8,19.54,35.88,47.98,35.88,78.03,0,24.46-8.78,48.17-24.71,66.76-19.54,22.8-47.98,35.88-78.03,35.88Z"/>
+                            </g>
+                            <g>
+                                <path d="M1285.93,1074.85c-30.05,0-58.49-13.08-78.03-35.88-15.93-18.59-24.71-42.3-24.71-66.76,0-30.05,13.08-58.49,35.88-78.03l250.55-214.69-250.31-214.48c-22.79-19.54-35.87-47.98-35.87-78.02,0-24.46,8.78-48.17,24.71-66.77,19.53-22.8,47.97-35.88,78.02-35.88,24.46,0,48.17,8.78,66.78,24.72l342.77,293.7c19.88,17.04,32.4,40.75,35.26,66.76,3.08,28.13-5.7,56.57-24.09,78.04-7.82,9.12-17.03,16.7-27.36,22.54l-326.82,280.04c-18.6,15.94-42.31,24.71-66.77,24.71Z"/>
+                            </g>
+                            <g>
+                                <path d="M654.13,1358.51c-14.07,0-27.98-2.45-41.33-7.29-62.91-22.79-95.55-92.52-72.76-155.43L944.11,80.55C961.45,32.67,1007.31,.5,1058.21,.5c14.07,0,27.98,2.45,41.33,7.29,62.91,22.79,95.55,92.52,72.76,155.43l-404.06,1115.24c-17.35,47.88-63.2,80.05-114.1,80.05Z"/>
+                            </g>
+                        </svg>
+                    </div>
                     <div class="project-overlay">
                         <h3 class="project-title">Code</h3>
                         <p class="project-description">Explore my programming projects and scripts.</p>
@@ -297,7 +417,22 @@
             <!-- Photography Card -->
             <a href="photography.html" class="project-card">
                 <div class="project-image-container">
-                    <div class="project-image" style="background-image: url('https://github.com/fireemerald1/bg/blob/main/photobg.png?raw=true');"></div>
+                    <div class="project-image">
+                        <svg viewBox="0 0 1283 798">
+                            <g>
+                                <rect x=".5" y="103.5" width="244" height="694" rx="63.94" ry="63.94"/>
+                            </g>
+                            <g>
+                                <path d="M338.44,797.5c-35.26,0-63.94-28.68-63.94-63.94V167.44c0-35.26,28.68-63.94,63.94-63.94h247.06V42.44c0-23.13,18.81-41.94,41.94-41.94h286.12c23.12,0,41.94,18.81,41.94,41.94v61.06h263.06c35.26,0,63.94,28.68,63.94,63.94V733.56c0,35.26-28.68,63.94-63.94,63.94H338.44Z"/>
+                            </g>
+                            <g>
+                                <path d="M758,702.5c-67.45,0-130.85-26.26-178.54-73.96-47.69-47.69-73.96-111.1-73.96-178.54s26.26-130.85,73.96-178.54,111.1-73.96,178.54-73.96,130.85,26.26,178.54,73.96c47.69,47.69,73.96,111.1,73.96,178.54s-26.26,130.85-73.96,178.54c-47.69,47.69-111.1,73.96-178.54,73.96Z"/>
+                            </g>
+                            <g>
+                                <circle cx="757.5" cy="450.5" r="207"/>
+                            </g>
+                        </svg>
+                    </div>
                     <div class="project-overlay">
                         <h3 class="project-title">Photography</h3>
                         <p class="project-description">A collection of my captures</p>
@@ -310,7 +445,12 @@
             <!-- Geometry Dash Card -->
             <a href="geometry-dash.html" class="project-card">
                 <div class="project-image-container">
-                    <div class="project-image" style="background-image: url('https://github.com/fireemerald1/bg/blob/main/gdbg.png?raw=true');"></div>
+                    <div class="project-image">
+                        <svg viewBox="0 0 1157.65 1157.65">
+                            <path d="M268.55,.62L.62,889.1l888.48,267.93,267.93-888.48L268.55,.62Zm489.76,912.68L241.79,757.54,397.55,241.01l516.53,155.76-155.76,516.53Z"/>
+                            <rect x="458.83" y="458.83" width="240" height="240" transform="translate(318.65 -197.31) rotate(26.47)"/>
+                        </svg>
+                    </div>
                     <div class="project-overlay">
                         <h3 class="project-title">Geometry Dash</h3>
                         <p class="project-description">Few level i have been made</p>
@@ -363,7 +503,7 @@
             </div>
         </div>
         <div class="text-center mt-8 pt-8 border-t border-gray-800 text-gray-400">
-            © 2025 Fire Exe Property. All Rights Reserved.
+            &copy; 2025 Fire Exe Property. All Rights Reserved.
             <p><a href="contact.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Contact Me</a></p>
         </div>
     </footer>
@@ -377,6 +517,29 @@
                 mobileMenu.classList.toggle('hidden');
                 mobileMenu.classList.toggle('flex');
             });
+            
+            // Create hologram particles
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 2px and 6px
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation delay
+                particle.style.animationDelay = `${Math.random() * 3}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
         });
     </script>
 </body>

@@ -90,38 +90,74 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            background-image: url('https://github.com/fireemerald1/asdbhjawbhdkjabnsdkjbwa/blob/main/bannerforaboutmewoah.png?raw=true');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
             position: relative;
+            overflow-x: hidden;
         }
 
         body::before {
             content: '';
-            position: absolute;
+            position: fixed;
             inset: 0;
-            background: linear-gradient(45deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 0, 0.1), rgba(0, 255, 255, 0.1));
-            background-size: 200% 200%;
-            animation: gradientMove 10s ease infinite;
-            z-index: -1;
-        }
-
-        body::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: black;
             z-index: -2;
         }
 
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Geometry Dash themed background */
+        .geometry-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
 
-        /* Navbar styles from index.html/About_me.html */
+        /* Geometric shapes animation */
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .geo-shape {
+            position: absolute;
+            bottom: -100px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            opacity: 0.15;
+            animation: float 15s infinite linear;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        }
+
+        .geo-shape::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: var(--bg-color);
+        }
+
+        .grid-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            height: 1px;
+            width: 100%;
+            opacity: 0.1;
+        }
+
+        .grid-line.vertical {
+            transform: rotate(90deg);
+            transform-origin: left;
+            width: 100vh;
+            left: 0;
+        }
+
+        /* Navbar styles from About_me.html */
         .glass {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -292,7 +328,10 @@
     </style>
 </head>
 <body>
-    <!-- Navbar from index.html/About_me.html -->
+    <!-- Geometry Dash themed background -->
+    <div class="geometry-bg" id="geometry-bg"></div>
+    
+    <!-- Navbar from About_me.html unified style -->
     <nav class="fixed top-0 w-full bg-fire-black/80 backdrop-blur-md z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
             <a href="index.html" class="text-2xl font-bold text-fire-red transition-transform hover:scale-105 glow">Fire Exe</a>
@@ -304,6 +343,7 @@
                 <li><a href="contact.html" class="text-white hover:text-fire-red transition-colors glow">Contact</a></li>
             </ul>
         </div>
+        <!-- Mobile Menu -->
         <ul class="hidden sm:hidden flex-col absolute top-16 left-0 w-full bg-fire-black/95 p-6 space-y-4" id="mobile-menu">
             <li><a href="index.html" class="text-white hover:text-fire-red transition-colors">Home</a></li>
             <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors">About Me</a></li>
@@ -364,7 +404,7 @@
             </div>
         </div>
         <div class="text-center mt-8 pt-8 border-t border-gray-800 text-gray-400">
-            © 2025 Fire Exe Property. All Rights Reserved.
+            2025 Fire Exe Property. All Rights Reserved.
             <p><a href="contact.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Contact Me</a></p>
         </div>
     </footer>
@@ -378,6 +418,64 @@
                 mobileMenu.classList.toggle('hidden');
                 mobileMenu.classList.toggle('flex');
             });
+
+            // Create Geometry Dash themed background
+            const bgContainer = document.getElementById('geometry-bg');
+            const colors = [
+                ['#ff0000', '#ff3333'], // Red variants
+                ['#00ffff', '#00cccc']  // Cyan variants
+            ];
+
+            // Create geometric shapes (only squares)
+            function createShapes(count) {
+                for (let i = 0; i < count; i++) {
+                    const shape = document.createElement('div');
+                    const colorSet = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    shape.className = 'geo-shape';
+                    
+                    // Random size (square)
+                    const size = 30 + Math.random() * 70;
+                    shape.style.width = `${size}px`;
+                    shape.style.height = `${size}px`;
+                    
+                    // Random position
+                    shape.style.left = `${Math.random() * 100}%`;
+                    
+                    // Animation properties
+                    shape.style.animationDuration = `${10 + Math.random() * 20}s`;
+                    shape.style.animationDelay = `${Math.random() * 10}s`;
+                    shape.style.background = `linear-gradient(45deg, ${colorSet[0]}, ${colorSet[1]})`;
+                    
+                    bgContainer.appendChild(shape);
+                }
+            }
+
+            // Create grid lines
+            function createGridLines() {
+                // Horizontal lines
+                const lineCount = 20;
+                const spacing = 100 / lineCount;
+                
+                for (let i = 0; i < lineCount; i++) {
+                    const line = document.createElement('div');
+                    line.className = 'grid-line';
+                    line.style.top = `${i * spacing}%`;
+                    bgContainer.appendChild(line);
+                }
+                
+                // Vertical lines
+                for (let i = 0; i < lineCount; i++) {
+                    const line = document.createElement('div');
+                    line.className = 'grid-line vertical';
+                    line.style.left = `${i * spacing}%`;
+                    bgContainer.appendChild(line);
+                }
+            }
+
+            // Initialize background
+            createShapes(30);
+            createGridLines();
 
             // Tooltip functionality
             const tooltip = document.getElementById('tooltip');
