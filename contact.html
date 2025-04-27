@@ -193,6 +193,16 @@
             pointer-events: none;
         }
 
+        /* Animation for success message */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #success-message {
+            animation: fadeIn 0.5s forwards;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .contact-layout {
@@ -312,6 +322,9 @@
         .card-inner.red { background: #800000; }
         .card-inner.black { background: rgba(0,0,0,0.6); }
     </style>
+    <script src="config.js"></script>
+    <script src="bad-words-filter.js"></script>
+    <script src="contact-form.js"></script>
 </head>
 <body>
     <div class="card-bg-container" id="cardBgContainer"></div>
@@ -326,6 +339,7 @@
                 <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors glow">About Me</a></li>
                 <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors glow">Projects</a></li>
                 <li><a href="contact.html" class="text-fire-red hover:text-fire-cyan transition-colors glow">Contact</a></li>
+                <li><a href="guestbook.html" class="text-white hover:text-fire-red transition-colors glow">Guest Book</a></li>
             </ul>
         </div>
         <!-- Mobile Menu -->
@@ -334,6 +348,7 @@
             <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors">About Me</a></li>
             <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors">Projects</a></li>
             <li><a href="contact.html" class="text-fire-red hover:text-fire-cyan transition-colors">Contact</a></li>
+            <li><a href="guestbook.html" class="text-white hover:text-fire-red transition-colors">Guest Book</a></li>
         </ul>
     </nav>
     
@@ -381,6 +396,27 @@
                     <img src="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20with%20something%20transparent%20full.png?raw=true" alt="Fire Exe Logo">
                 </div>
             </div>
+            
+            <!-- Email Form Below Contact Info - Completely Separate Box -->
+            <div class="contact-container" style="margin-top: 60px;">
+                <h2 style="text-align: center; color: var(--secondary-color); margin-bottom: 20px; font-size: 1.8rem;">Send Me an Email</h2>
+                <div id="success-message" style="display:none;text-align:center;padding:3em 1em;background:rgba(20, 20, 28, 0.75);backdrop-filter:blur(18px);max-width:600px;margin:0 auto;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.22);border:1px solid rgba(255,255,255,0.08);">
+                    <div style="font-size:3rem;margin-bottom:0.5em;">✉️</div>
+                    <h3 style="color:#007777;font-size:1.5rem;margin-bottom:0.5em;">Email Sent Successfully!</h3>
+                    <p style="color:#e0e0e0;margin-bottom:1.5em;">Thank you for your message. I'll get back to you soon!</p>
+                    <button id="send-another" style="background:linear-gradient(90deg,#800000,#007777);color:#fff;font-weight:bold;padding:0.8em 1.5em;border:none;border-radius:6px;cursor:pointer;transition:all 0.3s;font-size:1rem;">Send Another Message</button>
+                </div>
+                <form id="contact-form" style="max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:1.2em;background:rgba(20, 20, 28, 0.75);backdrop-filter:blur(18px);padding:2em 1.5em;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.22);border:1px solid rgba(255,255,255,0.08);">
+                    <!-- Honeypot field to prevent spam -->
+                    <input type="text" name="_gotcha" style="display:none">
+                    <input id="contact-name" name="name" type="text" placeholder="Your Name" required style="padding:0.8em;border-radius:6px;border:1px solid #333;background:#181820;color:#fff;font-size:1rem;">
+                    <input id="contact-subject" name="subject" type="text" placeholder="Subject" required style="padding:0.8em;border-radius:6px;border:1px solid #333;background:#181820;color:#fff;font-size:1rem;">
+                    <input id="contact-email" name="email" type="email" placeholder="Your Email" required style="padding:0.8em;border-radius:6px;border:1px solid #333;background:#181820;color:#fff;font-size:1rem;">
+                    <textarea id="contact-message" name="message" placeholder="Message" required rows="6" style="padding:0.8em;border-radius:6px;border:1px solid #333;background:#181820;color:#fff;font-size:1rem;resize:vertical;min-height:120px;"></textarea>
+                    <button type="submit" style="background:linear-gradient(90deg,#800000,#007777);color:#fff;font-weight:bold;padding:1em;border:none;border-radius:6px;cursor:pointer;transition:all 0.3s;font-size:1rem;">Send Email</button>
+                    <div id="contact-status" style="margin-top:0.7em;font-weight:bold;text-align:center;min-height:24px;"></div>
+                </form>
+            </div>
         </div>
     </main>
     
@@ -399,6 +435,7 @@
                     <li><a href="About_me.html" class="text-gray-400 hover:text-fire-cyan transition-colors">About Me</a></li>
                     <li><a href="projects.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Projects</a></li>
                     <li><a href="contact.html" class="text-gray-400 hover:text-fire-red transition-colors">Contact</a></li>
+                    <li><a href="guestbook.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Guest Book</a></li>
                 </ul>
             </div>
             <div>
