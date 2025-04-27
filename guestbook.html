@@ -509,6 +509,8 @@
             if (result.user) {
                 // User just signed in with a redirect
                 showToast('Signed in successfully!');
+                // Reload the page to ensure UI updates correctly
+                location.reload();
             }
         }).catch((error) => {
             console.error('Error with redirect sign-in:', error);
@@ -661,18 +663,23 @@
                     .replace(/\*/g, 'a')
                     .replace(/!/g, 'i');
                 
-                // Check both original and substituted text for bad words
+                // Only use spaced/special character matching for longer bad words
+                const MIN_SPACED_LENGTH = 5;
+                
                 for (const badWord of badWords) {
-                    // Check for exact matches with word boundaries
+                    // Check for exact matches with word boundaries (whole words only)
                     const regex = new RegExp('\\b' + badWord + '\\b', 'i');
                     if (regex.test(normalizedText) || regex.test(substitutedText)) {
                         return true;
                     }
-                    
-                    // Check for intentional spacing or special characters between letters
-                    const spacedRegex = new RegExp(badWord.split('').join('[\\s\\W_]*'), 'i');
-                    if (spacedRegex.test(normalizedText) || spacedRegex.test(substitutedText)) {
-                        return true;
+
+                    // Only apply spaced/special character matching for longer bad words
+                    if (badWord.length >= MIN_SPACED_LENGTH) {
+                        // Add word boundaries to spacedRegex to avoid matching substrings inside other words
+                        const spacedRegex = new RegExp('\\b' + badWord.split('').join('[\\s\\W_]*') + '\\b', 'i');
+                        if (spacedRegex.test(normalizedText) || spacedRegex.test(substitutedText)) {
+                            return true;
+                        }
                     }
                 }
                 

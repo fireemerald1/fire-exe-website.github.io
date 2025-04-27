@@ -31,25 +31,30 @@ async function containsBadWords(text) {
             .replace(/\)/g, 'o')
             .replace(/\*/g, 'a')
             .replace(/!/g, 'i');
+
+        // Only use spaced/special character matching for longer bad words
+        const MIN_SPACED_LENGTH = 5;
         
-        // Check both original and substituted text for bad words
         for (const badWord of badWords) {
-            // Check for exact matches with word boundaries
+            // Check for exact matches with word boundaries (whole words only)
             const regex = new RegExp('\\b' + badWord + '\\b', 'i');
             if (regex.test(normalizedText) || regex.test(substitutedText)) {
                 return true;
             }
-            
-            // Check for intentional spacing or special characters between letters
-            const spacedRegex = new RegExp(badWord.split('').join('[\\s\\W_]*'), 'i');
-            if (spacedRegex.test(normalizedText) || spacedRegex.test(substitutedText)) {
-                return true;
+
+            // Only apply spaced/special character matching for longer bad words
+            if (badWord.length >= MIN_SPACED_LENGTH) {
+                // Add word boundaries to spacedRegex to avoid matching substrings inside other words
+                const spacedRegex = new RegExp('\\b' + badWord.split('').join('[\\s\\W_]*') + '\\b', 'i');
+                if (spacedRegex.test(normalizedText) || spacedRegex.test(substitutedText)) {
+                    return true;
+                }
             }
         }
         
         return false;
-    } catch (error) {
-        console.error('Error checking bad words:', error);
-        return false; // In case of error, allow the message to be posted
+    } catch (e) {
+        console.error('Error checking bad words:', e);
+        return false;
     }
 }
