@@ -26,6 +26,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- Firebase Configuration -->
+    <script src="firebase-config.js"></script>
     <style>
         /* Base Styles */
         * {
@@ -810,7 +812,7 @@
                     // Hide loading spinner
                     loadingSpinner.classList.add('hidden');
                     
-                    // Clear entries container
+                    // Clear existing entries
                     entriesContainer.innerHTML = '';
                     
                     if (querySnapshot.empty) {
