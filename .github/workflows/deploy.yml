@@ -1,9 +1,14 @@
-name: Prepare Website Files
+name: Deploy Website
 
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
@@ -41,40 +46,34 @@ jobs:
         run: |
           echo "Resend API key is configured for serverless deployment"
 
-      # Let GitHub Pages handle the deployment automatically
-      - name: Upload artifact for deployment
-        uses: actions/upload-pages-artifact@v2
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         with:
+          name: website-files
           path: .
 
   # Deployment job
   deploy:
     needs: build
-    permissions:
-      contents: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.PAT_TOKEN }}
-          persist-credentials: true
-
       - name: Download artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
-          name: github-pages
+          name: website-files
+          path: .
+          
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+          
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
           path: .
           
       - name: Deploy to GitHub Pages
         id: deployment
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git checkout --orphan gh-pages
-          git add -A
-          git commit -m "Deploy to GitHub Pages"
-          git push -f https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git gh-pages
+        uses: actions/deploy-pages@v2
