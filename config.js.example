@@ -1,0 +1,7 @@
+// Example configuration file
+// Copy this file to config.js and replace with your actual configuration
+
+const CONFIG = {
+  // Endpoint for the Resend email API
+  RESEND_API_ENDPOINT: '/api/send-email'
+};

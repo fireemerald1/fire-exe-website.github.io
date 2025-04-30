@@ -1,0 +1,23 @@
+{
+  "name": "fire-exe-website",
+  "version": "1.0.0",
+  "description": "Fire Exe personal website with Resend email integration",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "website",
+    "portfolio",
+    "contact",
+    "resend"
+  ],
+  "author": "Fire Exe",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "resend": "^1.0.0"
+  }
+}

@@ -1,5 +1,10 @@
 # Configuration files with sensitive information
 config.js
+firebase-config.js
+
+# Local development server
+server.js
+send-email-server.js
 
 # Node.js dependencies
 node_modules/

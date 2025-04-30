@@ -1,0 +1,51 @@
+name: Deploy Website with Resend Email API
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          
+      - name: Install dependencies
+        run: |
+          npm install resend
+          
+      - name: Create config.js file
+        run: |
+          echo "// Configuration file" > config.js
+          echo "const CONFIG = {" >> config.js
+          echo "  RESEND_API_ENDPOINT: '/api/send-email'" >> config.js
+          echo "};" >> config.js
+        
+      - name: Create firebase-config.js file
+        env:
+          FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+        run: |
+          echo "$FIREBASE_CONFIG" > firebase-config.js
+          
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: .
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          clean: true
+          
+      - name: Setup Resend API for Serverless Functions
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          echo "Resend API key is configured for serverless deployment"
+

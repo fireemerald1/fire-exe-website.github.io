@@ -322,7 +322,14 @@
         .card-inner.red { background: #800000; }
         .card-inner.black { background: rgba(0,0,0,0.6); }
     </style>
-    <script src="config.js"></script>
+    <!-- Load config.js if it exists, otherwise contact-form.js will use default values -->
+    <script>
+        // Create a fallback config if the file doesn't load
+        const CONFIG = {
+            RESEND_API_ENDPOINT: '/api/send-email'
+        };
+    </script>
+    <script src="config.js" onerror="console.log('Using default config')"></script>
     <script src="bad-words-filter.js"></script>
     <script src="contact-form.js"></script>
 </head>
@@ -400,12 +407,7 @@
             <!-- Email Form Below Contact Info - Completely Separate Box -->
             <div class="contact-container" style="margin-top: 60px;">
                 <h2 style="text-align: center; color: var(--secondary-color); margin-bottom: 20px; font-size: 1.8rem;">Send Me an Email</h2>
-                <div id="success-message" style="display:none;text-align:center;padding:3em 1em;background:rgba(20, 20, 28, 0.75);backdrop-filter:blur(18px);max-width:600px;margin:0 auto;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.22);border:1px solid rgba(255,255,255,0.08);">
-                    <div style="font-size:3rem;margin-bottom:0.5em;">✉️</div>
-                    <h3 style="color:#007777;font-size:1.5rem;margin-bottom:0.5em;">Email Sent Successfully!</h3>
-                    <p style="color:#e0e0e0;margin-bottom:1.5em;">Thank you for your message. I'll get back to you soon!</p>
-                    <button id="send-another" style="background:linear-gradient(90deg,#800000,#007777);color:#fff;font-weight:bold;padding:0.8em 1.5em;border:none;border-radius:6px;cursor:pointer;transition:all 0.3s;font-size:1rem;">Send Another Message</button>
-                </div>
+                <!-- Success message is now shown inline in the form status div -->
                 <form id="contact-form" style="max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:1.2em;background:rgba(20, 20, 28, 0.75);backdrop-filter:blur(18px);padding:2em 1.5em;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.22);border:1px solid rgba(255,255,255,0.08);">
                     <!-- Honeypot field to prevent spam -->
                     <input type="text" name="_gotcha" style="display:none">

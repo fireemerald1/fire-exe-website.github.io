@@ -203,16 +203,67 @@
             color: white;
             padding: 12px 24px;
             border-radius: 8px;
-            border-left: 4px solid #00ffff;
             z-index: 1000;
             opacity: 0;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            max-width: 80%;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        /* Toast animation */
+        @keyframes toastBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            10% { transform: translateX(-50%) translateY(-10px); }
+            20% { transform: translateX(-50%) translateY(0); }
+            30% { transform: translateX(-50%) translateY(-5px); }
+            40% { transform: translateX(-50%) translateY(0); }
+        }
+        
+        /* Message image container */
+        .message-image-container {
+            max-width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .message-image-container img {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .message-image-container img.error-image {
+            border: 2px solid #ff0000;
+            opacity: 0.7;
+        }
+        
+        /* Toast types */
+        .toast.info {
+            border-left: 4px solid #00ffff;
+        }
+        
+        .toast.success {
+            border-left: 4px solid #00ff00;
+            background-color: rgba(0, 20, 0, 0.9);
+        }
+        
+        .toast.error {
+            border-left: 4px solid #ff0000;
+            background-color: rgba(20, 0, 0, 0.9);
+            font-weight: bold;
         }
         
         .toast.show {
             transform: translateX(-50%) translateY(0);
             opacity: 1;
+            animation: toastBounce 0.8s ease;
         }
 
         /* Canvas background */
@@ -315,7 +366,7 @@
                             <div class="bg-fire-black/90 p-6 rounded-xl border-2 border-gray-800">
                                 <form id="message-form" class="h-full flex flex-col">
                                     <div class="flex-grow mb-4">
-                                        <textarea id="message-input" class="w-full h-full p-4 rounded-lg bg-gray-900 border border-gray-700 text-white focus:border-fire-cyan focus:ring-2 focus:ring-fire-cyan/50 focus:outline-none transition-all" placeholder="Write your message here..." maxlength="500" required></textarea>
+                                        <textarea id="message-input" class="w-full h-full p-4 rounded-lg bg-gray-900 border border-gray-700 text-white focus:border-fire-cyan focus:ring-2 focus:ring-fire-cyan/50 focus:outline-none transition-all" placeholder="Write your message here... You can add ONE image using [(https://example.com/image.jpg)] format." maxlength="500" required></textarea>
                                         <div class="text-right text-sm text-gray-500 mt-1">
                                             <span id="char-count">0</span>/500 characters
                                         </div>
@@ -418,19 +469,9 @@
         <span id="toast-message"></span>
     </div>
 
-    <!-- Firebase Configuration Script -->
+    <!-- Load Firebase Configuration from external file -->
+    <script src="firebase-config.js"></script>
     <script>
-        // Your Firebase configuration will go here
-        // Replace with your actual Firebase config
-        const firebaseConfig = {
-            apiKey: "AIzaSyDvfqAzM_2gUmTHGlsXMxbOOCEVjT4PaCM",
-            authDomain: "fireexeportofolio.firebaseapp.com",
-            projectId: "fireexeportofolio",
-            storageBucket: "fireexeportofolio.firebasestorage.app",
-            messagingSenderId: "1038276283243",
-            appId: "1:1038276283243:web:5343ac41c307f617319a2e",
-            measurementId: "G-20GKEYGZS2"
-        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -508,78 +549,113 @@
         firebase.auth().getRedirectResult().then((result) => {
             if (result.user) {
                 // User just signed in with a redirect
-                showToast('Signed in successfully!');
+                showToast('Signed in successfully!', 'success');
                 // Reload the page to ensure UI updates correctly
                 location.reload();
             }
         }).catch((error) => {
             console.error('Error with redirect sign-in:', error);
-            if (error.code !== 'auth/cancelled-popup-request') {
-                showToast('Error signing in. Please try again.');
+            // Show more detailed error message for debugging
+            if (error.code === 'auth/unauthorized-domain') {
+                showToast('Error: This domain is not authorized in Firebase. Add localhost to authorized domains in Firebase console.', 'error');
+                console.warn('You need to add ' + window.location.hostname + ' to authorized domains in Firebase console.');
+            } else if (error.code !== 'auth/cancelled-popup-request') {
+                showToast('Error signing in: ' + error.message, 'error');
             }
         });
         
         // Sign in with Google
         signInGoogleButton.addEventListener('click', () => {
+            showToast('Attempting to sign in with Google...', 'info');
+            console.log('Attempting Google sign-in');
+            
             const provider = new firebase.auth.GoogleAuthProvider();
             
-            // Check if mobile device
-            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                // Use redirect method for mobile
-                auth.signInWithRedirect(provider)
-                    .catch((error) => {
-                        console.error('Error signing in with Google:', error);
-                        showToast('Error signing in. Please try again.');
-                    });
-            } else {
-                // Use popup for desktop
-                auth.signInWithPopup(provider)
-                    .then((result) => {
-                        // Successfully signed in
-                        showToast('Signed in successfully!');
-                    })
-                    .catch((error) => {
-                        console.error('Error signing in with Google:', error);
-                        showToast('Error signing in. Please try again.');
-                    });
-            }
+            // Add scopes for better user identification
+            provider.addScope('profile');
+            provider.addScope('email');
+            
+            // Force account selection even if user is already signed in
+            provider.setCustomParameters({
+                prompt: 'select_account'
+            });
+            
+            // Always use popup for testing to see immediate errors
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    // Successfully signed in
+                    console.log('Google sign-in successful:', result.user.displayName);
+                    showToast('Signed in successfully as ' + result.user.displayName, 'success');
+                })
+                .catch((error) => {
+                    console.error('Detailed Google sign-in error:', error);
+                    console.error('Error code:', error.code);
+                    console.error('Error message:', error.message);
+                    
+                    // Show more specific error messages
+                    if (error.code === 'auth/popup-blocked') {
+                        showToast('Popup was blocked. Please allow popups for this site.', 'error');
+                    } else if (error.code === 'auth/popup-closed-by-user') {
+                        showToast('Sign-in was cancelled. Please try again.', 'info');
+                    } else if (error.code === 'auth/unauthorized-domain') {
+                        showToast('This domain (' + window.location.hostname + ') is not authorized in Firebase.', 'error');
+                    } else {
+                        showToast('Error signing in: ' + error.message, 'error');
+                    }
+                });
         });
         
         // Sign in with GitHub
         signInGithubButton.addEventListener('click', () => {
+            showToast('Attempting to sign in with GitHub...', 'info');
+            console.log('Attempting GitHub sign-in');
+            
             const provider = new firebase.auth.GithubAuthProvider();
             
-            // Check if mobile device
-            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                // Use redirect method for mobile
-                auth.signInWithRedirect(provider)
-                    .catch((error) => {
-                        console.error('Error signing in with GitHub:', error);
-                        showToast('Error signing in. Please try again.');
-                    });
-            } else {
-                // Use popup for desktop
-                auth.signInWithPopup(provider)
-                    .then((result) => {
-                        // Successfully signed in
-                        showToast('Signed in successfully!');
-                    })
-                    .catch((error) => {
-                        console.error('Error signing in with GitHub:', error);
-                        showToast('Error signing in. Please try again.');
-                    });
-            }
+            // Add scopes for better user identification
+            provider.addScope('user');
+            
+            // Force account selection even if user is already signed in
+            provider.setCustomParameters({
+                'allow_signup': 'true'
+            });
+            
+            // Always use popup for testing to see immediate errors
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    // Successfully signed in
+                    console.log('GitHub sign-in successful:', result.user.displayName);
+                    showToast('Signed in successfully as ' + result.user.displayName, 'success');
+                })
+                .catch((error) => {
+                    console.error('Detailed GitHub sign-in error:', error);
+                    console.error('Error code:', error.code);
+                    console.error('Error message:', error.message);
+                    
+                    // Show more specific error messages
+                    if (error.code === 'auth/popup-blocked') {
+                        showToast('Popup was blocked. Please allow popups for this site.', 'error');
+                    } else if (error.code === 'auth/popup-closed-by-user') {
+                        showToast('Sign-in was cancelled. Please try again.', 'info');
+                    } else if (error.code === 'auth/unauthorized-domain') {
+                        showToast('This domain (' + window.location.hostname + ') is not authorized in Firebase.', 'error');
+                    } else if (error.code === 'auth/account-exists-with-different-credential') {
+                        showToast('An account already exists with the same email address but different sign-in credentials.', 'error');
+                    } else {
+                        showToast('Error signing in: ' + error.message, 'error');
+                    }
+                });
         });
 
         // Sign out
         signOutButton.addEventListener('click', () => {
             auth.signOut()
                 .then(() => {
-                    showToast('Signed out successfully!');
+                    showToast('Signed out successfully!', 'success');
                 })
                 .catch((error) => {
                     console.error('Error signing out:', error);
-                    showToast('Error signing out. Please try again.');
+                    showToast('Error signing out. Please try again.', 'error');
                 });
         });
         
@@ -589,19 +665,19 @@
             
             const user = auth.currentUser;
             if (!user) {
-                showToast('Please sign in to post a message.');
+                showToast('Please sign in to post a message.', 'info');
                 return;
             }
             
             const message = messageInput.value.trim();
             if (!message) {
-                showToast('Please enter a message.');
+                showToast('Please enter a message.', 'info');
                 return;
             }
             
             // Check for bad words
             if (await containsBadWords(message)) {
-                showToast('Your message contains inappropriate language. Please revise and try again.');
+                showToast('Your message contains inappropriate language. Please revise and try again.', 'error');
                 return;
             }
             
@@ -618,14 +694,14 @@
                 messageInput.value = '';
                 charCount.textContent = '0';
                 charCount.classList.remove('text-yellow-500', 'text-fire-red');
-                showToast('Message posted successfully!');
+                showToast('Message posted successfully!', 'success');
                 
                 // Reload entries
                 loadEntries();
             })
             .catch((error) => {
                 console.error('Error posting message:', error);
-                showToast('Error posting message. Please try again.');
+                showToast('Error posting message. Please try again.', 'error');
             });
         });
         
@@ -690,6 +766,37 @@
             }
         }
         
+        // Function to sanitize HTML and process image tags
+        function processMessageContent(message) {
+            // First escape HTML to prevent any HTML injection
+            let sanitized = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            
+            // Look for image pattern [(https://example.com/image.jpg)]
+            const imagePattern = /\[\((https?:\/\/[^\s]+\.(png|jpg|jpeg|gif|webp))\)\]/i;
+            const imageMatch = sanitized.match(imagePattern);
+            
+            let imageHtml = '';
+            
+            // If there's an image match, extract it and create image HTML
+            if (imageMatch) {
+                const imageUrl = imageMatch[1];
+                // Remove the image tag from the text
+                sanitized = sanitized.replace(imageMatch[0], '');
+                // Create image HTML with safety measures
+                imageHtml = `<div class="message-image-container mb-3">
+                    <img src="${imageUrl}" alt="User shared image" class="max-w-full rounded-lg shadow-md" 
+                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300?text=Image+Error'; this.classList.add('error-image');"
+                         loading="lazy">
+                </div>`;
+            }
+            
+            // Return both the image HTML and sanitized text
+            return {
+                imageHtml: imageHtml,
+                textHtml: sanitized.trim()
+            };
+        }
+        
         // Load guest book entries
         function loadEntries() {
             loadingSpinner.classList.remove('hidden');
@@ -719,7 +826,7 @@
                     const currentUser = auth.currentUser;
                     const isAdmin = currentUser ? adminUserIds.includes(currentUser.uid) : false;
                     
-                    // Add entries to container
+                    // Process each entry
                     querySnapshot.forEach((doc) => {
                         const entry = doc.data();
                         const entryId = doc.id;
@@ -728,52 +835,62 @@
                             year: 'numeric',
                             month: 'short',
                             day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
                         }).format(timestamp);
+                        
+                        // Process message content to sanitize HTML and handle image embedding
+                        const processedContent = processMessageContent(entry.message);
                         
                         // Create entry element
                         const entryElement = document.createElement('div');
-                        entryElement.className = 'bg-fire-black/70 backdrop-blur-md p-6 rounded-xl border border-gray-800 shadow-lg';
-                        
-                        // Add admin controls if user is admin or entry author
-                        const showControls = currentUser && (isAdmin || currentUser.uid === entry.userId);
-                        
+                        entryElement.className = 'guest-entry bg-fire-black/70 backdrop-blur-md p-6 rounded-xl border border-gray-800 shadow-xl';
                         entryElement.innerHTML = `
-                            <div class="flex items-start mb-4">
+                            <div class="flex items-start">
                                 <div class="flex-shrink-0 mr-4">
-                                    <img src="${entry.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(entry.name) + '&background=00ffff&color=000000'}" 
-                                         alt="${entry.name}" 
-                                         class="w-12 h-12 rounded-full border-2 border-fire-cyan">
+                                    <div class="w-12 h-12 overflow-hidden rounded-full border border-fire-cyan">
+                                        <img src="${entry.photoURL || 'https://ui-avatars.com/api/?name=' + entry.name + '&background=0077ff&color=ffffff'}" 
+                                             alt="${entry.name}" class="w-full h-full object-cover">
+                                    </div>
                                 </div>
                                 <div class="flex-grow">
-                                    <div class="flex justify-between items-start">
-                                        <h3 class="text-lg font-bold text-fire-cyan">${entry.name}</h3>
-                                        <span class="text-sm text-gray-500">${formattedDate}</span>
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h3 class="text-fire-cyan font-bold text-lg">${entry.name}</h3>
+                                        <span class="text-gray-500 text-sm">${formattedDate}</span>
                                     </div>
-                                    <div class="message-content mt-2 text-white">
-                                        ${entry.message.replace(/\n/g, '<br>')}
-                                    </div>
-                                    ${entry.editedAt ? `<div class="text-xs text-gray-500 mt-2">(Edited by ${entry.editedBy || 'Admin'})</div>` : ''}
+                                    
+                                    <!-- Image content (if any) -->
+                                    ${processedContent.imageHtml}
+                                    
+                                    <!-- Text content (sanitized) -->
+                                    <p class="text-white mb-4">${processedContent.textHtml}</p>
+                                    
+                                    ${entry.editedAt ? `<p class="text-gray-500 text-xs italic">Edited by ${entry.editedBy || 'user'} on ${new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(entry.editedAt.toDate())}</p>` : ''}
                                 </div>
                             </div>
-                            ${showControls ? `
-                            <div class="flex justify-end gap-2 mt-2">
-                                <button class="edit-entry-btn text-fire-cyan hover:text-white text-sm px-3 py-1 rounded border border-fire-cyan hover:bg-fire-cyan/20 transition-colors">
-                                    <i class="fas fa-edit mr-1"></i> Edit
-                                </button>
-                                <button class="delete-entry-btn text-fire-red hover:text-white text-sm px-3 py-1 rounded border border-fire-red hover:bg-fire-red/20 transition-colors">
-                                    <i class="fas fa-trash-alt mr-1"></i> Delete
-                                </button>
-                            </div>
-                            ` : ''}
                         `;
-                        
+
+                        // Add admin controls if user is admin
+                        if (isAdmin) {
+                            const adminControls = document.createElement('div');
+                            adminControls.className = 'mt-4 pt-4 border-t border-gray-800 flex justify-end space-x-4';
+                            adminControls.innerHTML = `
+                                <button class="delete-entry-btn text-fire-red hover:text-white transition-colors">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                                <button class="edit-entry-btn text-fire-cyan hover:text-white transition-colors">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            `;
+                            entryElement.appendChild(adminControls);
+                        }
+
                         // Add entry to container
                         entriesContainer.appendChild(entryElement);
                         
                         // Add event listeners for admin controls
-                        if (showControls) {
+                        if (isAdmin) {
                             // Delete button
                             const deleteBtn = entryElement.querySelector('.delete-entry-btn');
                             if (deleteBtn) {
@@ -805,19 +922,19 @@
         function deleteEntry(entryId) {
             db.collection('guestbook').doc(entryId).delete()
                 .then(() => {
-                    showToast('Message deleted successfully!');
+                    showToast('Message deleted successfully!', 'success');
                     // Reload entries to update the UI
                     loadEntries();
                 })
                 .catch((error) => {
                     console.error('Error deleting message:', error);
-                    showToast('Error deleting message: Missing or insufficient permissions.');
+                    showToast('Error deleting message: Missing or insufficient permissions.', 'error');
                 });
         }
         
         // Function to edit an entry
         function editEntry(entryId, entry) {
-            const newMessage = prompt('Edit message:', entry.message);
+            const newMessage = prompt('Edit message: (You can add one image using [(https://example.com/image.jpg)] format)', entry.message);
             
             if (newMessage === null || newMessage.trim() === '' || newMessage === entry.message) {
                 return; // User cancelled or didn't change the message
@@ -825,30 +942,64 @@
             
             const currentUser = auth.currentUser;
             
+            // Sanitization happens when displaying the message, not when storing it
+            // This allows us to maintain the original format including image links
             db.collection('guestbook').doc(entryId).update({
                 message: newMessage,
                 editedAt: firebase.firestore.FieldValue.serverTimestamp(),
                 editedBy: currentUser ? currentUser.displayName : 'Admin'
             })
             .then(() => {
-                showToast('Message edited successfully!');
+                showToast('Message edited successfully!', 'success');
                 // Reload entries to update the UI
                 loadEntries();
             })
             .catch((error) => {
                 console.error('Error editing message:', error);
-                showToast('Error editing message: Missing or insufficient permissions.');
+                showToast('Error editing message: Missing or insufficient permissions.', 'error');
             });
         }
         
-        // Function to show toast notification
-        function showToast(message) {
-            toastMessage.textContent = message;
+        // Function to show toast notification with type (success, error, info)
+        function showToast(message, type = 'info') {
+            // Get appropriate icon based on type
+            let icon = '';
+            switch(type) {
+                case 'success':
+                    icon = '<i class="fas fa-check-circle mr-2"></i>';
+                    break;
+                case 'error':
+                    icon = '<i class="fas fa-exclamation-circle mr-2"></i>';
+                    break;
+                case 'info':
+                default:
+                    icon = '<i class="fas fa-info-circle mr-2"></i>';
+                    break;
+            }
+            
+            // Set message with icon
+            toastMessage.innerHTML = icon + message;
+            
+            // Remove any existing classes
+            toast.classList.remove('success', 'error', 'info');
+            
+            // Add the type class
+            toast.classList.add(type);
             toast.classList.add('show');
             
+            // Log to console as well
+            if (type === 'error') {
+                console.error('TOAST:', message);
+            } else if (type === 'success') {
+                console.log('TOAST:', message);
+            } else {
+                console.info('TOAST:', message);
+            }
+            
+            // Hide toast after 5 seconds for errors, 3 seconds for others
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 3000);
+            }, type === 'error' ? 5000 : 3000);
         }
 
         // Logo Bounce Animation
@@ -1027,6 +1178,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Initialize logo bounce animation
             initLogoBounceAnimation();
+            
+            // Show info message about image embedding
+            showToast('You can now embed one image in your messages using [(https://example.com/image.jpg)] format!', 'info');
             
             loadEntries();
             
