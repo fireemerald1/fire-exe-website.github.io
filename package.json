@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Fire Exe personal website with Resend email integration",
   "main": "server.js",
+  "homepage": "https://fireemerald1.github.io/fire-exe-website.github.io",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
