@@ -6,7 +6,8 @@
   "homepage": "https://fireemerald1.github.io/fire-exe-website.github.io",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "mkdir -p build && cp -r *.html *.css *.js *.png CNAME README.md api/ build/ && rm -f build/config.js.example build/firebase-config.js.example"
   },
   "keywords": [
     "website",
