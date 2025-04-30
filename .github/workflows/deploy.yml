@@ -36,14 +36,14 @@ jobs:
           echo "$FIREBASE_CONFIG" > firebase-config.js
           
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          folder: .
-          token: ${{ secrets.PAT_TOKEN }}
-          branch: gh-pages
-          clean: true
-          git-config-name: github-actions[bot]
-          git-config-email: github-actions[bot]@users.noreply.github.com
+          personal_token: ${{ secrets.PAT_TOKEN }}
+          publish_dir: .
+          force_orphan: true
+          external_repository: fireemerald1/fire-exe-website.github.io
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
           
       - name: Setup Resend API for Serverless Functions
         env:
