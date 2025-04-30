@@ -30,7 +30,7 @@ async function sendContactForm(e) {
     // Get configuration from config.js (which is not uploaded to GitHub)
     // If CONFIG is not defined, use fallback values for local development only
     const formspreeUrl = typeof CONFIG !== 'undefined' ? CONFIG.FORMSPREE_ENDPOINT : null;
-    const allowedDomains = typeof CONFIG !== 'undefined' ? CONFIG.ALLOWED_DOMAINS : ['localhost', '127.0.0.1'];
+    const allowedDomains = typeof CONFIG !== 'undefined' ? CONFIG.ALLOWED_DOMAINS : ['localhost', '127.0.0.1', "https://fireemerald1.github.io/fire-exe-website.github.io", "https://fireexe.is-a.dev"];
     
     // If config is missing, show error
     if (!formspreeUrl) {
