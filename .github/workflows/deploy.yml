@@ -1,4 +1,4 @@
-name: Deploy Website with Resend Email API
+name: Prepare Website Files
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     
     steps:
@@ -35,19 +35,29 @@ jobs:
         run: |
           echo "$FIREBASE_CONFIG" > firebase-config.js
           
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          personal_token: ${{ secrets.PAT_TOKEN }}
-          publish_dir: .
-          force_orphan: true
-          external_repository: fireemerald1/fire-exe-website.github.io
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          
       - name: Setup Resend API for Serverless Functions
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           echo "Resend API key is configured for serverless deployment"
 
+      # Let GitHub Pages handle the deployment automatically
+      - name: Upload artifact for deployment
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: .
+
+  # Deployment job
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
