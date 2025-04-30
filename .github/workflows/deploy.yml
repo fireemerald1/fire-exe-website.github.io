@@ -16,24 +16,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-
-      - name: Upload artifact (for CI debugging or other use)
-        uses: actions/upload-artifact@v3
-        with:
-          name: site-build
-          path: ./build  # Adjust if your build output is elsewhere
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./build  # Make sure this matches your build output directory
-  
 
       - name: Install dependencies
         run: npm ci || npm install
@@ -41,11 +29,22 @@ jobs:
       - name: Build website
         run: |
           echo "Building website assets..."
-          npm run build  # Replace with your actual build command if needed
+          npm run build  # or whatever your build command is
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-build
+          path: ./build  # adjust to your output directory
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v3
-        
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build  # again, make sure this is your build output
+
   deploy:
     needs: build
     environment:
@@ -55,4 +54,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v3
+        uses: actions/deploy-pages@v2
