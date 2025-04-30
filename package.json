@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "build": "mkdir -p build && cp -r *.html *.css *.js *.png CNAME README.md api/ build/ && rm -f build/config.js.example build/firebase-config.js.example"
+    "build": "mkdir -p build && cp -r *.html *.js *.png CNAME README.md api/ build/ && cp -f config.js firebase-config.js build/ && rm -f build/config.js.example build/firebase-config.js.example build/send-email-server.js build/server.js"
   },
   "keywords": [
     "website",
