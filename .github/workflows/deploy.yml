@@ -24,6 +24,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
+      - name: Create config.js file
+        env:
+          GITHUB_PAT: ${{ secrets.PAT_TOKEN }}
+        run: |
+          echo "// Configuration file" > config.js
+          echo "const CONFIG = {" >> config.js
+          echo "  RESEND_API_ENDPOINT: '/api/send-email'," >> config.js
+          echo "  GITHUB_TOKEN: '${{ secrets.PAT_TOKEN }}'" >> config.js
+          echo "};" >> config.js
+      
       - name: Setup Pages
         uses: actions/configure-pages@v4
       
