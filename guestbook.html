@@ -774,22 +774,29 @@
             let sanitized = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
             
             // Look for image pattern [(https://example.com/image.jpg)]
-            const imagePattern = /\[\((https?:\/\/[^\s]+\.(png|jpg|jpeg|gif|webp))\)\]/i;
-            const imageMatch = sanitized.match(imagePattern);
+            const imagePattern = /\[\((https?:\/\/[^\s]+\.(png|jpg|jpeg|gif|webp))\)\]/gi;
+            const imageMatches = [...sanitized.matchAll(imagePattern)];
             
             let imageHtml = '';
             
-            // If there's an image match, extract it and create image HTML
-            if (imageMatch) {
-                const imageUrl = imageMatch[1];
-                // Remove the image tag from the text
-                sanitized = sanitized.replace(imageMatch[0], '');
-                // Create image HTML with safety measures
-                imageHtml = `<div class="message-image-container mb-3">
-                    <img src="${imageUrl}" alt="User shared image" class="max-w-full rounded-lg shadow-md" 
-                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300?text=Image+Error'; this.classList.add('error-image');"
-                         loading="lazy">
-                </div>`;
+            // Process all image matches
+            if (imageMatches.length > 0) {
+                // Process each image match
+                for (const match of imageMatches) {
+                    const fullMatch = match[0];
+                    const imageUrl = match[1];
+                    const fileExtension = match[2].toLowerCase();
+                    
+                    // Remove the image tag from the text
+                    sanitized = sanitized.replace(fullMatch, '');
+                    
+                    // Create image HTML with safety measures
+                    imageHtml += `<div class="message-image-container mb-3">
+                        <img src="${imageUrl}" alt="User shared image" class="max-w-full rounded-lg shadow-md" 
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300?text=Image+Error'; this.classList.add('error-image');"
+                             loading="lazy">
+                    </div>`;
+                }
             }
             
             // Return both the image HTML and sanitized text
