@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fire Exe - Balls</title>
+  <link rel="icon" type="image/png" href="https://github.com/fireemerald1/fire-exe-website.github.io/blob/main/info.png?raw=true">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background-color: rgb(15, 15, 15);
+      color: white;
+      height: 100vh;
+      position: relative;
+    }
+    
+    #game-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    
+    #logo {
+      position: absolute;
+      width: 100px;
+      height: auto;
+      cursor: grab;
+    }
+    
+    #logo:active {
+      cursor: grabbing;
+    }
+    
+    #bounce-count {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 200px;
+      color: rgba(255, 255, 255, 1);
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0;
+    }
+    
+    #milestone-message {
+      position: absolute;
+      width: 100%;
+      top: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      color: rgba(255, 255, 255, 0.8);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    header {
+      background-color: rgba(0, 0, 0, 0.95);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem 0;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      top: 0;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #ff0000;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-links li {
+      margin-left: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #e0e0e0;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #00ffff;
+    }
+
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #e0e0e0;
+    }
+
+    .nav-item {
+      position: absolute;
+      padding: 5px 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      font-size: 16px;
+      color: #e0e0e0;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .nav-item:active {
+      cursor: grabbing;
+    }
+
+    .nav-item a {
+      color: #e0e0e0;
+      text-decoration: none;
+    }
+
+    .nav-item a:hover {
+      color: #00ffff;
+    }
+
+    .ad-container {
+      position: fixed;
+      width: 320px;
+      z-index: 2000;
+      display: none;
+      transition: all 0.3s ease;
+    }
+
+    .ad-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .ad-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.3s ease;
+    }
+
+    .ad-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ad-wrapper:hover .ad-overlay {
+      opacity: 1;
+    }
+
+    .ad-button {
+      position: relative;
+      margin: 0;
+      padding: 17px 35px;
+      outline: none;
+      text-decoration: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      text-transform: uppercase;
+      background-color: #fff;
+      border: 1px solid rgba(22, 76, 167, 0.6);
+      border-radius: 10px;
+      color: #1d89ff;
+      font-weight: 400;
+      font-family: inherit;
+      z-index: 0;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
+    }
+
+    .ad-button span {
+      color: #164ca7;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.7px;
+    }
+
+    .ad-button:hover {
+      animation: rotate624 0.7s ease-in-out both;
+    }
+
+    .ad-button:hover span {
+      animation: storm1261 0.7s ease-in-out both;
+      animation-delay: 0.06s;
+    }
+
+    @keyframes rotate624 {
+      0% { transform: rotate(0deg) translate3d(0, 0, 0); }
+      25% { transform: rotate(3deg) translate3d(0, 0, 0); }
+      50% { transform: rotate(-3deg) translate3d(0, 0, 0); }
+      75% { transform: rotate(1deg) translate3d(0, 0, 0); }
+      100% { transform: rotate(0deg) translate3d(0, 0, 0); }
+    }
+
+    @keyframes storm1261 {
+      0% { transform: translate3d(0, 0, 0) translateZ(0); }
+      25% { transform: translate3d(4px, 0, 0) translateZ(0); }
+      50% { transform: translate3d(-3px, 0, 0) translateZ(0); }
+      75% { transform: translate3d(2px, 0, 0) translateZ(0); }
+      100% { transform: translate3d(0, 0, 0) translateZ(0); }
+    }
+
+    .ad-button.btn-shine {
+      border: 1px solid;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .ad-button.btn-shine span {
+      z-index: 20;
+    }
+
+    .ad-button.btn-shine:after {
+      background: #38ef7d;
+      content: "";
+      height: 155px;
+      left: -75px;
+      opacity: 0.4;
+      position: absolute;
+      top: -50px;
+      transform: rotate(35deg);
+      transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+      width: 50px;
+      z-index: -10;
+    }
+
+    .ad-button.btn-shine:hover:after {
+      left: 120%;
+      transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    @media (max-width: 768px) {
+      .menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background-color: #000000;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 50px;
+        transition: left 0.3s;
+      }
+
+      .nav-links.active {
+        left: 0;
+      }
+
+      .nav-links li {
+        margin: 0 0 30px;
+      }
+
+      .ad-container {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="navbar">
+    <nav>
+      <a href="index.html" class="logo glow">Fire Exe</a>
+      <button class="menu-btn">☰</button>
+      <ul class="nav-links">
+        <li><a href="ball.html" class="active">ball</a></li>
+        <li><a href="index.html" id="nav-home">Home</a></li>
+        <li><a href="About_me.html" id="nav-about">About me</a></li>
+        <li><a href="projects.html" id="nav-project">Project</a></li>
+        <li><a href="contact.html" id="nav-contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div id="game-container">
+    <div id="bounce-count">0</div>
+    <div id="milestone-message"></div>
+    <img id="logo" src="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20no%20svg.png?raw=true" alt="Logo">
+    <div class="ad-container" id="ad-1"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-2"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-3"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-4"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-5"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-6"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-7"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-8"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-9"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-10"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-11"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-12"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-13"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-14"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-15"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-16"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+    <div class="ad-container" id="ad-17"><div class="ad-wrapper"><img src="" alt="Ad" class="ad-image"><div class="ad-overlay"><a href="#" class="ad-button btn-shine" target="_blank"><span>Visit Now</span></a></div></div></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const logo = document.getElementById('logo');
+      const bounceCountDisplay = document.getElementById('bounce-count');
+      const milestoneMessage = document.getElementById('milestone-message');
+      const navbar = document.getElementById('navbar');
+      const navLinks = document.querySelector('.nav-links');
+      
+      let bounceCount = -3;
+      let navbarHeight = navbar.offsetHeight;
+      let hasDroppedNavItems = false;
+      let adsData = null;
+      let adStates = Array(17).fill(false); // Tracks if each ad has been triggered
+      
+      const gravity = 0.5;
+      const friction = 0.98;
+      const elasticity = 0.33;
+      const holdThreshold = 4000;
+      const adDisplayTime = 15 * 1000; // 15 seconds
+      
+      const objects = [];
+      const adObjects = [];
+      
+      const logoObject = {
+        element: logo,
+        posX: window.innerWidth / 2 - 50,
+        posY: 50,
+        velocityX: 0,
+        velocityY: 0,
+        isDragging: false,
+        offsetX: 0,
+        offsetY: 0,
+        dragStartTime: null,
+        width: 100,
+        height: logo.offsetHeight,
+        countsBounces: true,
+      };
+      objects.push(logoObject);
+      
+      logo.onload = function() {
+        logoObject.height = logo.offsetHeight;
+      };
+      
+      const milestones = {
+        50: "cool, how did you find this thing",
+        70: "so its quite empty, so... here an ad :3",
+        100: "You are very bored aren't you?",
+        140: "whats that :0 2 total ads :0?",
+        200: "You really don't have a job, do you?",
+        300: "Wow, you have determination to go to 1000, don't you?",
+        400: "You are the definition of unemployed",
+        500: "Why are you doing this?",
+        600: "Ok, why are you doing this instead of doing useful things?",
+        700: "Wow, you actually have determination",
+        800: "I'm serious, why are you doing this?",
+        900: "Ok... you are very bored ._.",
+        1000: "Ok... here's a reward, new icon to bounce!",
+        1500: "WAIT WTF",
+        2000: "Ok... gg",
+      };
+      
+      updatePosition(logoObject);
+      
+      function dropNavItems() {
+        if (hasDroppedNavItems) return;
+        hasDroppedNavItems = true;
+        
+        const navItems = [
+          { id: 'nav-home', text: 'Home', href: 'index.html' },
+          { id: 'nav-about', text: 'About me', href: 'About_me.html' },
+          { id: 'nav-project', text: 'Project', href: 'projects.html' },
+          { id: 'nav-contact', text: 'Contact', href: 'contact.html' },
+        ];
+        
+        navItems.forEach(item => {
+          const navElement = document.getElementById(item.id);
+          if (navElement) navElement.remove();
+        });
+        
+        const navWidth = window.innerWidth / (navItems.length + 1);
+        navItems.forEach((item, index) => {
+          const navElement = document.createElement('div');
+          navElement.className = 'nav-item';
+          const link = document.createElement('a');
+          link.href = item.href;
+          link.textContent = item.text;
+          link.style.color = '#e0e0e0';
+          link.style.textDecoration = 'none';
+          navElement.appendChild(link);
+          document.getElementById('game-container').appendChild(navElement);
+          
+          const navObject = {
+            element: navElement,
+            posX: navWidth * (index + 1) - navElement.offsetWidth / 2,
+            posY: navbarHeight + 10,
+            velocityX: 0,
+            velocityY: 0,
+            isDragging: false,
+            offsetX: 0,
+            offsetY: 0,
+            dragStartTime: null,
+            width: navElement.offsetWidth,
+            height: navElement.offsetHeight,
+            countsBounces: false,
+          };
+          objects.push(navObject);
+          
+          addDragEvents(navObject);
+        });
+      }
+      
+      const adContainers = [
+        document.getElementById('ad-1'),
+        document.getElementById('ad-2'),
+        document.getElementById('ad-3'),
+        document.getElementById('ad-4'),
+        document.getElementById('ad-5'),
+        document.getElementById('ad-6'),
+        document.getElementById('ad-7'),
+        document.getElementById('ad-8'),
+        document.getElementById('ad-9'),
+        document.getElementById('ad-10'),
+        document.getElementById('ad-11'),
+        document.getElementById('ad-12'),
+        document.getElementById('ad-13'),
+        document.getElementById('ad-14'),
+        document.getElementById('ad-15'),
+        document.getElementById('ad-16'),
+        document.getElementById('ad-17')
+      ];
+      
+      function isDesktop() {
+        return window.innerWidth > 768;
+      }
+      
+      function initializeAds() {
+        adContainers.forEach((adContainer, index) => {
+          const adWrapper = adContainer.querySelector('.ad-wrapper');
+          const adObject = {
+            element: adContainer,
+            posX: 0,
+            posY: 0,
+            width: adWrapper.offsetWidth,
+            height: adWrapper.offsetHeight,
+            isDragging: false,
+            countsBounces: false,
+            isStatic: true
+          };
+          adObjects.push(adObject);
+        });
+      }
+      
+      function getRandomDelay() {
+        return Math.floor(Math.random() * (5 - 10 + 1) + 5) * 1000; // Random between 15 and 30 seconds
+      }
+      
+      function getRandomPosition(adWidth, adHeight) {
+        const navbarHeight = document.getElementById('navbar').offsetHeight;
+        const margin = 20; // Margin from edges to prevent ads from touching the borders
+
+        // Calculate the available space for positioning
+        const minX = margin; // Left edge + margin
+        const maxX = window.innerWidth - adWidth - margin; // Right edge - ad width - margin
+        const minY = navbarHeight + margin; // Below navbar + margin
+        const maxY = window.innerHeight - adHeight - margin; // Bottom edge - ad height - margin
+
+        // Ensure the range is valid (prevent negative or zero range)
+        const safeMaxX = Math.max(minX, maxX);
+        const safeMaxY = Math.max(minY, maxY);
+
+        // Generate random positions within the safe bounds
+        const posX = Math.floor(Math.random() * (safeMaxX - minX + 1)) + minX;
+        const posY = Math.floor(Math.random() * (safeMaxY - minY + 1)) + minY;
+
+        return { left: `${posX}px`, top: `${posY}px` };
+      }
+      
+      function loadAd(adContainer, adObject, index) {
+        if (!isDesktop() || !adsData) return;
+        
+        const randomAd = adsData[Math.floor(Math.random() * adsData.length)]; // Allow duplicates
+        const adImage = adContainer.querySelector('.ad-image');
+        const adButton = adContainer.querySelector('.ad-button');
+        
+        adImage.src = randomAd.image;
+        adButton.href = randomAd.link;
+        
+        const position = getRandomPosition(adObject.width, adObject.height);
+        
+        adContainer.style.left = position.left;
+        adContainer.style.top = position.top;
+        adContainer.style.right = 'auto';
+        adContainer.style.bottom = 'auto';
+        adContainer.style.display = 'block';
+        
+        adObject.posX = parseInt(position.left);
+        adObject.posY = parseInt(position.top);
+        
+        setTimeout(() => {
+          adContainer.style.display = 'none';
+          if (bounceCount >= (index + 1) * 15) { // Only cycle if bounce threshold still met
+            setTimeout(() => loadAd(adContainer, adObject, index), getRandomDelay());
+          }
+        }, adDisplayTime);
+      }
+      
+      function startAdCycles() {
+        if (!isDesktop()) return;
+        
+        fetch('https://raw.githubusercontent.com/fireemerald1/ads-woah/refs/heads/main/ad.json')
+          .then(response => response.json())
+          .then(data => {
+            if (data && data.ads && data.ads.length > 0) {
+              adsData = data.ads;
+              // Initial check won't trigger ads yet; wait for bounces
+            }
+          })
+          .catch(error => {
+            console.error('Error loading ads:', error);
+            adContainers.forEach(ad => ad.style.display = 'none');
+          });
+      }
+      
+      initializeAds();
+      startAdCycles();
+      
+      window.addEventListener('resize', function() {
+        if (!isDesktop()) {
+          adContainers.forEach(ad => ad.style.display = 'none');
+        }
+        adObjects.forEach(ad => {
+          if (ad.element.style.display === 'block') {
+            const position = getRandomPosition(ad.width, ad.height);
+            ad.element.style.left = position.left;
+            ad.element.style.top = position.top;
+            ad.posX = parseInt(position.left);
+            ad.posY = parseInt(position.top);
+          }
+        });
+      });
+      
+      function animateLoop() {
+        objects.forEach(obj => {
+          if (!obj.isDragging) {
+            obj.velocityY += gravity;
+            obj.posX += obj.velocityX;
+            obj.posY += obj.velocityY;
+            obj.velocityX *= friction;
+            
+            const rect = obj.element.getBoundingClientRect();
+            
+            if (obj.posX + rect.width > window.innerWidth) {
+              obj.posX = window.innerWidth - rect.width;
+              if (Math.abs(obj.velocityX) > 1 && obj.countsBounces) registerBounce();
+              obj.velocityX = -obj.velocityX * elasticity;
+            } else if (obj.posX < 0) {
+              obj.posX = 0;
+              if (Math.abs(obj.velocityX) > 1 && obj.countsBounces) registerBounce();
+              obj.velocityX = -obj.velocityX * elasticity;
+            }
+            
+            if (obj.posY + rect.height > window.innerHeight) {
+              obj.posY = window.innerHeight - rect.height;
+              if (Math.abs(obj.velocityY) > 1 && obj.countsBounces) registerBounce();
+              obj.velocityY = -obj.velocityY * elasticity;
+            } else if (obj.posY < navbarHeight) {
+              obj.posY = navbarHeight;
+              if (Math.abs(obj.velocityY) > 1 && obj.countsBounces) registerBounce();
+              obj.velocityY = -obj.velocityY * elasticity;
+            }
+            
+            updatePosition(obj);
+          }
+        });
+        
+        if (bounceCount >= 1500 && !hasDroppedNavItems) {
+          dropNavItems();
+        }
+        
+        requestAnimationFrame(animateLoop);
+      }
+      
+      function updatePosition(obj) {
+        obj.element.style.left = obj.posX + 'px';
+        obj.element.style.top = obj.posY + 'px';
+      }
+      
+      function registerBounce() {
+        bounceCount++;
+        bounceCountDisplay.textContent = bounceCount;
+        if (bounceCount >= 1) {
+          const opacity = Math.min(0.5, (bounceCount - 1) / (20 - 1) * 0.5);
+          bounceCountDisplay.style.opacity = opacity;
+        }
+        checkMilestones();
+        checkAdTriggers();
+      }
+      
+      function checkAdTriggers() {
+        adContainers.forEach((adContainer, index) => {
+          const triggerBounce = (index + 1) * 70; // 70, 140, 210, etc.
+          if (bounceCount >= triggerBounce && !adStates[index]) {
+            adStates[index] = true;
+            loadAd(adContainer, adObjects[index], index);
+          }
+        });
+      }
+      
+      function checkMilestones() {
+        if (milestones[bounceCount]) {
+          showMilestoneMessage(milestones[bounceCount]);
+          if (bounceCount === 1000) {
+            logo.src = "https://github.com/fireemerald1/bg/blob/main/cube_1.png?raw=true";
+          }
+        }
+      }
+      
+      function showMilestoneMessage(message) {
+        milestoneMessage.textContent = message;
+        milestoneMessage.style.opacity = 1;
+        setTimeout(() => milestoneMessage.style.opacity = 0, 60000);
+      }
+      
+      function addDragEvents(obj) {
+        const positionHistory = [];
+        const maxHistoryLength = 5;
+        
+        function addPositionToHistory(x, y, time) {
+          positionHistory.push({ x, y, time });
+          if (positionHistory.length > maxHistoryLength) positionHistory.shift();
+        }
+        
+        function calculateVelocityFromHistory() {
+          if (positionHistory.length < 2) return { x: 0, y: 0 };
+          const oldest = positionHistory[0];
+          const newest = positionHistory[positionHistory.length - 1];
+          const dt = newest.time - oldest.time;
+          if (dt <= 0) return { x: 0, y: 0 };
+          const amplifier = 20;
+          return {
+            x: (newest.x - oldest.x) / dt * amplifier,
+            y: (newest.y - oldest.y) / dt * amplifier
+          };
+        }
+        
+        obj.element.addEventListener('mousedown', function(e) {
+          obj.isDragging = true;
+          obj.offsetX = e.clientX - obj.posX;
+          obj.offsetY = e.clientY - obj.posY;
+          obj.dragStartTime = Date.now();
+          obj.element.style.cursor = 'grabbing';
+          positionHistory.length = 0;
+          obj.velocityX = 0;
+          obj.velocityY = 0;
+          e.preventDefault();
+        });
+        
+        document.addEventListener('mousemove', function(e) {
+          if (obj.isDragging) {
+            addPositionToHistory(e.clientX, e.clientY, Date.now());
+            obj.posX = e.clientX - obj.offsetX;
+            obj.posY = e.clientY - obj.offsetY;
+            updatePosition(obj);
+          }
+        });
+        
+        document.addEventListener('mouseup', function(e) {
+          if (obj.isDragging) {
+            obj.isDragging = false;
+            obj.element.style.cursor = 'grab';
+            const holdDuration = Date.now() - obj.dragStartTime;
+            const velocity = calculateVelocityFromHistory();
+            obj.velocityX = Math.max(-60, Math.min(60, velocity.x));
+            obj.velocityY = Math.max(-60, Math.min(60, velocity.y));
+            
+            if (holdDuration > holdThreshold) {
+              const link = obj.element.querySelector('a');
+              if (link) {
+                const preventClick = (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  link.removeEventListener('click', preventClick);
+                };
+                link.addEventListener('click', preventClick);
+              }
+            }
+            obj.dragStartTime = null;
+          }
+        });
+        
+        obj.element.addEventListener('touchstart', function(e) {
+          obj.isDragging = true;
+          obj.offsetX = e.touches[0].clientX - obj.posX;
+          obj.offsetY = e.touches[0].clientY - obj.posY;
+          obj.dragStartTime = Date.now();
+          positionHistory.length = 0;
+          obj.velocityX = 0;
+          obj.velocityY = 0;
+          e.preventDefault();
+        });
+        
+        document.addEventListener('touchmove', function(e) {
+          if (obj.isDragging) {
+            addPositionToHistory(e.touches[0].clientX, e.touches[0].clientY, Date.now());
+            obj.posX = e.touches[0].clientX - obj.offsetX;
+            obj.posY = e.touches[0].clientY - obj.offsetY;
+            updatePosition(obj);
+            e.preventDefault();
+          }
+        });
+        
+        document.addEventListener('touchend', function(e) {
+          if (obj.isDragging) {
+            obj.isDragging = false;
+            const holdDuration = Date.now() - obj.dragStartTime;
+            const velocity = calculateVelocityFromHistory();
+            obj.velocityX = Math.max(-60, Math.min(60, velocity.x));
+            obj.velocityY = Math.max(-60, Math.min(60, velocity.y));
+            
+            if (holdDuration > holdThreshold) {
+              const link = obj.element.querySelector('a');
+              if (link) {
+                const preventClick = (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  link.removeEventListener('click', preventClick);
+                };
+                link.addEventListener('click', preventClick);
+              }
+            }
+            obj.dragStartTime = null;
+          }
+        });
+      }
+      
+      addDragEvents(logoObject);
+      
+      function handleCollision(obj1, obj2) {
+        const center1X = obj1.posX + obj1.width / 2;
+        const center1Y = obj1.posY + obj1.height / 2;
+        const center2X = obj2.posX + obj2.width / 2;
+        const center2Y = obj2.posY + obj2.height / 2;
+        
+        const radius1 = (obj1.width + obj1.height) / 4;
+        const radius2 = (obj2.width + obj2.height) / 4;
+        
+        const dx = center2X - center1X;
+        const dy = center2Y - center1Y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < radius1 + radius2) {
+          const angle = Math.atan2(dy, dx);
+          const overlap = (radius1 + radius2) - distance;
+          
+          const pushX = Math.cos(angle) * overlap / 2;
+          const pushY = Math.sin(angle) * overlap / 2;
+          
+          if (!obj1.isDragging) {
+            obj1.posX -= pushX;
+            obj1.posY -= pushY;
+          }
+          if (!obj2.isDragging) {
+            obj2.posX += pushX;
+            obj2.posY += pushY;
+          }
+          
+          const mass1 = obj1.width * obj1.height;
+          const mass2 = obj2.width * obj2.height;
+          const totalMass = mass1 + mass2;
+          
+          const v1x = obj1.velocityX;
+          const v1y = obj1.velocityY;
+          const v2x = obj2.velocityX;
+          const v2y = obj2.velocityY;
+          
+          if (!obj1.isDragging) {
+            obj1.velocityX = ((mass1 - mass2) * v1x + 2 * mass2 * v2x) / totalMass * elasticity;
+            obj1.velocityY = ((mass1 - mass2) * v1y + 2 * mass2 * v2y) / totalMass * elasticity;
+          }
+          if (!obj2.isDragging) {
+            obj2.velocityX = ((mass2 - mass1) * v2x + 2 * mass1 * v1x) / totalMass * elasticity;
+            obj2.velocityY = ((mass2 - mass1) * v2y + 2 * mass1 * v1y) / totalMass * elasticity;
+          }
+        }
+      }
+      
+      document.querySelector('.menu-btn').addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.toggle('active');
+      });
+
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function() {
+          document.querySelector('.nav-links').classList.remove('active');
+        });
+      });
+      
+      animateLoop();
+      
+      window.addEventListener('resize', function() {
+        navbarHeight = navbar.offsetHeight;
+        objects.forEach(obj => {
+          if (obj.posX + obj.width > window.innerWidth) {
+            obj.posX = window.innerWidth - obj.width;
+          }
+          if (obj.posY + obj.height > window.innerHeight) {
+            obj.posY = window.innerHeight - obj.height;
+          }
+          if (obj.posY < navbarHeight) {
+            obj.posY = navbarHeight;
+          }
+          updatePosition(obj);
+        });
+      });
+    });
+  </script>
+  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92d7c8dff8a5452d',t:'MTc0NDE3ODQzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

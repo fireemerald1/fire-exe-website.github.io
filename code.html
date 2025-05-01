@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Exe - Code</title>
+    <link rel="icon" type="image/png" href="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20no%20svg.png?raw=true">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'fire-black': '#000000',
+                        'fire-cyan': '#00ffff',
+                        'fire-red': '#ff0000',
+                    },
+                },
+            },
+        };
+    </script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Root variables from original projects.html */
+        :root {
+            --primary-color: #ff0000;
+            --secondary-color: #00ffff;
+            --accent-color: #ff3333;
+            --text-color: #e0e0e0;
+            --light-text: #a0a0a0;
+            --bg-color: #000000;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Scrollbar styles from original projects.html */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: transparent;
+            border-radius: 6px;
+            border: none;
+            opacity: 0;
+            transition: opacity 0.3s ease, background 0.3s ease;
+        }
+
+        html:hover ::-webkit-scrollbar-track {
+            background: #000000;
+            border: 1px solid #333333;
+        }
+
+        html:hover ::-webkit-scrollbar-thumb {
+            background: #ff0000;
+            border: 2px solid #000000;
+            opacity: 1;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff3333;
+        }
+
+        html {
+            scrollbar-width: none;
+        }
+
+        html:hover {
+            scrollbar-width: thin;
+            scrollbar-color: #ff0000 #000000;
+        }
+
+        /* Body with background from About_me.html */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black; /* Solid black background */
+            z-index: -2;
+        }
+
+        @keyframes gradientShift {
+            0% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(180deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        /* Navbar styles from index.html/About_me.html */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glow:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        /* Main content styles from original projects.html */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem; /* Adjusted for navbar height consistency */
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--light-text);
+            margin-bottom: 2rem;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Fixed to 3 columns */
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+            border: 1px solid var(--border-color);
+            text-decoration: none; /* Ensure no underline on link */
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .project-image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .project-image {
+            height: 100%;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.1);
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--text-color);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .project-description {
+            color: var(--light-text);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto;
+            justify-content: center;
+        }
+
+        .tag {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .project-grid {
+                grid-template-columns: 1fr; /* Stack cards on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="matrix-bg" id="codeCanvas"></canvas>
+    <!-- Navbar from About_me.html unified style -->
+    <nav class="fixed top-0 w-full bg-fire-black/80 backdrop-blur-md z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+            <a href="index.html" class="text-2xl font-bold text-fire-red transition-transform hover:scale-105 glow">Fire Exe</a>
+            <button class="sm:hidden text-fire-cyan text-2xl focus:outline-none" id="menu-btn">☰</button>
+            <ul class="hidden sm:flex space-x-6">
+                <li><a href="index.html" class="text-white hover:text-fire-red transition-colors glow">Home</a></li>
+                <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors glow">About Me</a></li>
+                <li><a href="projects.html" class="text-fire-red hover:text-fire-cyan transition-colors glow">Projects</a></li>
+                <li><a href="contact.html" class="text-white hover:text-fire-red transition-colors glow">Contact</a></li>
+                <li><a href="guestbook.html" class="text-white hover:text-fire-red transition-colors glow">Guest Book</a></li>
+                <li><a href="code.html" class="text-fire-red hover:text-fire-cyan transition-colors glow">Code</a></li>
+            </ul>
+        </div>
+        <!-- Mobile Menu -->
+        <ul class="hidden sm:hidden flex-col absolute top-16 left-0 w-full bg-fire-black/95 p-6 space-y-4" id="mobile-menu">
+            <li><a href="index.html" class="text-white hover:text-fire-red transition-colors">Home</a></li>
+            <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors">About Me</a></li>
+            <li><a href="projects.html" class="text-white hover:text-fire-red transition-colors">Projects</a></li>
+            <li><a href="contact.html" class="text-white hover:text-fire-red transition-colors">Contact</a></li>
+            <li><a href="guestbook.html" class="text-white hover:text-fire-red transition-colors">Guest Book</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container">
+        <h2 class="section-title">Code</h2>
+        <p class="section-subtitle">A showcase of my best coding work</p>
+        <div class="project-grid" id="project-container">
+            <!-- Project cards will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <!-- Footer from index.html/About_me.html -->
+    <footer class="bg-fire-black py-12 border-t border-gray-800 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">About</h3>
+                <p class="text-gray-400">Beginner programmer from Indonesia, exploring development and creation.</p>
+                <p class="text-gray-400 mt-4">Fun Fact: I'm still a student</p>
+            </div>
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Home</a></li>
+                    <li><a href="About_me.html" class="text-gray-400 hover:text-fire-cyan transition-colors">About Me</a></li>
+                    <li><a href="projects.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Projects</a></li>
+                    <li><a href="contact.html" class="text-gray-400 hover:text-fire-red transition-colors">Contact</a></li>
+                    <li><a href="code.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Code</a></li>
+                    <li><a href="guestbook.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Guest Book</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">Skills</h3>
+                <ul class="space-y-2">
+                    <li><span class="text-white">Python</span></li>
+                    <li><span class="text-white">Geometry Dash</span></li>
+                    <li><span class="text-white">Adobe Illustrator</span></li>
+                    <li><a href="About_me.html" class="text-gray-400 hover:text-fire-cyan transition-colors">More Skills</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">Contact</h3>
+                <ul class="space-y-2">
+                    <li>Email: <a href="mailto:fireexecontact@gmail.com" class="text-gray-400 hover:text-fire-cyan transition-colors">fireexecontact@gmail.com</a></li>
+                    <li class="text-gray-400">Location: Indonesia</li>
+                </ul>
+                <div class="flex space-x-4 mt-4">
+                    <a href="https://github.com/fireemerald1" class="text-fire-cyan hover:text-fire-red transition-colors"><i class="fab fa-github text-2xl"></i></a>
+                    <a href="https://www.youtube.com/@fireexeGD" class="text-fire-cyan hover:text-fire-red transition-colors"><i class="fab fa-youtube text-2xl"></i></a>
+                    <a href="https://discord.com/users/1330170447588888651" class="text-fire-cyan hover:text-fire-red transition-colors"><i class="fab fa-discord text-2xl"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-8 pt-8 border-t border-gray-800 text-gray-400">
+            &copy; 2025 Fire Exe Property. All Rights Reserved.
+            <p><a href="contact.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Contact Me</a></p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle from index.html/About_me.html
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('flex');
+            });
+
+            // Matrix code rain effect
+            const canvas = document.getElementById('codeCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas dimensions
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Characters to display (code-like characters)
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>{}[]|\/?!@#$%^&*()_+-=;:",.~`';
+            
+            // Column settings
+            const fontSize = 14;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = [];
+            
+            // Initialize drops at random positions
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.floor(Math.random() * canvas.height / fontSize) * -1;
+            }
+            
+            // Draw the matrix effect
+            function draw() {
+                // Semi-transparent black to create fade effect
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Set text style
+                ctx.font = `${fontSize}px monospace`;
+                
+                // Draw characters
+                for (let i = 0; i < drops.length; i++) {
+                    // Random character
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    
+                    // First character in each column is brighter (leading character)
+                    if (drops[i] * fontSize > 0 && drops[i] * fontSize < canvas.height) {
+                        // Leading character (bright fire-red or fire-cyan)
+                        if (Math.random() > 0.5) {
+                            ctx.fillStyle = '#ff0000'; // fire-red
+                        } else {
+                            ctx.fillStyle = '#00ffff'; // fire-cyan
+                        }
+                        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                        
+                        // Trailing characters (dimmer)
+                        for (let j = 1; j < 10; j++) {
+                            const trailY = drops[i] * fontSize - j * fontSize;
+                            if (trailY > 0) {
+                                // Fade out trail
+                                const opacity = (10 - j) / 10;
+                                if (Math.random() > 0.5) {
+                                    ctx.fillStyle = `rgba(255, 0, 0, ${opacity * 0.7})`; // fire-red with opacity
+                                } else {
+                                    ctx.fillStyle = `rgba(0, 255, 255, ${opacity * 0.7})`; // fire-cyan with opacity
+                                }
+                                ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fontSize, trailY);
+                            }
+                        }
+                    }
+                    
+                    // Move drops down
+                    drops[i]++;
+                    
+                    // Reset drops when they reach bottom or randomly
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                }
+            }
+            
+            // Animation loop
+            setInterval(draw, 33);
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                const newColumns = Math.floor(canvas.width / fontSize);
+                
+                // Adjust drops array for new width
+                if (newColumns > columns) {
+                    for (let i = drops.length; i < newColumns; i++) {
+                        drops[i] = Math.floor(Math.random() * canvas.height / fontSize) * -1;
+                    }
+                }
+            });
+
+            // Fetch and load project data from JSON file
+            fetch('https://raw.githubusercontent.com/fireemerald1/asdbhjawbhdkjabnsdkjbwa/refs/heads/main/storage.json')
+                .then(response => response.json())
+                .then(projects => {
+                    const projectContainer = document.getElementById('project-container');
+                    
+                    // Clear any existing content
+                    projectContainer.innerHTML = '';
+                    
+                    // Loop through each project and create a card
+                    projects.forEach(project => {
+                        // Create tag elements from the tags array
+                        const tagElements = project.tag ? project.tag.map(tag => 
+                            `<span class="tag">${tag}</span>`
+                        ).join('') : '';
+                        
+                        // Create a new project card
+                        const projectCard = `
+                            <a href="${project.link}" class="project-card" target="_blank">
+                                <div class="project-image-container">
+                                    <div class="project-image" style="background-image: url('${project.image}');"></div>
+                                    <div class="project-overlay">
+                                        <h3 class="project-title">${project.name}</h3>
+                                        <p class="project-description">${project.description}</p>
+                                        <div class="project-tags">
+                                            ${tagElements}
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        `;
+                        
+                        // Add the card to the container
+                        projectContainer.innerHTML += projectCard;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading project data:', error);
+                    document.getElementById('project-container').innerHTML = `
+                        <div class="col-span-3 text-center text-fire-red">
+                            <p>Failed to load project data. Please try again later.</p>
+                        </div>
+                    `;
+                });
+        });
+    </script>
+</body>
+</html>

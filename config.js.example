@@ -1,0 +1,11 @@
+// Example configuration file
+// Copy this file to config.js and replace with your actual configuration
+
+const CONFIG = {
+  // Endpoint for the Resend email API
+  RESEND_API_ENDPOINT: '/api/send-email',
+  // GitHub Personal Access Token with 'repo' scope
+  // Create one at: https://github.com/settings/tokens
+  // This token is used to trigger GitHub Actions workflow for the contact form
+  GITHUB_TOKEN: 'your-github-personal-access-token-here'
+};

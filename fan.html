@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Exe - Fan</title>
+    <link rel="icon" type="image/png" href="https://github.com/fireemerald1/bg/blob/main/fan.png?raw=true">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #101010;
+            font-family: Arial, sans-serif;
+            cursor: none;
+            color: white;
+        }
+        .container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            padding-top: 80px; /* Add padding to account for navbar height */
+        }
+        #fan {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            transform-origin: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+        #fan img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transform: rotate(-90deg); /* Rotate fan image counter-clockwise */
+        }
+        #logo {
+            position: absolute;
+            width: 150px;
+            height: auto;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+            z-index: 50;
+        }
+        #goal {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            z-index: 50;
+        }
+        #hitbox {
+            position: absolute;
+            pointer-events: none;
+            z-index: 49;
+        }
+        #score {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 180px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.2);
+            z-index: 1;
+        }
+        #message {
+            position: absolute;
+            top: 120px; /* Increased from 100px to 120px to ensure it's below navbar */
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            z-index: 102;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .obstacle {
+            position: absolute;
+            background-color: rgba(255, 100, 100, 0.5);
+            border: 2px solid rgba(255, 150, 150, 0.8);
+            z-index: 40;
+        }
+
+        /* Navbar styles */
+        header {
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            top: 0;
+            height: 70px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: #ff0000;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #00ffff;
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: #000000;
+                flex-direction: column;
+                align-items: center;
+                padding-top: 50px;
+                transition: left 0.3s;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 0 0 30px;
+            }
+
+            /* Mobile-specific element sizes */
+            #fan {
+                width: 50px;
+                height: 50px;
+            }
+
+            #logo {
+                width: 100px;
+            }
+
+            #goal {
+                width: 30px;
+                height: 30px;
+            }
+
+            #score {
+                font-size: 120px;
+            }
+
+            .instructions {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="navbar">
+        <nav>
+            <a href="index.html" class="logo glow">Fire Exe</a>
+            <button class="menu-btn">☰</button>
+            <ul class="nav-links">
+                <li><a href="fan.html" class="active">fan</a></li>
+                <li><a href="index.html" id="nav-home">Home</a></li>
+                <li><a href="About_me.html" id="nav-about">About me</a></li>
+                <li><a href="projects.html" id="nav-project">Project</a></li>
+                <li><a href="contact.html" id="nav-contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div id="score">0</div>
+        <div id="obstacles-container"></div>
+        <img id="logo" src="https://raw.githubusercontent.com/fireemerald1/bg/refs/heads/main/fire%20exe%20logo%20no%20svg.png" alt="Fire EXE Logo">
+        <img id="goal" src="https://github.com/fireemerald1/bg/blob/main/info.png?raw=true" alt="Goal">
+        <div id="hitbox"></div>
+        <div id="fan">
+            <img src="https://github.com/fireemerald1/bg/blob/main/fan.png?raw=true" alt="Fan">
+        </div>
+        <div id="message"></div>
+        
+    </div>
+
+    <script>
+        const fan = document.getElementById('fan');
+        const logo = document.getElementById('logo');
+        const goal = document.getElementById('goal');
+        const hitbox = document.getElementById('hitbox');
+        const scoreDisplay = document.getElementById('score');
+        const message = document.getElementById('message');
+        const obstaclesContainer = document.getElementById('obstacles-container');
+        const container = document.querySelector('.container');
+        const navbar = document.getElementById('navbar');
+        
+        // Get navbar height for calculations
+        const navbarHeight = navbar.offsetHeight;
+        
+        // Initial logo position
+        let logoX = window.innerWidth / 2;
+        let logoY = window.innerHeight / 2;
+        
+        // Physics variables
+        let velocityX = 0;
+        let velocityY = 0;
+        const friction = 0.95;
+        
+        // Score variable
+        let score = 0;
+        
+        // Obstacle management
+        let obstacles = [];
+        const MAX_OBSTACLES = 10;
+        
+        // Score message thresholds
+        const scoreMessages = {
+            50: "wow, you have a determination",
+            60: "ok... here a block",
+            100: "ok, thats... impresive, not better than vortex",
+            120: "more block woah",
+            150: "ok, you catually have determination",
+            180: "more block coming soon",
+            200: "Damn",
+            300: "ok, thats unbelieveable",
+            400: "FANtastic (bad joke ik)",
+            600: "Maximum obstacle challenge!",
+            1000: "gg, you better than me"
+        };
+        
+        // Show message for a few seconds
+        function showMessage(text) {
+            message.textContent = text;
+            message.style.opacity = "1";
+            
+            setTimeout(() => {
+                message.style.opacity = "0";
+            }, 3000);
+        }
+
+        // Hitbox adjustments
+        const hitboxOffsetX = 0;
+        const hitboxOffsetY = 5;
+        const desktopHitboxWidth = 100;
+        const desktopHitboxHeight = 80;
+        const mobileHitboxWidth = 60;
+        const mobileHitboxHeight = 50;
+        
+        // Update hitbox position and size
+        function updateHitbox() {
+            const logoRect = logo.getBoundingClientRect();
+            const centerX = logoRect.left + logoRect.width / 2;
+            const centerY = logoRect.top + logoRect.height / 2;
+            
+            const isMobile = window.innerWidth <= 768;
+            const hitboxWidth = isMobile ? mobileHitboxWidth : desktopHitboxWidth;
+            const hitboxHeight = isMobile ? mobileHitboxHeight : desktopHitboxHeight;
+
+            hitbox.style.width = `${hitboxWidth}px`;
+            hitbox.style.height = `${hitboxHeight}px`;
+            hitbox.style.left = `${centerX - hitboxWidth/2 + hitboxOffsetX}px`;
+            hitbox.style.top = `${centerY - hitboxHeight/2 + hitboxOffsetY}px`;
+        }
+        
+        // Position the goal at a random location on screen, avoiding navbar and obstacles
+        function positionGoalRandomly() {
+            const padding = 50;
+            const goalWidth = goal.offsetWidth;
+            const goalHeight = goal.offsetHeight;
+            const maxX = window.innerWidth - goalWidth - padding;
+            const maxY = window.innerHeight - goalHeight - padding;
+            
+            let isValidPosition = false;
+            let attempts = 0;
+            const maxAttempts = 30;
+            let randomX, randomY;
+
+            while (!isValidPosition && attempts < maxAttempts) {
+                randomX = Math.floor(Math.random() * (maxX - padding)) + padding;
+                randomY = Math.floor(Math.random() * (maxY - padding - navbarHeight)) + padding + navbarHeight;
+
+                let overlapsObstacle = false;
+                for (const obstacle of obstacles) {
+                    const obstacleRect = obstacle.getBoundingClientRect();
+                    if (
+                        randomX < obstacleRect.right &&
+                        randomX + goalWidth > obstacleRect.left &&
+                        randomY < obstacleRect.bottom &&
+                        randomY + goalHeight > obstacleRect.top
+                    ) {
+                        overlapsObstacle = true;
+                        break;
+                    }
+                }
+
+                if (!overlapsObstacle) {
+                    isValidPosition = true;
+                } else {
+                    attempts++;
+                }
+            }
+            
+            if (!isValidPosition) {
+                randomX = window.innerWidth / 2 - goalWidth / 2;
+                randomY = window.innerHeight / 2 - goalHeight / 2;
+                
+                let centerIsClear = true;
+                for (const obstacle of obstacles) {
+                    const obstacleRect = obstacle.getBoundingClientRect();
+                    if (
+                        randomX < obstacleRect.right &&
+                        randomX + goalWidth > obstacleRect.left &&
+                        randomY < obstacleRect.bottom &&
+                        randomY + goalHeight > obstacleRect.top
+                    ) {
+                        centerIsClear = false;
+                        break;
+                    }
+                }
+                
+                if (!centerIsClear && obstacles.length > 0) {
+                    const obstacle = obstacles.pop();
+                    obstaclesContainer.removeChild(obstacle);
+                    return positionGoalRandomly();
+                }
+            }
+            
+            goal.style.left = `${randomX}px`;
+            goal.style.top = `${randomY}px`;
+        }
+
+        // Create a new obstacle, avoiding navbar area
+        function createObstacle() {
+            if (obstacles.length === 0) {
+                showMessage("Watch out for obstacles!");
+            }
+
+            const minSize = 50;
+            const maxWidth = Math.min(300, window.innerWidth / 3);
+            const maxHeight = Math.min(300, window.innerHeight / 3);
+            
+            const width = Math.floor(Math.random() * (maxWidth - minSize)) + minSize;
+            const height = Math.floor(Math.random() * (maxHeight - minSize)) + minSize;
+            
+            const padding = 50;
+            const maxX = window.innerWidth - width - padding;
+            const maxY = window.innerHeight - height - padding;
+            
+            let posX, posY;
+            let validPosition = false;
+            let attempts = 0;
+            const maxAttempts = 10;
+
+            while (!validPosition && attempts < maxAttempts) {
+                posX = Math.floor(Math.random() * (maxX - padding)) + padding;
+                posY = Math.floor(Math.random() * (maxY - padding - navbarHeight)) + padding + navbarHeight;
+                
+                const goalRect = goal.getBoundingClientRect();
+                const logoRect = hitbox.getBoundingClientRect();
+                
+                if (
+                    (posX > goalRect.right || posX + width < goalRect.left || 
+                     posY > goalRect.bottom || posY + height < goalRect.top) &&
+                    (posX > logoRect.right || posX + width < logoRect.left || 
+                     posY > logoRect.bottom || posY + height < logoRect.top)
+                ) {
+                    validPosition = true;
+                }
+                
+                attempts++;
+            }
+            
+            const obstacle = document.createElement('div');
+            obstacle.className = 'obstacle';
+            obstacle.style.width = `${width}px`;
+            obstacle.style.height = `${height}px`;
+            obstacle.style.left = `${posX}px`;
+            obstacle.style.top = `${posY}px`;
+            
+            obstaclesContainer.appendChild(obstacle);
+            obstacles.push(obstacle);
+            
+            return obstacle;
+        }
+
+        // Update all obstacles
+        function updateObstacles() {
+            const expectedObstacles = Math.min(Math.floor(score /60), MAX_OBSTACLES);
+            
+            while (obstacles.length < expectedObstacles) {
+                createObstacle();
+            }
+            
+            while (obstacles.length > expectedObstacles) {
+                const obstacle = obstacles.pop();
+                obstaclesContainer.removeChild(obstacle);
+            }
+            
+            if (score % 1 === 0 && score > 0) {
+                obstacles.forEach(obstacle => {
+                    const width = Math.floor(Math.random() * 250) + 50;
+                    const height = Math.floor(Math.random() * 250) + 50;
+                    
+                    const padding = 50;
+                    const maxX = window.innerWidth - width - padding;
+                    const maxY = window.innerHeight - height - padding;
+                    
+                    const posX = Math.floor(Math.random() * maxX) + padding;
+                    const posY = Math.floor(Math.random() * (maxY - padding - navbarHeight)) + padding + navbarHeight;
+                    
+                    obstacle.style.width = `${width}px`;
+                    obstacle.style.height = `${height}px`;
+                    obstacle.style.left = `${posX}px`;
+                    obstacle.style.top = `${posY}px`;
+                });
+                
+                positionGoalRandomly();
+            }
+        }
+        
+        // Check if logo has collided with an obstacle
+        function checkObstacleCollisions() {
+            const logoRect = hitbox.getBoundingClientRect();
+            
+            for (const obstacle of obstacles) {
+                const obstacleRect = obstacle.getBoundingClientRect();
+                
+                if (
+                    logoRect.left < obstacleRect.right &&
+                    logoRect.right > obstacleRect.left &&
+                    logoRect.top < obstacleRect.bottom &&
+                    logoRect.bottom > obstacleRect.top
+                ) {
+                    const centerX = logoRect.left + logoRect.width / 2;
+                    const centerY = logoRect.top + logoRect.height / 2;
+                    
+                    const obsCenterX = obstacleRect.left + obstacleRect.width / 2;
+                    const obsCenterY = obstacleRect.top + obstacleRect.height / 2;
+                    
+                    const dx = centerX - obsCenterX;
+                    const dy = centerY - obsCenterY;
+                    
+                    const bounceFactor = 1.5;
+                    
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        velocityX = dx > 0 ? Math.abs(velocityX) * bounceFactor : -Math.abs(velocityX) * bounceFactor;
+                    } else {
+                        velocityY = dy > 0 ? Math.abs(velocityY) * bounceFactor : -Math.abs(velocityY) * bounceFactor;
+                    }
+                    
+                    obstacle.style.backgroundColor = 'rgba(255, 50, 50, 0.7)';
+                    setTimeout(() => {
+                        obstacle.style.backgroundColor = 'rgba(255, 100, 100, 0.5)';
+                    }, 200);
+                }
+            }
+        }
+        
+        // Check if logo has collided with goal
+        function checkGoalCollision() {
+            const logoRect = hitbox.getBoundingClientRect();
+            const goalRect = goal.getBoundingClientRect();
+            
+            if (
+                logoRect.left < goalRect.right &&
+                logoRect.right > goalRect.left &&
+                logoRect.top < goalRect.bottom &&
+                logoRect.bottom > goalRect.top
+            ) {
+                score++;
+                scoreDisplay.textContent = score;
+                
+                updateObstacles();
+                positionGoalRandomly();
+                
+                goal.style.transition = 'transform 0.1s';
+                goal.style.transform = 'scale(1.5)';
+                setTimeout(() => {
+                    goal.style.transform = 'scale(1)';
+                }, 100);
+                
+                if (scoreMessages[score]) {
+                    showMessage(scoreMessages[score]);
+                } else if (score % 60 === 0) {
+                    const obstacleCount = Math.min(score / 60, MAX_OBSTACLES);
+                    if (obstacleCount === MAX_OBSTACLES) {
+                        showMessage(`Maximum obstacles reached! Ultimate challenge!`);
+                    } else {
+                        showMessage(`Level ${obstacleCount}! ${obstacleCount} obstacle${obstacleCount > 1 ? 's' : ''} now!`);
+                    }
+                }
+            }
+        }
+        
+        // Wait for images to load
+        window.onload = function() {
+            updateHitbox();
+            positionGoalRandomly();
+        };
+        
+        // Update fan position based on mouse
+        document.addEventListener('mousemove', (e) => {
+            const isMobile = window.innerWidth <= 768;
+            const fanOffset = isMobile ? 25 : 40;
+            
+            fan.style.left = `${e.clientX - fanOffset}px`;
+            fan.style.top = `${e.clientY - fanOffset}px`;
+            
+            const hitboxRect = hitbox.getBoundingClientRect();
+            const hitboxCenterX = hitboxRect.left + hitboxRect.width / 2;
+            const hitboxCenterY = hitboxRect.top + hitboxRect.height / 2;
+            
+            const fanCenterX = e.clientX;
+            const fanCenterY = e.clientY;
+            
+            const dx = hitboxCenterX - fanCenterX;
+            const dy = hitboxCenterY - fanCenterY;
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            fan.style.transform = `rotate(${angle + 90}deg)`;
+            
+            if (distance < 200) {
+                const force = (1 - distance / 200) * 0.8;
+                velocityX += dx / distance * force;
+                velocityY += dy / distance * force;
+            }
+        });
+        
+        // Animation loop for logo movement
+        function animate() {
+            logoX += velocityX;
+            logoY += velocityY;
+            
+            velocityX *= friction;
+            velocityY *= friction;
+            
+            const maxX = window.innerWidth - logo.offsetWidth / 2;
+            const minX = logo.offsetWidth / 2;
+            const maxY = window.innerHeight - logo.offsetHeight / 2;
+            const minY = navbarHeight + logo.offsetHeight / 2;
+            
+            const isMobile = window.innerWidth <= 768;
+
+            if (logoX < minX) {
+                logoX = minX;
+                velocityX *= -0.5;
+            } else if (logoX > maxX) {
+                logoX = maxX;
+                velocityX *= -0.5;
+            }
+            
+            if (logoY < minY) {
+                if (isMobile) {
+                    logoX = window.innerWidth / 2;
+                    logoY = window.innerHeight / 2;
+                    velocityX = 0;
+                    velocityY = 0;
+                } else {
+                    logoY = minY;
+                    velocityY *= -0.5;
+                }
+            } else if (logoY > maxY) {
+                logoY = maxY;
+                velocityY *= -0.5;
+            }
+            
+            logo.style.transform = `translate(calc(-50% + ${logoX - window.innerWidth/2}px), calc(-50% + ${logoY - window.innerHeight/2}px))`;
+            
+            updateHitbox();
+            checkObstacleCollisions();
+            checkGoalCollision();
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // Start animations
+        animate();
+        
+        // Recenter logo when window resizes
+        window.addEventListener('resize', () => {
+            logoX = window.innerWidth / 2;
+            logoY = Math.max(window.innerHeight / 2, navbarHeight + 50);
+            
+            obstacles.forEach(obstacle => {
+                obstaclesContainer.removeChild(obstacle);
+            });
+            obstacles = [];
+            
+            updateObstacles();
+            positionGoalRandomly();
+        });
+
+        // Navbar mobile menu toggle
+        document.querySelector('.menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelector('.nav-links').classList.remove('active');
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92db90a72b284526',t:'MTc0NDIxODA3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

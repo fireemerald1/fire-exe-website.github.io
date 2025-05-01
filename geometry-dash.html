@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Exe - geometry Dash</title>
+    <link rel="icon" type="image/png" href="https://github.com/fireemerald1/bg/blob/main/fire%20exe%20logo%20no%20svg.png?raw=true">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'fire-black': '#000000',
+                        'fire-cyan': '#00ffff',
+                        'fire-red': '#ff0000',
+                    },
+                },
+            },
+        };
+    </script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Root variables from original projects.html */
+        :root {
+            --primary-color: #ff0000;
+            --secondary-color: #00ffff;
+            --accent-color: #ff3333;
+            --text-color: #e0e0e0;
+            --light-text: #a0a0a0;
+            --bg-color: #000000;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Scrollbar styles from original projects.html */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: transparent;
+            border-radius: 6px;
+            border: none;
+            opacity: 0;
+            transition: opacity 0.3s ease, background 0.3s ease;
+        }
+
+        html:hover ::-webkit-scrollbar-track {
+            background: #000000;
+            border: 1px solid #333333;
+        }
+
+        html:hover ::-webkit-scrollbar-thumb {
+            background: #ff0000;
+            border: 2px solid #000000;
+            opacity: 1;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff3333;
+        }
+
+        html {
+            scrollbar-width: none;
+        }
+
+        html:hover {
+            scrollbar-width: thin;
+            scrollbar-color: #ff0000 #000000;
+        }
+
+        /* Body with background from About_me.html */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: black;
+            z-index: -2;
+        }
+
+        /* Geometry Dash themed background */
+        .geometry-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Geometric shapes animation */
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .geo-shape {
+            position: absolute;
+            bottom: -100px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            opacity: 0.15;
+            animation: float 15s infinite linear;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        }
+
+        .geo-shape::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: var(--bg-color);
+        }
+
+        .grid-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            height: 1px;
+            width: 100%;
+            opacity: 0.1;
+        }
+
+        .grid-line.vertical {
+            transform: rotate(90deg);
+            transform-origin: left;
+            width: 100vh;
+            left: 0;
+        }
+
+        /* Navbar styles from About_me.html */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glow:hover {
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        /* Main content styles from original projects.html */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem; /* Adjusted for navbar height consistency */
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--light-text);
+            margin-bottom: 2rem;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Fixed to 3 columns */
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            border: 1px solid var(--border-color);
+            text-decoration: none; /* Ensure no underline on link */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .project-image-container {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+            overflow: hidden;
+        }
+
+        .project-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.1);
+        }
+
+        .project-content {
+            padding: 1rem;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .project-description {
+            color: var(--light-text);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* ID badge styling */
+        .id-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--secondary-color);
+            font-weight: bold;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            z-index: 10;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .id-badge:hover {
+            background-color: var(--secondary-color);
+            color: var(--bg-color);
+        }
+
+        .id-badge.copied {
+            background-color: var(--primary-color);
+            animation: pulse 1s;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Tooltip for copy feedback */
+        .tooltip {
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 100;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .project-grid {
+                grid-template-columns: 1fr; /* Stack cards on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Geometry Dash themed background -->
+    <div class="geometry-bg" id="geometry-bg"></div>
+    
+    <!-- Navbar from About_me.html unified style -->
+    <nav class="fixed top-0 w-full bg-fire-black/80 backdrop-blur-md z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+            <a href="index.html" class="text-2xl font-bold text-fire-red transition-transform hover:scale-105 glow">Fire Exe</a>
+            <button class="sm:hidden text-fire-cyan text-2xl focus:outline-none" id="menu-btn">☰</button>
+            <ul class="hidden sm:flex space-x-6">
+                <li><a href="index.html" class="text-white hover:text-fire-red transition-colors glow">Home</a></li>
+                <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors glow">About Me</a></li>
+                <li><a href="projects.html" class="text-fire-red hover:text-fire-cyan transition-colors glow">Projects</a></li>
+                <li><a href="contact.html" class="text-white hover:text-fire-red transition-colors glow">Contact</a></li>
+                <li><a href="guestbook.html" class="text-white hover:text-fire-red transition-colors glow">Guest Book</a></li>
+            </ul>
+        </div>
+        <!-- Mobile Menu -->
+        <ul class="hidden sm:hidden flex-col absolute top-16 left-0 w-full bg-fire-black/95 p-6 space-y-4" id="mobile-menu">
+            <li><a href="index.html" class="text-white hover:text-fire-red transition-colors">Home</a></li>
+            <li><a href="About_me.html" class="text-white hover:text-fire-red transition-colors">About Me</a></li>
+            <li><a href="projects.html" class="text-fire-red hover:text-fire-cyan transition-colors">Projects</a></li>
+            <li><a href="contact.html" class="text-white hover:text-fire-red transition-colors">Contact</a></li>
+            <li><a href="guestbook.html" class="text-white hover:text-fire-red transition-colors">Guest Book</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container">
+        <h2 class="section-title">My YouTube Projects</h2>
+        <p class="section-subtitle">A showcase of my Geometry Dash level</p>
+        <div class="project-grid" id="project-container">
+            <!-- Project cards will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <!-- Tooltip element for copy feedback -->
+    <div class="tooltip" id="tooltip"></div>
+
+    <!-- Footer from index.html/About_me.html -->
+    <footer class="bg-fire-black py-12 border-t border-gray-800 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">About</h3>
+                <p class="text-gray-400">Beginner programmer from Indonesia, exploring development and creation.</p>
+                <p class="text-gray-400 mt-4">Fun Fact: I'm still a student</p>
+            </div>
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Home</a></li>
+                    <li><a href="About_me.html" class="text-gray-400 hover:text-fire-cyan transition-colors">About Me</a></li>
+                    <li><a href="projects.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Projects</a></li>
+                    <li><a href="contact.html" class="text-gray-400 hover:text-fire-red transition-colors">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">Skills</h3>
+                <ul class="space-y-2">
+                    <li><span class="text-white">Python</span></li>
+                    <li><span class="text-white">Geometry Dash</span></li>
+                    <li><span class="text-white">Adobe Illustrator</span></li>
+                    <li><a href="About_me.html" class="text-gray-400 hover:text-fire-cyan transition-colors">More Skills</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-fire-red text-xl font-semibold mb-4">Contact</h3>
+                <ul class="space-y-2">
+                    <li>Email: <a href="mailto:fireexecontact@gmail.com" class="text-gray-400 hover:text-fire-cyan transition-colors">fireexecontact@gmail.com</a></li>
+                    <li class="text-gray-400">Location: Indonesia</li>
+                </ul>
+                <div class="flex space-x-4 mt-4">
+                    <a href="https://github.com/fireemerald1" class="text-fire-cyan hover:text-fire-red transition-colors"><i class="fab fa-github text-2xl"></i></a>
+                    <a href="https://www.youtube.com/@fireexeGD" class="text-fire-cyan hover:text-fire-red transition-colors"><i class="fab fa-youtube text-2xl"></i></a>
+                    <a href="https://discord.com/users/1330170447588888651" class="text-fire-cyan hover:text-fire-red transition-colors"><i class="fab fa-discord text-2xl"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-8 pt-8 border-t border-gray-800 text-gray-400">
+            2025 Fire Exe Property. All Rights Reserved.
+            <p><a href="contact.html" class="text-gray-400 hover:text-fire-cyan transition-colors">Contact Me</a></p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle from index.html/About_me.html
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('flex');
+            });
+
+            // Create Geometry Dash themed background
+            const bgContainer = document.getElementById('geometry-bg');
+            const colors = [
+                ['#ff0000', '#ff3333'], // Red variants
+                ['#00ffff', '#00cccc']  // Cyan variants
+            ];
+
+            // Create geometric shapes (only squares)
+            function createShapes(count) {
+                for (let i = 0; i < count; i++) {
+                    const shape = document.createElement('div');
+                    const colorSet = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    shape.className = 'geo-shape';
+                    
+                    // Random size (square)
+                    const size = 30 + Math.random() * 70;
+                    shape.style.width = `${size}px`;
+                    shape.style.height = `${size}px`;
+                    
+                    // Random position
+                    shape.style.left = `${Math.random() * 100}%`;
+                    
+                    // Animation properties
+                    shape.style.animationDuration = `${10 + Math.random() * 20}s`;
+                    shape.style.animationDelay = `${Math.random() * 10}s`;
+                    shape.style.background = `linear-gradient(45deg, ${colorSet[0]}, ${colorSet[1]})`;
+                    
+                    bgContainer.appendChild(shape);
+                }
+            }
+
+            // Create grid lines
+            function createGridLines() {
+                // Horizontal lines
+                const lineCount = 20;
+                const spacing = 100 / lineCount;
+                
+                for (let i = 0; i < lineCount; i++) {
+                    const line = document.createElement('div');
+                    line.className = 'grid-line';
+                    line.style.top = `${i * spacing}%`;
+                    bgContainer.appendChild(line);
+                }
+                
+                // Vertical lines
+                for (let i = 0; i < lineCount; i++) {
+                    const line = document.createElement('div');
+                    line.className = 'grid-line vertical';
+                    line.style.left = `${i * spacing}%`;
+                    bgContainer.appendChild(line);
+                }
+            }
+
+            // Initialize background
+            createShapes(30);
+            createGridLines();
+
+            // Tooltip functionality
+            const tooltip = document.getElementById('tooltip');
+            
+            function showTooltip(text, x, y) {
+                tooltip.textContent = text;
+                tooltip.style.left = `${x}px`;
+                tooltip.style.top = `${y}px`;
+                tooltip.classList.add('show');
+                
+                setTimeout(() => {
+                    tooltip.classList.remove('show');
+                }, 2000);
+            }
+            
+            // Fetch and load project data from JSON file
+            fetch('https://raw.githubusercontent.com/fireemerald1/abdskjbshkjabbansdkbwabnkjdsabnjk/refs/heads/main/gduhh.json')
+                .then(response => response.json())
+                .then(projects => {
+                    const projectContainer = document.getElementById('project-container');
+                    
+                    // Clear any existing content
+                    projectContainer.innerHTML = '';
+                    
+                    // Loop through each project and create a card
+                    projects.forEach(project => {
+                        // Extract YouTube video ID from the link
+                        let videoId = '';
+                        if (project.link) {
+                            const urlParams = new URL(project.link).searchParams;
+                            videoId = urlParams.get('v');
+                        }
+                        
+                        // Generate YouTube thumbnail URL
+                        const thumbnailUrl = videoId ? 
+                            `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : 
+                            'https://via.placeholder.com/640x360?text=No+Thumbnail';
+                        
+                        // Create tag elements if any tags exist
+                        const tagElements = project.tag ? project.tag.map(tag => 
+                            `<span class="tag">${tag}</span>`
+                        ).join('') : '';
+                        
+                        // Create a new project card
+                        const projectCard = document.createElement('div');
+                        projectCard.className = 'project-card';
+                        projectCard.innerHTML = `
+                            <div class="id-badge" data-id="${project.id}">[${project.id}]</div>
+                            <a href="${project.link}" class="project-image-container" target="_blank">
+                                <div class="project-image" style="background-image: url('${thumbnailUrl}');"></div>
+                            </a>
+                            <div class="project-content">
+                                <h3 class="project-title">${project.name}</h3>
+                                <p class="project-description">${project.description}</p>
+                                <div class="project-tags">
+                                    ${tagElements}
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Add the card to the container
+                        projectContainer.appendChild(projectCard);
+                        
+                        // Add click event for ID badge to copy the ID
+                        const idBadge = projectCard.querySelector('.id-badge');
+                        idBadge.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            // Get the ID and copy to clipboard
+                            const id = this.getAttribute('data-id');
+                            navigator.clipboard.writeText(id).then(() => {
+                                // Show copied feedback
+                                this.classList.add('copied');
+                                
+                                // Show tooltip
+                                const rect = this.getBoundingClientRect();
+                                showTooltip('ID Copied!', rect.left, rect.bottom + 10);
+                                
+                                // Remove the copied class after animation
+                                setTimeout(() => {
+                                    this.classList.remove('copied');
+                                }, 1000);
+                            });
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading project data:', error);
+                    document.getElementById('project-container').innerHTML = `
+                        <div class="col-span-3 text-center text-fire-red">
+                            <p>Failed to load project data. Please try again later.</p>
+                        </div>
+                    `;
+                });
+        });
+    </script>
+</body>
+</html>

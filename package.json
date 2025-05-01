@@ -1,0 +1,25 @@
+{
+  "name": "fire-exe-website",
+  "version": "1.0.0",
+  "description": "Fire Exe personal website with Resend email integration",
+  "main": "server.js",
+  "homepage": "https://fireemerald1.github.io/fire-exe-website.github.io",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "build": "mkdir -p build && cp -r *.html *.js *.png CNAME README.md api/ build/ || true && rm -f build/config.js.example build/firebase-config.js.example build/send-email-server.js build/server.js || true"
+  },
+  "keywords": [
+    "website",
+    "portfolio",
+    "contact",
+    "resend"
+  ],
+  "author": "Fire Exe",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "resend": "^1.0.0"
+  }
+}
