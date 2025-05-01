@@ -368,7 +368,7 @@
                             <div class="bg-fire-black/90 p-6 rounded-xl border-2 border-gray-800">
                                 <form id="message-form" class="h-full flex flex-col">
                                     <div class="flex-grow mb-4">
-                                        <textarea id="message-input" class="w-full h-full p-4 rounded-lg bg-gray-900 border border-gray-700 text-white focus:border-fire-cyan focus:ring-2 focus:ring-fire-cyan/50 focus:outline-none transition-all" placeholder="Write your message here... You can add ONE image using [(https://example.com/image.jpg)] format." maxlength="500" required></textarea>
+                                        <textarea id="message-input" class="w-full h-full p-4 rounded-lg bg-gray-900 border border-gray-700 text-white focus:border-fire-cyan focus:ring-2 focus:ring-fire-cyan/50 focus:outline-none transition-all" placeholder="Write your message here... You can add images using [url] format. GIFs are supported too!" maxlength="500" required></textarea>
                                         <div class="text-right text-sm text-gray-500 mt-1">
                                             <span id="char-count">0</span>/500 characters
                                         </div>
@@ -773,22 +773,30 @@
             // First escape HTML to prevent any HTML injection
             let sanitized = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
             
-            // Look for image pattern [(https://example.com/image.jpg)]
-            const imagePattern = /\[\((https?:\/\/[^\s]+\.(png|jpg|jpeg|gif|webp))\)\]/gi;
-            const imageMatches = [...sanitized.matchAll(imagePattern)];
-            
+            // Look for image pattern [https://example.com/image.jpg]
+            // Using a simpler approach with square brackets
             let imageHtml = '';
             
-            // Process all image matches
-            if (imageMatches.length > 0) {
-                // Process each image match
-                for (const match of imageMatches) {
-                    const fullMatch = match[0];
-                    const imageUrl = match[1];
-                    const fileExtension = match[2].toLowerCase();
-                    
+            // Find all instances of [url]
+            const startTag = "[";
+            const endTag = "]";
+            let startIndex = 0;
+            
+            while (true) {
+                const tagStart = sanitized.indexOf(startTag, startIndex);
+                if (tagStart === -1) break;
+                
+                const tagEnd = sanitized.indexOf(endTag, tagStart + startTag.length);
+                if (tagEnd === -1) break;
+                
+                // Extract the URL
+                const imageUrl = sanitized.substring(tagStart + startTag.length, tagEnd);
+                
+                // Only process if it looks like a URL
+                if (imageUrl.startsWith('http')) {
                     // Remove the image tag from the text
-                    sanitized = sanitized.replace(fullMatch, '');
+                    const fullTag = sanitized.substring(tagStart, tagEnd + endTag.length);
+                    sanitized = sanitized.replace(fullTag, '');
                     
                     // Create image HTML with safety measures
                     imageHtml += `<div class="message-image-container mb-3">
@@ -796,6 +804,12 @@
                              onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300?text=Image+Error'; this.classList.add('error-image');"
                              loading="lazy">
                     </div>`;
+                    
+                    // Continue searching from the current position
+                    startIndex = tagStart;
+                } else {
+                    // If it's not a URL, move past this bracket
+                    startIndex = tagStart + 1;
                 }
             }
             
@@ -943,7 +957,7 @@
         
         // Function to edit an entry
         function editEntry(entryId, entry) {
-            const newMessage = prompt('Edit message: (You can add one image using [(https://example.com/image.jpg)] format)', entry.message);
+            const newMessage = prompt('Edit message: (You can add one image using [url] format)', entry.message);
             
             if (newMessage === null || newMessage.trim() === '' || newMessage === entry.message) {
                 return; // User cancelled or didn't change the message
@@ -1189,7 +1203,7 @@
             initLogoBounceAnimation();
             
             // Show info message about image embedding
-            showToast('You can now embed one image in your messages using [(https://example.com/image.jpg)] format!', 'info');
+            showToast('You can now embed one image in your messages using [url] format!', 'info');
             
             loadEntries();
             
